@@ -16,6 +16,25 @@ class PersonalController extends Controller
         return view('raizpersonal')->with('personals', $personal);
     }
 
+    //funcion para la barra
+    public function index2(Request $request){
+        
+        $texto =trim($request->get('texto'));
+
+        if($texto == 'Activo'){
+            $texto = 1;
+        }else if(($texto == 'Inactivo')){
+            $texto = 0;
+        }
+
+        $personals = DB::table('Personals')
+                        ->where('NombrePersonal', 'LIKE', '%'.$texto.'%')
+                        ->where('ApellidoPersonal', 'LIKE', '%'.$texto.'%')
+                        ->orWhere('EmpleadoActivo', '=', $texto)
+                        ->paginate(10);
+        return view('buscarPersonal', compact('personals', 'texto'));
+    }
+
     //funcion para mostrar
     public function show($id){
         $cargos = Cargo::all();

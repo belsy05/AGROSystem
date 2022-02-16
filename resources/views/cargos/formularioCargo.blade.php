@@ -37,7 +37,7 @@
     </div>
 
     <br>
-    <input type="submit" class="btn btn-primary" value="Guardar" onclick="return confirm('¿Está seguro que desea agregar el cargo?')">
+    <input type="submit" class="btn btn-primary" value="Guardar">
     <input type="reset" class="btn btn-danger" value="Limpiar"> 
     <a class="btn btn-info" href="{{route('cargo.index')}}">Cerrar</a>
     

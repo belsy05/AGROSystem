@@ -41,5 +41,36 @@ class CargoController extends Controller
             //retornar con un mensaje de error
         }
     }
+    //funcion para editar los datos
+    public function edit($id){
+        $cargo = Cargo::findOrFail($id);
+        return view('cargos.formularioEditarCargo')->with('cargo', $cargo);
 
+    }
+
+    //funcion para actualizar los datos
+    public function update(Request $request, $id){
+
+        $request->validate([
+            'NombreCargo'=>'required',
+            'DescripcionCargo'=>'required',
+            'Sueldo'=>'required'
+        ]);
+
+        $cargo = Cargo::findOrFail($id);
+        $cargo->NombreCargo = $request->input('NombreCargo');
+        $cargo->DescripcionCargo = $request->DescripcionCargo;
+        $cargo->Sueldo = $request->input('Sueldo');
+
+        $creado = $cargo->save();
+
+        if($creado){
+            return redirect()->route('cargo.index')
+                ->with('mensaje', 'El cargo fue modificado exitosamente');
+        }else{
+            //retornar con un mensaje de error
+        }
+    }
 }
+
+

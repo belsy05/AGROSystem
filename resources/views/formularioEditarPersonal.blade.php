@@ -17,7 +17,7 @@
     </div>
 @endif
 
-<form method="POST" action="">
+<form method="POST" action="{{ route('personal.update', ['id'=>$personal->id]) }}" id="formulari_editar_personal">
     @method('put')
     @csrf <!-- PARA PODER ENVIAR EL FORMULARIO -->
     <div class="form-group">
@@ -38,19 +38,19 @@
 
     <div class="form-group">
         <label for="NombrePersonal"> Nombres </label>
-        <input type="text" class="form-control" name="NombrePersonal" id="NombrePersonal" 
+        <input type="text" class="form-control" name="NombrePersonal" id="NombrePersonal"
         placeholder="Nombre del personal" value="{{$personal->NombrePersonal}}">
     </div>
 
     <div class="form-group">
         <label for="ApellidoPersonal"> Apellidos </label>
-        <input type="text" class="form-control" name="ApellidoPersonal" id="ApellidoPersonal" 
+        <input type="text" class="form-control" name="ApellidoPersonal" id="ApellidoPersonal"
         placeholder="Apellido del personal" value="{{$personal->ApellidoPersonal}}">
     </div>
 
     <div class="form-group">
         <label for="CorreoElectronico"> Correo Electrónico </label>
-        <input type="email" class="form-control" name="CorreoElectronico" id="CorreoElectronico" 
+        <input type="email" class="form-control" name="CorreoElectronico" id="CorreoElectronico"
         placeholder="nombre.apellido@example.com" value="{{$personal->CorreoElectronico}}">
     </div>
 
@@ -62,31 +62,97 @@
 
     <div class="form-group">
         <label for="FechaNacimiento"> Fecha de Nacimiento </label>
-        <input type="date" class="form-control" name="FechaNacimiento" id="FechaNacimiento" 
+        <input type="date" class="form-control" name="FechaNacimiento" id="FechaNacimiento"
         placeholder="Fecha de nacimiento del empleado" value="{{$personal->FechaNacimiento}}">
     </div>
 
     <div class="form-group">
         <label for="FechaIngreso"> Fecha de Ingreso </label>
-        <input type="date" class="form-control" name="FechaIngreso" id="FechaIngreso" 
+        <input type="date" class="form-control" name="FechaIngreso" id="FechaIngreso"
         placeholder="Fecha de ingreso del empleado" value="{{$personal->FechaIngreso}}">
     </div>
 
     <div class="form-group">
         <label for="Ciudad"> Ciudad </label>
-        <input type="text" class="form-control" name="Ciudad" id="Ciudad" 
+        <input type="text" class="form-control" name="Ciudad" id="Ciudad"
         placeholder="Ciudad" value="{{$personal->Ciudad}}">
     </div>
 
     <div class="form-group">
         <label for="Direccion"> Dirección </label>
-        <input type="text" class="form-control" name="Direccion" id="Direccion" 
+        <input type="text" class="form-control" name="Direccion" id="Direccion"
         placeholder="Direccion" value="{{$personal->Direccion}}">
     </div>
 
     <br>
-    <input type="submit" class="btn btn-primary" value="Actualizar">
-    <input type="reset" class="btn btn-danger" value="Restaurar"> 
-    <a class="btn btn-info" href="{{route('personal.index')}}">Cerrar</a>
-</form> 
+    <button type="button" class="btn btn-primary" onclick="confirmar()">Actualizar</button>
+    <button type="button" class="btn btn-danger" onclick="limpiar()">Restaurar</button>
+    <a class="btn btn-info" onclick="cerrar()" href="#">Cerrar</a>
+</form>
 @endsection
+
+
+
+@push('alertas')
+<script>
+
+    $('#Cargo').val({{$personal->cargo_id}});
+
+    function confirmar() {
+        var formulario = document.getElementById("formulari_editar_personal");
+        Swal.fire({
+                title: '¿Está seguro que desea actualizar los datos del empleado?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    formulario.submit();
+                }
+
+
+            })
+    }
+
+    function limpiar() {
+        var formulario = document.getElementById("formulari_editar_personal");
+        Swal.fire({
+                title: 'Desea restaurar todos los campos?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    window.location.href = window.location.href;
+                }
+
+
+            })
+    }
+
+    function cerrar() {
+        var formulario = document.getElementById("formulari_editar_personal");
+        Swal.fire({
+                title: 'Deseas dejar de actualizar al personal?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    window.location='/personals';
+                }
+
+            })
+    }
+
+</script>
+@endpush

@@ -12,6 +12,17 @@ class CargoController extends Controller
         return view('cargos.raizcargos')->with('cargos', $cargo);
     }
 
+    //funcion para la barra
+    /* public function index2(Request $request){
+        
+        $texto =trim($request->get('texto'));
+        $personals = DB::table('Personals')
+                        ->where('NombrePersonal', 'LIKE', '%'.$texto.'%')
+                        ->orWhere('cargo_id', 'LIKE', '%'.$texto.'%')
+                        ->paginate(10);
+        return view('buscarPersonal', compact('personals', 'texto'));
+    } */
+
     //funcion para crear o insertar datos
     public function crear(){
         return view('cargos.formularioCargo');
@@ -41,6 +52,7 @@ class CargoController extends Controller
             //retornar con un mensaje de error
         }
     }
+
     //funcion para editar los datos
     public function edit($id){
         $cargo = Cargo::findOrFail($id);
@@ -72,5 +84,3 @@ class CargoController extends Controller
         }
     }
 }
-
-

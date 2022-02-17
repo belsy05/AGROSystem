@@ -18,7 +18,7 @@ class PersonalController extends Controller
 
     //funcion para la barra
     public function index2(Request $request){
-        
+
         $texto =trim($request->get('texto'));
 
         if($texto == 'Activo'){
@@ -51,6 +51,7 @@ class PersonalController extends Controller
     //funcion para guardar los datos creados o insertados
     public function store(Request $request){
         //VALIDAR
+
         $request->validate([
             'Cargo'=>'required',
             'IdentidadPersonal'=>'required|unique:personals',
@@ -85,5 +86,78 @@ class PersonalController extends Controller
         }
     }
 
-    
+    //funcion para editar los datos
+    public function edit($id){
+        $cargos = Cargo::all();
+        $personal = Personal::findOrFail($id);
+        return view('formularioEditarPersonal', compact('cargos'))->with('personal', $personal);
+
+    }
+
+    //funcion para actualizar los datos
+    public function update(Request $request, $id){
+
+        $request->validate([
+            'Cargo'=>'required|integer',
+            'IdentidadPersonal'=>'required|max:255',
+            'NombrePersonal'=>'required|max:255',
+            'ApellidoPersonal'=>'required|max:255',
+            'CorreoElectronico'=>'required|email|max:255',
+            'Telefono'=>'required|max:255',
+            'FechaNacimiento'=>'required|date',
+            'FechaIngreso'=>'required|date',
+            'Ciudad'=>'required|max:255',
+            'Direccion'=>'required|max:255'
+        ]);
+
+        $personal = Personal::findOrFail($id);;
+        $personal->cargo_id = $request->Cargo;
+        $personal->IdentidadPersonal = $request->input('IdentidadPersonal');
+        $personal->NombrePersonal = $request->input('NombrePersonal');
+        $personal->ApellidoPersonal = $request->input('ApellidoPersonal');
+        $personal->CorreoElectronico = $request->input('CorreoElectronico');
+        $personal->Telefono = $request->input('Telefono');
+        $personal->FechaNacimiento = $request->input('FechaNacimiento');
+        $personal->FechaIngreso = $request->input('FechaIngreso');
+        $personal->Ciudad = $request->input('Ciudad');
+        $personal->Direccion = $request->input('Direccion');
+
+        $creado = $personal->save();
+
+        if($creado){
+            return redirect()->route('personal.index')
+                ->with('mensaje', 'El empleado fue modificado exitosamente');
+        }else{
+            //retornar con un mensaje de error
+        }
+    }
+
+    public function updateStatus($id){
+        //  $personal = Personal::findOrFail($request->id);
+        $personal = Personal::findOrFail($id);
+       /* if ($request->EmpleadoActivo == 0) {
+            $newStatus = false;
+        } else {
+            $newStatus = true;
+        }
+        return response()->json(['var'=>$newStatus]); */
+
+        if($personal->EmpleadoActivo == 1){
+            $personal->EmpleadoActivo = false;
+        }
+        else if(($personal->EmpleadoActivo == 0)){
+            $personal->EmpleadoActivo = true;
+        }
+
+        $creado = $personal->save();
+
+        if($creado){
+            return redirect()->route('personal.index')
+                ->with('mensaje', 'El empleado fue modificado exitosamente');
+        }else{
+            //retornar con un mensaje de error
+        }
+
+    }
+
 }

@@ -17,8 +17,8 @@ class PersonalController extends Controller
         return view('raizpersonal')->with('personals', $personal);
     }
 
-    //funcion para la barra
-    public function index2(Request $request){
+     //funcion para la barra
+     public function index2(Request $request){
 
         $texto =trim($request->get('texto'));
 

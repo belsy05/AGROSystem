@@ -1,155 +1,101 @@
 @extends('Plantillas.plantilla')
-
 @section('titulo', 'Formulario Del Personal')
-
 @section('contenido')
 
 <h1> Registro de Personal </h1>
 
 <!-- PARA LOS ERRORES -->
 @if ($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
 @endif
 
-<form method="POST" action="{{ route('personal.crear') }}" id="formulari_nuevo_personal">
+<form id="form_guardar" name="form_guardar" method="POST" action="{{ route('personal.guardar') }}" onsubmit="confirmar()">
     @csrf
     <div class="form-group">
         <label for="cargo">Cargo</label>
-        <select class="form-control" name="Cargo" id="Cargo">
+        <select class="form-control" name="Cargo" id="Cargo" required>
             <option value="">--Seleccione--</option>
             @foreach ($cargos as $cargo)
-            <option value="{{$cargo['id']}}">{{$cargo['NombreCargo']}}</option>
+                <option value="{{$cargo['id']}}">{{$cargo['NombreDelCargo']}}</option>
             @endforeach
         </select>
     </div>
 
     <div class="form-group">
-        <label for="IdentidadPersonal"> Identidad </label>
-        <input type="tel" class="form-control" name="IdentidadPersonal" id="IdentidadPersonal"
-            placeholder="Identidad del empleado" pattern="[0-9]{13}">
+        <label for="IdentidadDelEmpleado"> Identidad </label>
+        <input type="tel" class="form-control" name="IdentidadDelEmpleado" id="IdentidadDelEmpleado"
+        placeholder="Identidad del empleado sin guiones" pattern="[0-1][0-8][0-2][0-9]{10}" required value="{{old('IdentidadDelEmpleado')}}">
     </div>
 
     <div class="form-group">
-        <label for="NombrePersonal"> Nombres </label>
-        <input type="text" class="form-control" name="NombrePersonal" id="NombrePersonal"
-            placeholder="Nombres del empleado">
+        <label for="NombresDelEmpleado"> Nombres </label>
+        <input type="text" class="form-control" name="NombresDelEmpleado" id="NombresDelEmpleado" required
+        placeholder="Nombres del empleado" maxlength="30" value="{{old('NombresDelEmpleado')}}">
     </div>
 
     <div class="form-group">
-        <label for="ApellidoPersonal"> Apellidos </label>
-        <input type="text" class="form-control" name="ApellidoPersonal" id="ApellidoPersonal"
-            placeholder="Apellidos del empleado">
+        <label for="ApellidosDelEmpleado"> Apellidos </label>
+        <input type="text" class="form-control" name="ApellidosDelEmpleado" id="ApellidosDelEmpleado" required
+        placeholder="Apellidos del empleado" maxlength="40" value="{{old('ApellidosDelEmpleado')}}">
     </div>
 
     <div class="form-group">
-        <label for="CorreoElectronico"> Correo Electrónico </label>
-        <input type="email" class="form-control" name="CorreoElectronico" id="CorreoElectronico"
-            placeholder="nombre.apellido@example.com">
+        <label for="">Correo electrónico:</label>
+        <input type="email" name="CorreoElectrónico" pattern="^[a-zA-Z0-9.!#$%&+/=?^_`{|}~]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$" class="form-control {{ $errors->has('CorreoElectrónico') ? 'is-invalid' : '' }}"
+            value="{{ old('CorreoElectrónico') }}" id="CorreoElectrónico" placeholder="hola@ejemplo.com" required
+            title="por favor ingrese un correo valido">
     </div>
 
     <div class="form-group">
-        <label for="Telefono"> Teléfono </label>
-        <input type="tel" class="form-control" name="Telefono" id="Telefono" placeholder="00000000"
-            pattern="([0-9]{8})">
+        <label for="Teléfono"> Teléfono </label>
+        <input type="tel" class="form-control" name="Teléfono" id="Teléfono" placeholder="00000000" 
+        pattern="([3, 8-9][0-9]{7})" required value="{{old('Teléfono')}}">
     </div>
 
+
+    <?php
+        $fecha_actual = date("d-m-Y");
+    ?>
     <div class="form-group">
-        <label for="FechaNacimiento"> Fecha de Nacimiento </label>
-        <input type="date" class="form-control" name="FechaNacimiento" id="FechaNacimiento"
-            placeholder="Fecha de Nacimiento del Empleado">
+        <label for="FechaDeNacimiento">Fecha Nacimiento:</label>
+        <input require type="date" class="form-control" name="FechaDeNacimiento" id="FechaDeNacimiento"
+        value="{{old('FechaDeNacimiento')}}"min="<?php echo date('Y-m-d',strtotime($fecha_actual."- 70 year"));?>"
+         max="<?php echo date('Y-m-d',strtotime($fecha_actual."- 18 year"));?>">
     </div>
 
+
     <div class="form-group">
-        <label for="FechaIngreso"> Fecha de Ingreso </label>
-        <input type="date" class="form-control" name="FechaIngreso" id="FechaIngreso"
-            placeholder="Fecha de Ingreso del Empleado">
+        <label for="FechaDeIngreso">Fecha Ingreso:</label>
+        <input require type="date" class="form-control " name="FechaDeIngreso" id="FechaDeIngreso"
+        value="{{old('FechaDeIngreso')}}"
+        max="<?php echo date('Y-m-d',strtotime($fecha_actual));?>">
     </div>
+
 
     <div class="form-group">
         <label for="Ciudad"> Ciudad </label>
-        <input type="text" class="form-control" name="Ciudad" id="Ciudad" placeholder="Ciudad del empleado">
+        <input type="text" class="form-control" name="Ciudad" id="Ciudad" placeholder="Ciudad del empleado" 
+        maxlength="20" value="{{old('Ciudad')}}">
     </div>
 
     <div class="form-group">
-        <label for="Direccion"> Dirección </label>
-        <input type="text" class="form-control" name="Direccion" id="Direccion" placeholder="Direccion del empleado">
+        <label for="Dirección"> Dirección </label>
+        <input type="text" class="form-control" name="Dirección" id="Dirección"
+        placeholder="Dirección del empleado" maxlength="150" value="{{old('Dirección')}}">
     </div>
 
     <br>
-    <button type="button" class="btn btn-primary" value=""
-        onclick="confirmar()">Guardar</button>
-    <button type="button"  onclick="limpiar()" class="btn btn-danger" value="">Limpiar</button>
-    <a class="btn btn-info" onclick="cerrar()" href="#">Cerrar</a>
+    <input type="submit" class="btn btn-primary" value="Guardar">
+    <input type="reset" class="btn btn-danger" value="Limpiar">
+    <a class="btn btn-info" href="{{route('personal.index')}}">Cerrar</a>
+
 
 </form>
 
-
 @endsection
-
-@push('alertas')
-<script>
-
-    function confirmar() {
-        var formulario = document.getElementById("formulari_nuevo_personal");
-        Swal.fire({
-                title: 'Deseas guardar estos datos?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar'
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-                    formulario.submit();
-                }
-
-
-            })
-    }
-
-    function limpiar() {
-        var formulario = document.getElementById("formulari_nuevo_personal");
-        Swal.fire({
-                title: 'Desea limpiar todos los campos?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar'
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-                    formulario.reset();
-                }
-
-
-            })
-    }
-
-    function cerrar() {
-        var formulario = document.getElementById("formulari_nuevo_personal");
-        Swal.fire({
-                title: 'Deseas dejar de guardar al personal?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar'
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-                    window.location='/personals';
-                }
-
-            })
-    }
-
-</script>
-@endpush

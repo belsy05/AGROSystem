@@ -47,3 +47,29 @@
 </form>
 
 @endsection
+@push('alertas')
+    <script>
+        function confirmar() {
+           var formul = document.getElementById("form_guardarC");
+
+
+            Swal.fire({
+                title: '¿Está seguro que desea guardar los datos del nuevo cargo?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+            }).then((result)=>{
+                if (result.isConfirmed) {
+                    formul.submit();
+                }
+
+            })
+
+            event.preventDefault()
+
+
+        }
+    </script>
+@endpush

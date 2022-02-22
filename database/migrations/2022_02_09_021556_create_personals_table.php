@@ -17,16 +17,16 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('cargo_id');
             $table->foreign('cargo_id')->references('id')->on('cargos');
-            $table->string('IdentidadPersonal')->unique();
-            $table->string('NombrePersonal');
-            $table->string('ApellidoPersonal');
-            $table->string('CorreoElectronico')->unique();
-            $table->string('Telefono');
-            $table->date('FechaNacimiento');
-            $table->date('FechaIngreso');
+            $table->string('IdentidadDelEmpleado')->unique();
+            $table->string('NombresDelEmpleado');
+            $table->string('ApellidosDelEmpleado');
+            $table->string('CorreoElectrónico')->unique();
+            $table->string('Teléfono');
+            $table->date('FechaDeNacimiento');
+            $table->date('FechaDeIngreso');
             $table->string('Ciudad');
-            $table->string('Direccion');
-            $table->boolean('EmpleadoActivo')->default(true);
+            $table->string('Dirección');
+            $table->string('EmpleadoActivo')->default('Activo');
             $table->timestamps();
         });
     }

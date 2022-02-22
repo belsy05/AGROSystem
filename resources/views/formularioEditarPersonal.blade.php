@@ -17,7 +17,7 @@
     </div>
 @endif
 
-<form method="POST" action="{{ route('personal.update', ['id'=>$personal->id]) }}" id="formulari_editar_personal">
+<form id="form_editar" name="form_editar" method="POST" action="{{ route('personal.update', $personal->id) }}" onsubmit="confirmar()">
     @method('put')
     @csrf <!-- PARA PODER ENVIAR EL FORMULARIO -->
     <div class="form-group">
@@ -25,70 +25,82 @@
         <select class="form-control" name="Cargo" id="Cargo" >
             <option value="">--Seleccione--</option>
             @foreach ($cargos as $cargo)
-                <option value="{{$cargo['id']}}">{{$cargo['NombreCargo']}}</option>
+                <option value="{{$cargo['id']}}">{{$cargo['NombreDelCargo']}}</option>
             @endforeach
         </select>
     </div>
 
     <div class="form-group">
-        <label for="IdentidadPersonal"> Identidad </label>
-        <input type="tel" class="form-control" name="IdentidadPersonal" id="IdentidadPersonal" pattern="[0-9]{13}"
-        placeholder="Identidad del personal" value="{{$personal->IdentidadPersonal}}">
+        <label for="IdentidadDelEmpleado"> Identidad </label>
+        <input type="tel" class="form-control" name="IdentidadDelEmpleado" id="IdentidadDelEmpleado" pattern="[0-1][0-8][0-2][0-9]{10}"
+        placeholder="Identidad del personal sin guiones" value="{{old('IdentidadDelEmpleado', $personal->IdentidadDelEmpleado)}}">
     </div>
 
     <div class="form-group">
-        <label for="NombrePersonal"> Nombres </label>
-        <input type="text" class="form-control" name="NombrePersonal" id="NombrePersonal"
-        placeholder="Nombre del personal" value="{{$personal->NombrePersonal}}">
+        <label for="NombresDelEmpleado"> Nombres </label>
+        <input type="text" class="form-control" name="NombresDelEmpleado" id="NombresDelEmpleado" 
+        placeholder="Nombre del personal" value="{{old('NombresDelEmpleado', $personal->NombresDelEmpleado)}}" maxlength="20">
     </div>
 
     <div class="form-group">
-        <label for="ApellidoPersonal"> Apellidos </label>
-        <input type="text" class="form-control" name="ApellidoPersonal" id="ApellidoPersonal"
-        placeholder="Apellido del personal" value="{{$personal->ApellidoPersonal}}">
+        <label for="ApellidosDelEmpleado"> Apellidos </label>
+        <input type="text" class="form-control" name="ApellidosDelEmpleado" id="ApellidosDelEmpleado" 
+        placeholder="Apellido del personal" value="{{old('ApellidosDelEmpleado', $personal->ApellidosDelEmpleado)}}" maxlength="40">
     </div>
 
     <div class="form-group">
-        <label for="CorreoElectronico"> Correo Electrónico </label>
-        <input type="email" class="form-control" name="CorreoElectronico" id="CorreoElectronico"
-        placeholder="nombre.apellido@example.com" value="{{$personal->CorreoElectronico}}">
+        <label for="">Correo electrónico:</label>
+        <input type="email" name="CorreoElectrónico" pattern="^[a-zA-Z0-9.!#$%&+/=?^_`{|}~]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$" class="form-control {{ $errors->has('CorreoElectrónico') ? 'is-invalid' : '' }}"
+               value="{{ old('CorreoElectrónico', $personal->CorreoElectrónico) }}" id="CorreoElectrónico" placeholder="hola@ejemplo.com" required
+               title="por favor ingrese un correo valido">
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+            </div>
+        </div>
     </div>
 
     <div class="form-group">
-        <label for="Telefono"> Teléfono </label>
-        <input type="tel" class="form-control" name="Telefono" id="Telefono" pattern="[0-9]{8}"
-        placeholder="00000000" value="{{$personal->Telefono}}">
+        <label for="Teléfono"> Teléfono </label>
+        <input type="tel" class="form-control" name="Teléfono" id="Teléfono" pattern="([3, 8-9][0-9]{7})"
+        placeholder="00000000" value="{{old('Teléfono', $personal->Teléfono)}}">
     </div>
 
+    <?php
+        $fecha_actual = date("d-m-Y");
+    ?>
     <div class="form-group">
-        <label for="FechaNacimiento"> Fecha de Nacimiento </label>
-        <input type="date" class="form-control" name="FechaNacimiento" id="FechaNacimiento"
-        placeholder="Fecha de nacimiento del empleado" value="{{$personal->FechaNacimiento}}">
+        <label for="FechaDeNacimiento">Fecha Nacimiento:</label>
+        <input require type="date" class="form-control" name="FechaDeNacimiento" id="FechaDeNacimiento"
+        value="{{old('FechaDeNacimiento', $personal->FechaDeNacimiento)}}"min="<?php echo date('Y-m-d',strtotime($fecha_actual."- 70 year"));?>"
+         max="<?php echo date('Y-m-d',strtotime($fecha_actual."- 18 year"));?>">
     </div>
 
+
     <div class="form-group">
-        <label for="FechaIngreso"> Fecha de Ingreso </label>
-        <input type="date" class="form-control" name="FechaIngreso" id="FechaIngreso"
-        placeholder="Fecha de ingreso del empleado" value="{{$personal->FechaIngreso}}">
+        <label for="FechaDeIngreso">Fecha Ingreso:</label>
+        <input require type="date" class="form-control " name="FechaDeIngreso" id="FechaDeIngreso"
+        value="{{old('FechaDeIngreso', $personal->FechaDeIngreso)}}"
+        max="<?php echo date('Y-m-d',strtotime($fecha_actual));?>">
     </div>
 
     <div class="form-group">
         <label for="Ciudad"> Ciudad </label>
-        <input type="text" class="form-control" name="Ciudad" id="Ciudad"
-        placeholder="Ciudad" value="{{$personal->Ciudad}}">
+        <input type="text" class="form-control" name="Ciudad" id="Ciudad" 
+        placeholder="Ciudad" value="{{old('Ciudad', $personal->Ciudad)}}" maxlength="20">
     </div>
 
     <div class="form-group">
-        <label for="Direccion"> Dirección </label>
-        <input type="text" class="form-control" name="Direccion" id="Direccion"
-        placeholder="Direccion" value="{{$personal->Direccion}}">
+        <label for="Dirección"> Dirección </label>
+        <input type="text" class="form-control" name="Dirección" id="Dirección" 
+        placeholder="Dirección" value="{{old('Dirección', $personal->Dirección)}}" maxlength="150">
     </div>
 
     <br>
-    <button type="button" class="btn btn-primary" onclick="confirmar()">Actualizar</button>
-    <button type="button" class="btn btn-danger" onclick="limpiar()">Restaurar</button>
-    <a class="btn btn-info" onclick="cerrar()" href="#">Cerrar</a>
-</form>
+    <input type="submit" class="btn btn-primary" value="Actualizar" >
+    <input type="reset" class="btn btn-danger" value="Restaurar"> 
+    <a class="btn btn-info" href="{{route('personal.index')}}">Cerrar</a>
+</form> 
 @endsection
 
 
@@ -98,61 +110,30 @@
 
     $('#Cargo').val({{$personal->cargo_id}});
 
-    function confirmar() {
-        var formulario = document.getElementById("formulari_editar_personal");
+</script>
+
+<script>
+    function confirmar(id) {
+       var formul = document.getElementById("form_editar");
+
+
         Swal.fire({
-                title: '¿Está seguro que desea actualizar los datos del empleado?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar'
-            }).then((result) => {
+            title: '¿Está seguro que desea actualizar los datos del empleado?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar'
+        }).then((result)=>{
+            if (result.isConfirmed) {
+                formul.submit();
+            }
 
-                if (result.isConfirmed) {
-                    formulario.submit();
-                }
+        })
+
+        event.preventDefault()
 
 
-            })
     }
-
-    function limpiar() {
-        var formulario = document.getElementById("formulari_editar_personal");
-        Swal.fire({
-                title: 'Desea restaurar todos los campos?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar'
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-                    window.location.href = window.location.href;
-                }
-
-
-            })
-    }
-
-    function cerrar() {
-        var formulario = document.getElementById("formulari_editar_personal");
-        Swal.fire({
-                title: 'Deseas dejar de actualizar al personal?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar'
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-                    window.location='/personals';
-                }
-
-            })
-    }
-
 </script>
 @endpush

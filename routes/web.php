@@ -83,7 +83,6 @@ Route::put('/cargos/{id}/editar', [CargoController::class, 'update'])
 Route::get('/proveedors', [ProveedorController::class, 'index'])
 ->name('proveedor.index');
 
-//ruta para barra de busqueda
 Route::get('/proveedors/buscar', [ProveedorController::class, 'index2'])
 ->name('proveedor.index2');
 
@@ -95,3 +94,11 @@ Route::post('/proveedors/crear', [ProveedorController::class, 'store'])
 
 Route::get('/proveedors/{id}', [ProveedorController::class, 'show'])
 ->name('proveedor.mostrar')->where('id', '[0-9]+');
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Route::get('/clientes', [ClienteController::class, 'index'])
+->name('cliente.index');
+
+Route::get('/clientes/buscar', [clienteController::class, 'index2'])
+->name('cliente.index2');

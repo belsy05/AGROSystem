@@ -1,5 +1,7 @@
 @extends('Plantillas.plantilla')
+
 @section('titulo', 'Formulario Del Personal')
+
 @section('contenido')
 
 <h1> Registro de Personal </h1>
@@ -48,8 +50,13 @@
     <div class="form-group">
         <label for="">Correo electrónico:</label>
         <input type="email" name="CorreoElectrónico" pattern="^[a-zA-Z0-9.!#$%&+/=?^_`{|}~]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$" class="form-control {{ $errors->has('CorreoElectrónico') ? 'is-invalid' : '' }}"
-            value="{{ old('CorreoElectrónico') }}" id="CorreoElectrónico" placeholder="hola@ejemplo.com" required
-            title="por favor ingrese un correo valido">
+               value="{{ old('CorreoElectrónico') }}" id="CorreoElectrónico" placeholder="hola@ejemplo.com" required
+               title="por favor ingrese un correo valido">
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+            </div>
+        </div>
     </div>
 
     <div class="form-group">

@@ -76,3 +76,18 @@ Route::get('/cargos/{id}/editar', [CargoController::class, 'edit'])
 //para actualizar los datos
 Route::put('/cargos/{id}/editar', [CargoController::class, 'update'])
 ->name('cargo.update')->where('id', '[0-9]+');
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Route::get('/proveedors', [ProveedorController::class, 'index'])
+->name('proveedor.index');
+
+Route::get('/proveedors/crear', [ProveedorController::class, 'crear'])
+->name('proveedor.crear');
+
+Route::post('/proveedors/crear', [ProveedorController::class, 'store'])
+->name('proveedor.guardar');
+
+Route::get('/proveedors/{id}', [ProveedorController::class, 'show'])
+->name('proveedor.mostrar')->where('id', '[0-9]+');

@@ -1,3 +1,4 @@
+
 @extends('Plantillas.plantilla')
 
 @section('titulo', 'Personal')
@@ -66,6 +67,11 @@
                 <td scope="col">{{ $personal->Teléfono}}</td>
                 <td scope="col">{{ $personal->FechaDeIngreso}}</td>
                 <td scope="col">{{$personal->EmpleadoActivo}}
+                    {{-- @if ($personal->EmpleadoActivo)
+                        Activo
+                    @else
+                        Inactivo
+                    @endif --}}
                 </td>
 
                 <td> <a class="btn btn-success" href="{{ route('personal.mostrar',['id' => $personal->id]) }}" > Más Detalles </a></td>
@@ -134,5 +140,8 @@ Swal.fire({
 
     })
 }
+
+
+
 </script>
 @endpush

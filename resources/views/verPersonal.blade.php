@@ -9,41 +9,37 @@
     <thead class="table-secondary">
         <tr>
             <th scope="col">Campos</th>
-            <th scope="col">Valor</th>
+            <th scope="col">Información del empleado</th>
         </tr>  
     </thead>
     <tbody>
         <tr>
-            <th scope="row">Cargo Id</th>
-            <td scope="col">{{ $personal->cargo_id }} </td>
-        </tr>
-        <tr>
             <th scope="row"> Identidad </th>
-            <td scope="col">{{ $personal->IdentidadPersonal}} </td>
+            <td scope="col">{{ $personal->IdentidadDelEmpleado}} </td>
         </tr>
         <tr>
             <th scope="row">Nombres</th>
-            <td scope="col">{{ $personal->NombrePersonal }} </td>
+            <td scope="col">{{ $personal->NombresDelEmpleado }} </td>
         </tr>
         <tr>
             <th scope="row">Apellidos</th>
-            <td scope="col">{{ $personal->ApellidoPersonal }} </td>
+            <td scope="col">{{ $personal->ApellidosDelEmpleado }} </td>
         </tr>
         <tr>
             <th scope="row">Correo Electrónico</th>
-            <td scope="col">{{ $personal->CorreoElectronico}} </td>
+            <td scope="col">{{ $personal->CorreoElectrónico}} </td>
         </tr>
         <tr>
             <th scope="row">Teléfono</th>
-            <td scope="col">{{ $personal->Telefono }} </td>
+            <td scope="col">{{ $personal->Teléfono }} </td>
         </tr>
         <tr>
             <th scope="row">Fecha De Nacimiento</th>
-            <td scope="col">{{ $personal->FechaNacimiento}} </td>
+            <td scope="col">{{ $personal->FechaDeNacimiento}} </td>
         </tr>
         <tr>
             <th scope="row">Fecha De Ingreso</th>
-            <td scope="col">{{ $personal->FechaIngreso}} </td>
+            <td scope="col">{{ $personal->FechaDeIngreso}} </td>
         </tr>
         <tr>
             <th scope="row">Ciudad</th>
@@ -51,7 +47,7 @@
         </tr>
         <tr>
             <th scope="row">Dirección</th>
-            <td scope="col">{{ $personal->Direccion}} </td>
+            <td scope="col">{{ $personal->Dirección}} </td>
         </tr>
     </tbody>
 </table>

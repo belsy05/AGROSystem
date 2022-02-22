@@ -54,7 +54,7 @@ class CargoController extends Controller
         }
     }
 
-    //funcion para editar los datos
+//funcion para editar los datos
     public function edit($id){
         $cargo = Cargo::findOrFail($id);
         return view('cargos.formularioEditarCargo')->with('cargo', $cargo);
@@ -90,4 +90,3 @@ class CargoController extends Controller
             //retornar con un mensaje de error
         }
     }
-}

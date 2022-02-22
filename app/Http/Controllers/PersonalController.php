@@ -17,19 +17,7 @@ class PersonalController extends Controller
         return view('raizpersonal')->with('personals', $personal);
     }
 
-    //funcion para la barra
-    public function index2(Request $request){
-
-        $texto =trim($request->get('texto'));
-
-        $personals = DB::table('Personals')
-                        ->where('IdentidadDelEmpleado', 'LIKE', '%'.$texto.'%')
-                        ->orwhere('NombresDelEmpleado', 'LIKE', '%'.$texto.'%')
-                        ->orwhere('ApellidosDelEmpleado', 'LIKE', '%'.$texto.'%')
-                        ->orWhere('EmpleadoActivo', 'LIKE', $texto)
-                        ->paginate(10);
-        return view('raizPersonal', compact('personals', 'texto'));
-    }
+    
 
     //funcion para mostrar
     public function show($id){

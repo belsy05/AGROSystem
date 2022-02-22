@@ -80,8 +80,11 @@ Route::put('/cargos/{id}/editar', [CargoController::class, 'update'])
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Route::get('/proveedors', [ProveedorController::class, 'index'])
-->name('proveedor.index');
+
+
+//ruta para barra de busqueda
+Route::get('/proveedors/buscar', [ProveedorController::class, 'index2'])
+->name('proveedor.index2');
 
 Route::get('/proveedors/crear', [ProveedorController::class, 'crear'])
 ->name('proveedor.crear');

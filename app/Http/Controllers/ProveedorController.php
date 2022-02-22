@@ -10,6 +10,11 @@ class ProveedorController extends Controller
     public function crear(){
         return view('proveedor.formularioProveedor');
     }
+    
+    public function show($id){
+        $proveedor = Proveedor::findOrFail($id);
+        return view('Proveedor.verProveedor')->with( 'proveedor', $proveedor);
+    } 
 
     public function store(Request $request){
         //Validar

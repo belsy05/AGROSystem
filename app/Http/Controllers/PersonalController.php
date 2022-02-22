@@ -17,10 +17,16 @@ class PersonalController extends Controller
         return view('raizpersonal')->with('personals', $personal);
     }
 
-     //funcion para la barra
-     public function index2(Request $request){
+    //funcion para la barra
+    public function index2(Request $request){
 
         $texto =trim($request->get('texto'));
+
+        /* if($texto == 'Activo' || $texto == 'activo'){
+            $texto = 1;
+        }else if(($texto == 'Inactivo' || $texto == 'inactivo')){
+            $texto = 0;
+        } */ 
 
         $personals = DB::table('Personals')
                         ->where('IdentidadDelEmpleado', 'LIKE', '%'.$texto.'%')
@@ -81,3 +87,82 @@ class PersonalController extends Controller
             //retornar con un mensaje de error
         }
     }
+
+    //funcion para editar los datos
+    public function edit($id){
+        $cargos = Cargo::all();
+        $personal = Personal::findOrFail($id);
+        return view('formularioEditarPersonal', compact('cargos'))->with('personal', $personal);
+
+    }
+
+    //funcion para actualizar los datos
+    public function update(Request $request, $id){
+
+        $personal = Personal::findOrFail($id);
+
+        $request->validate([
+            'Cargo'=>'required',
+            'IdentidadDelEmpleado'=> [
+                'required',
+                'max:13',
+                Rule::unique('personals')->ignore($personal->id),
+            ],
+            'NombresDelEmpleado'=>'required|max:30',
+            'ApellidosDelEmpleado'=>'required|max:40',
+            'CorreoElectrónico'=> [
+                'required',
+                'email',
+                'max:40',
+                Rule::unique('personals')->ignore($personal->id),
+            ],
+            'Teléfono'=>'required|max:8',
+            'FechaDeNacimiento'=>'required|date',
+            'FechaDeIngreso'=>'required|date',
+            'Ciudad'=>'required|max:20',
+            'Dirección'=>'required|max:150'
+        ]);
+
+        $personal->cargo_id = $request->Cargo;
+        $personal->IdentidadDelEmpleado = $request->input('IdentidadDelEmpleado');
+        $personal->NombresDelEmpleado = $request->input('NombresDelEmpleado');
+        $personal->ApellidosDelEmpleado = $request->input('ApellidosDelEmpleado');
+        $personal->CorreoElectrónico = $request->input('CorreoElectrónico');
+        $personal->Teléfono = $request->input('Teléfono');
+        $personal->FechaDeNacimiento = $request->input('FechaDeNacimiento');
+        $personal->FechaDeIngreso = $request->input('FechaDeIngreso');
+        $personal->Ciudad = $request->input('Ciudad');
+        $personal->Dirección = $request->input('Dirección');
+
+        $creado = $personal->update();
+
+        if($creado){
+            return redirect()->route('personal.index')
+                ->with('mensaje', 'El empleado fue modificado exitosamente');
+        }else{
+            //retornar con un mensaje de error
+        }
+    }
+
+    public function updateStatus($id){
+        $personal = Personal::findOrFail($id);
+
+        if($personal->EmpleadoActivo == 'Activo'){
+            $personal->EmpleadoActivo = 'Inactivo';
+        }
+        else if(($personal->EmpleadoActivo == 'Inactivo')){
+            $personal->EmpleadoActivo = 'Activo';
+        }
+
+        $creado = $personal->save();
+
+        if($creado){
+            return redirect()->route('personal.index')
+                ->with('mensaje', 'El estado fue modificado exitosamente');
+        }else{
+            //retornar con un mensaje de error
+        }
+
+    }
+
+}

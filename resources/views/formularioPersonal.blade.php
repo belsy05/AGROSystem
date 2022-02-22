@@ -102,7 +102,56 @@
     <input type="reset" class="btn btn-danger" value="Limpiar">
     <a class="btn btn-info" href="{{route('personal.index')}}">Cerrar</a>
 
+    {{--  --}}
 
 </form>
 
+@endsection
+
+@section('js')
+@push('alertas')
+    <script>
+        function confirmar() {
+           var formul = document.getElementById("form_guardar");
+
+
+            Swal.fire({
+                title: '¿Está seguro que desea guardar los datos del nuevo empleado?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+            }).then((result)=>{
+                if (result.isConfirmed) {
+                    formul.submit();
+                }
+
+            })
+
+            event.preventDefault()
+
+
+        }
+    </script>
+@endpush
+{{-- <script>
+    function correoocultar(){
+        var x = document.getElementById("errorcorreo");
+        x.style.display = "none";
+        document.getElementById("CorreoElectronico").className =document.getElementById("CorreoElectronico").className.replace( /(?:^|\s)is-invalid(?!\S)/g , '' )
+    }
+</script> --}}
+
+@if($errors->has('CorreoElectrónico'))
+<div class="invalid-feedback" id="errorcorreo" style="margin-left: 31%;">
+    @if($errors->first('CorreoElectrónico')=== 'validation.unique')
+        <strong>Valor en uso</strong>
+    @else
+        <strong>Dato incorrecto</strong>
+    @endif
+</div>
+@endif
+
+</div>
 @endsection

@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Validation\Rule;
 
 use App\Models\Cargo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CargoController extends Controller
 {
@@ -13,15 +15,14 @@ class CargoController extends Controller
     }
 
     //funcion para la barra
-    /* public function index2(Request $request){
-        
+    public function index2(Request $request){
+
         $texto =trim($request->get('texto'));
-        $personals = DB::table('Personals')
-                        ->where('NombrePersonal', 'LIKE', '%'.$texto.'%')
-                        ->orWhere('cargo_id', 'LIKE', '%'.$texto.'%')
+        $cargo = DB::table('cargos')
+                        ->where('NombreCargo', 'LIKE', '%'.$texto.'%')
                         ->paginate(10);
-        return view('buscarPersonal', compact('personals', 'texto'));
-    } */
+        return view('cargos.raizcargos')->with('cargos', $cargo);
+    }
 
     //funcion para crear o insertar datos
     public function crear(){
@@ -32,15 +33,15 @@ class CargoController extends Controller
     public function store(Request $request){
         //VALIDAR
         $request->validate([
-            'NombreCargo'=>'required',
-            'DescripcionCargo'=>'required',
-            'Sueldo'=>'required'
+            'NombreDelCargo'=>'required|unique:cargos|string|max:40|min:5',
+            'DescripciónDelCargo'=>'required|string|max:150|min:5',
+            'Sueldo'=>'required|numeric|min:1000.00|max:30000.00'
         ]);
 
         //Formulario
         $nuevoCargo = new Cargo();
-        $nuevoCargo->NombreCargo = $request->input('NombreCargo');
-        $nuevoCargo->DescripcionCargo = $request->DescripcionCargo;
+        $nuevoCargo->NombreDelCargo = $request->input('NombreDelCargo');
+        $nuevoCargo->DescripciónDelCargo = $request->DescripciónDelCargo;
         $nuevoCargo->Sueldo = $request->input('Sueldo');
 
         $creado = $nuevoCargo->save();
@@ -63,15 +64,21 @@ class CargoController extends Controller
     //funcion para actualizar los datos
     public function update(Request $request, $id){
 
+        $cargo = Cargo::findOrFail($id);
         $request->validate([
-            'NombreCargo'=>'required',
-            'DescripcionCargo'=>'required',
-            'Sueldo'=>'required'
+            'NombreDelCargo'=> [
+                'required',
+                'string',
+                'max:40',
+                'min:5',
+                Rule::unique('cargos')->ignore($cargo->id),
+            ],
+            'DescripciónDelCargo'=>'required|string|max:150',
+            'Sueldo'=>'required|numeric|min:1000.00|max:30000.00'
         ]);
 
-        $cargo = Cargo::findOrFail($id);
-        $cargo->NombreCargo = $request->input('NombreCargo');
-        $cargo->DescripcionCargo = $request->DescripcionCargo;
+        $cargo->NombreDelCargo = $request->input('NombreDelCargo');
+        $cargo->DescripciónDelCargo = $request->DescripciónDelCargo;
         $cargo->Sueldo = $request->input('Sueldo');
 
         $creado = $cargo->save();

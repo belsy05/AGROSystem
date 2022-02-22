@@ -58,6 +58,9 @@ Route::get('/estado/{id}', [PersonalController::class, 'updateStatus'])
 Route::get('/cargos', [CargoController::class, 'index'])
 ->name('cargo.index');
 
+Route::get('/cargos2', [CargoController::class, 'index2'])
+->name('cargo.index2');
+
 //ruta para crear
 Route::get('/cargos/crear', [CargoController::class, 'crear'])
 ->name('cargo.crear');

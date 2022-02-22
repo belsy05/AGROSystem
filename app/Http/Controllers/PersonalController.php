@@ -22,12 +22,6 @@ class PersonalController extends Controller
 
         $texto =trim($request->get('texto'));
 
-        /* if($texto == 'Activo' || $texto == 'activo'){
-            $texto = 1;
-        }else if(($texto == 'Inactivo' || $texto == 'inactivo')){
-            $texto = 0;
-        } */ 
-
         $personals = DB::table('Personals')
                         ->where('IdentidadDelEmpleado', 'LIKE', '%'.$texto.'%')
                         ->orwhere('NombresDelEmpleado', 'LIKE', '%'.$texto.'%')

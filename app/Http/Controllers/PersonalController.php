@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Validation\Rule;
 
 use App\Models\Cargo;
 use App\Models\Personal;
@@ -21,18 +22,19 @@ class PersonalController extends Controller
 
         $texto =trim($request->get('texto'));
 
-        if($texto == 'Activo'){
+        /* if($texto == 'Activo' || $texto == 'activo'){
             $texto = 1;
-        }else if(($texto == 'Inactivo')){
+        }else if(($texto == 'Inactivo' || $texto == 'inactivo')){
             $texto = 0;
-        }
+        } */ 
 
         $personals = DB::table('Personals')
-                        ->where('NombrePersonal', 'LIKE', '%'.$texto.'%')
-                        ->where('ApellidoPersonal', 'LIKE', '%'.$texto.'%')
-                        ->orWhere('EmpleadoActivo', '=', $texto)
+                        ->where('IdentidadDelEmpleado', 'LIKE', '%'.$texto.'%')
+                        ->orwhere('NombresDelEmpleado', 'LIKE', '%'.$texto.'%')
+                        ->orwhere('ApellidosDelEmpleado', 'LIKE', '%'.$texto.'%')
+                        ->orWhere('EmpleadoActivo', 'LIKE', $texto)
                         ->paginate(10);
-        return view('buscarPersonal', compact('personals', 'texto'));
+        return view('raizPersonal', compact('personals', 'texto'));
     }
 
     //funcion para mostrar
@@ -51,31 +53,31 @@ class PersonalController extends Controller
     //funcion para guardar los datos creados o insertados
     public function store(Request $request){
         //VALIDAR
-
         $request->validate([
             'Cargo'=>'required',
-            'IdentidadPersonal'=>'required|unique:personals',
-            'NombrePersonal'=>'required',
-            'ApellidoPersonal'=>'required',
-            'CorreoElectronico'=>'required|email|unique:personals',
-            'Telefono'=>'required',
-            'FechaNacimiento'=>'required',
-            'Ciudad'=>'required',
-            'Direccion'=>'required'
+            'IdentidadDelEmpleado'=>'required|unique:personals|max:13',
+            'NombresDelEmpleado'=>'required||max:30',
+            'ApellidosDelEmpleado'=>'required|max:40',
+            'CorreoElectrónico'=>'required|email|unique:personals|max:40',
+            'Teléfono'=>'required',
+            'FechaDeNacimiento'=>'required|date',
+            'FechaDeIngreso'=>'required|date',
+            'Ciudad'=>'required|max:20',
+            'Dirección'=>'required|max:150'
         ]);
 
         //Formulario
         $nuevoPersonal = new Personal();
         $nuevoPersonal->cargo_id = $request->Cargo;
-        $nuevoPersonal->IdentidadPersonal = $request->input('IdentidadPersonal');
-        $nuevoPersonal->NombrePersonal = $request->input('NombrePersonal');
-        $nuevoPersonal->ApellidoPersonal = $request->input('ApellidoPersonal');
-        $nuevoPersonal->CorreoElectronico = $request->input('CorreoElectronico');
-        $nuevoPersonal->Telefono = $request->input('Telefono');
-        $nuevoPersonal->FechaNacimiento = $request->input('FechaNacimiento');
-        $nuevoPersonal->FechaIngreso = $request->input('FechaIngreso');
+        $nuevoPersonal->IdentidadDelEmpleado = $request->input('IdentidadDelEmpleado');
+        $nuevoPersonal->NombresDelEmpleado = $request->input('NombresDelEmpleado');
+        $nuevoPersonal->ApellidosDelEmpleado = $request->input('ApellidosDelEmpleado');
+        $nuevoPersonal->CorreoElectrónico = $request->input('CorreoElectrónico');
+        $nuevoPersonal->Teléfono = $request->input('Teléfono');
+        $nuevoPersonal->FechaDeNacimiento = $request->input('FechaDeNacimiento');
+        $nuevoPersonal->FechaDeIngreso = $request->input('FechaDeIngreso');
         $nuevoPersonal->Ciudad = $request->input('Ciudad');
-        $nuevoPersonal->Direccion = $request->input('Direccion');
+        $nuevoPersonal->Dirección = $request->input('Dirección');
         $creado = $nuevoPersonal->save();
 
         if($creado){
@@ -85,79 +87,3 @@ class PersonalController extends Controller
             //retornar con un mensaje de error
         }
     }
-
-    //funcion para editar los datos
-    public function edit($id){
-        $cargos = Cargo::all();
-        $personal = Personal::findOrFail($id);
-        return view('formularioEditarPersonal', compact('cargos'))->with('personal', $personal);
-
-    }
-
-    //funcion para actualizar los datos
-    public function update(Request $request, $id){
-
-        $request->validate([
-            'Cargo'=>'required|integer',
-            'IdentidadPersonal'=>'required|max:255',
-            'NombrePersonal'=>'required|max:255',
-            'ApellidoPersonal'=>'required|max:255',
-            'CorreoElectronico'=>'required|email|max:255',
-            'Telefono'=>'required|max:255',
-            'FechaNacimiento'=>'required|date',
-            'FechaIngreso'=>'required|date',
-            'Ciudad'=>'required|max:255',
-            'Direccion'=>'required|max:255'
-        ]);
-
-        $personal = Personal::findOrFail($id);;
-        $personal->cargo_id = $request->Cargo;
-        $personal->IdentidadPersonal = $request->input('IdentidadPersonal');
-        $personal->NombrePersonal = $request->input('NombrePersonal');
-        $personal->ApellidoPersonal = $request->input('ApellidoPersonal');
-        $personal->CorreoElectronico = $request->input('CorreoElectronico');
-        $personal->Telefono = $request->input('Telefono');
-        $personal->FechaNacimiento = $request->input('FechaNacimiento');
-        $personal->FechaIngreso = $request->input('FechaIngreso');
-        $personal->Ciudad = $request->input('Ciudad');
-        $personal->Direccion = $request->input('Direccion');
-
-        $creado = $personal->save();
-
-        if($creado){
-            return redirect()->route('personal.index')
-                ->with('mensaje', 'El empleado fue modificado exitosamente');
-        }else{
-            //retornar con un mensaje de error
-        }
-    }
-
-    public function updateStatus($id){
-        //  $personal = Personal::findOrFail($request->id);
-        $personal = Personal::findOrFail($id);
-       /* if ($request->EmpleadoActivo == 0) {
-            $newStatus = false;
-        } else {
-            $newStatus = true;
-        }
-        return response()->json(['var'=>$newStatus]); */
-
-        if($personal->EmpleadoActivo == 1){
-            $personal->EmpleadoActivo = false;
-        }
-        else if(($personal->EmpleadoActivo == 0)){
-            $personal->EmpleadoActivo = true;
-        }
-
-        $creado = $personal->save();
-
-        if($creado){
-            return redirect()->route('personal.index')
-                ->with('mensaje', 'El empleado fue modificado exitosamente');
-        }else{
-            //retornar con un mensaje de error
-        }
-
-    }
-
-}

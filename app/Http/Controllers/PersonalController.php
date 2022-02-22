@@ -17,16 +17,10 @@ class PersonalController extends Controller
         return view('raizpersonal')->with('personals', $personal);
     }
 
-    //funcion para la barra
-    public function index2(Request $request){
+     //funcion para la barra
+     public function index2(Request $request){
 
         $texto =trim($request->get('texto'));
-
-        /* if($texto == 'Activo' || $texto == 'activo'){
-            $texto = 1;
-        }else if(($texto == 'Inactivo' || $texto == 'inactivo')){
-            $texto = 0;
-        } */ 
 
         $personals = DB::table('Personals')
                         ->where('IdentidadDelEmpleado', 'LIKE', '%'.$texto.'%')

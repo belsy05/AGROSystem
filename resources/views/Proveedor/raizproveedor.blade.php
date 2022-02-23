@@ -66,7 +66,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="4"> No hay más empleados </td>
+                <td colspan="4"> No hay más proveedores </td>
             </tr>
         @endforelse
 

@@ -6,7 +6,24 @@ use Illuminate\Http\Request;
 
 class ProveedorController extends Controller
 {
-    //
+    public function index(){
+        $proveedor = Proveedor::paginate(10);
+        return view('Proveedor.raizproveedor')->with('proveedors', $proveedor);
+    }
+
+    //funcion para la barra
+    public function index2(Request $request){
+
+        $texto =trim($request->get('texto'));
+
+        $proveedors = DB::table('Proveedors')
+                        ->where('EmpresaProveedora', 'LIKE', '%'.$texto.'%')
+                        ->orwhere('NombresDelEncargado', 'LIKE', '%'.$texto.'%')
+                        ->paginate(10);
+        return view('Proveedor.raizProveedor', compact('proveedors', 'texto'));
+    }
+
+
     public function crear(){
         return view('proveedor.formularioProveedor');
     }
@@ -46,7 +63,5 @@ class ProveedorController extends Controller
             //retornar con un mensaje de error
         }
     }
-
-}
 
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\CargoController;
+use App\Http\Controllers\ProveedorController;
 use Illuminate\Support\Facades\Route;
 
 /*

@@ -38,7 +38,7 @@ class ProveedorController extends Controller
         $request->validate([
             'EmpresaProveedora'=>'required|max:40',
             'DirecciónDeLaEmpresa'=>'required|max:150',
-            'CorreoElectrónicoDeLaEmpresa'=>'required|email|unique:proveedors|max:40',
+            'CorreoElectrónicoDeLaEmpresa'=>'nullable|email|unique:proveedors|max:40',
             'TeléfonoDeLaEmpresa'=>'required',
             'NombresDelEncargado'=>'required||max:30',
             'ApellidosDelEncargado'=>'required|max:40',

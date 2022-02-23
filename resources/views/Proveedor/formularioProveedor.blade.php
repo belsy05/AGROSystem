@@ -34,7 +34,7 @@
     <div class="form-group">
         <label for=""> Correo Electrónico </label>
         <input type="email" name="CorreoElectrónicoDeLaEmpresa" pattern="^[a-zA-Z0-9.!#$%&+/=?^_`{|}~]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$" class="form-control {{ $errors->has('CorreoElectrónicoDeLaEmpresa') ? 'is-invalid' : '' }}"
-               value="{{ old('CorreoElectrónicoDeLaEmpresa') }}" id="CorreoElectrónicoDeLaEmpresa" placeholder="hola@ejemplo.com" maxlength="40" required
+               value="{{ old('CorreoElectrónicoDeLaEmpresa') }}" id="CorreoElectrónicoDeLaEmpresa" placeholder="hola@ejemplo.com" maxlength="40" 
                title="Por favor ingrese un correo válido">
         <div class="input-group-append">
             <div class="input-group-text">

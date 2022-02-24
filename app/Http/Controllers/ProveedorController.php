@@ -63,5 +63,44 @@ class ProveedorController extends Controller
             //retornar con un mensaje de error
         }
     }
+    
+    //funcion para editar los datos
+     public function edit($id){
+        $proveedor = Proveedor::findOrFail($id);
+        return view('Proveedors.formularioEditarProveedor')->with('proveedor', $proveedor);
+    }
+
+    //funcion para actualizar los datos
+    public function update(Request $request, $id){
+
+        $proveedor = Proveedor::findOrFail($id);
+
+            $request->validate([
+                'EmpresaProveedora'=>'required|max:40',
+                'DirecciónDeLaEmpresa'=>'required|max:150',
+                'CorreoElectrónicoDeLaEmpresa'=>'nullable|email|unique:proveedors|max:40',
+                'TeléfonoDeLaEmpresa'=>'required',
+                'NombresDelEncargado'=>'required||max:30',
+                'ApellidosDelEncargado'=>'required|max:40',
+                'TeléfonoDelEncargado'=>'required',
+            ]);
+        
+                $proveedor->EmpresaProveedora = $request->input('EmpresaProveedora');
+                $proveedor->DirecciónDeLaEmpresa = $request->input('DirecciónDeLaEmpresa');
+                $proveedor->CorreoElectrónicoDeLaEmpresa = $request->input('CorreoElectrónicoDeLaEmpresa');
+                $proveedor->TeléfonoDeLaEmpresa = $request->input('TeléfonoDeLaEmpresa');
+                $proveedor->NombresDelEncargado = $request->input('NombresDelEncargado');
+                $proveedor->ApellidosDelEncargado = $request->input('ApellidosDelEncargado');
+                $proveedor->TeléfonoDelEncargado = $request->input('TeléfonoDelEncargado');
+
+                $creado = $proveedor->update();
+
+                if($creado){
+                    return redirect()->route('proveedor.index')
+                        ->with('mensaje', 'El proveedor fue modificado exitosamente');
+                }else{
+                    //retornar con un mensaje de error
+                }
+    } 
 
 }

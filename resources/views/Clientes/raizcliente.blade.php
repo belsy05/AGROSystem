@@ -48,6 +48,8 @@
                 <th scope="col">N° De Identidad</th>
                 <th scope="col">Nombre Completo</th>
                 <th scope="col">Lugar De Procedencia</th>
+                <th scope="col">Más Detalles</th>
+                <th scope="col">Editar</th>
             </tr>
         </thead>
         <tbody>

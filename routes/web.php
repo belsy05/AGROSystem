@@ -54,7 +54,8 @@ Route::put('/personals/{id}/editar', [PersonalController::class, 'update'])
 Route::get('/estado/{id}', [PersonalController::class, 'updateStatus'])
  ->name('status.update')->where('id', '[0-9]+');
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/********************************* CARGO *********************************/
 
 Route::get('/cargos', [CargoController::class, 'index'])
 ->name('cargo.index');
@@ -79,7 +80,8 @@ Route::put('/cargos/{id}/editar', [CargoController::class, 'update'])
 ->name('cargo.update')->where('id', '[0-9]+');
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/********************************* PROVEEDOR *********************************/
 
 Route::get('/proveedors', [ProveedorController::class, 'index'])
 ->name('proveedor.index');
@@ -96,7 +98,14 @@ Route::post('/proveedors/crear', [ProveedorController::class, 'store'])
 Route::get('/proveedors/{id}', [ProveedorController::class, 'show'])
 ->name('proveedor.mostrar')->where('id', '[0-9]+');
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Route::get('/proveedors/{id}/editar', [ProveedorController::class, 'edit'])
+->name('proveedor.edit')->where('id', '[0-9]+');
+
+Route::put('/proveedors/{id}/editar', [ProveedorController::class, 'update'])
+->name('proveedor.update')->where('id', '[0-9]+');
+
+
+/********************************* CLIENTE *********************************/
 
 Route::get('/clientes', [ClienteController::class, 'index'])
 ->name('cliente.index');

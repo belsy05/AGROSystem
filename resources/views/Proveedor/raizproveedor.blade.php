@@ -49,6 +49,8 @@
                 <th scope="col">Teléfono</th>
                 <th scope="col">Encargado</th>
                 <th scope="col">Teléfono Del Encargado</th>
+                <th scope="col">Más Detalles</th>
+                <th scope="col">Editar</th>
             </tr>
         </thead>
         <tbody>

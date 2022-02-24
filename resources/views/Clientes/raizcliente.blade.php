@@ -47,8 +47,8 @@
                 <th scope="col">N°</th>
                 <th scope="col">N° De Identidad</th>
                 <th scope="col">Nombre Completo</th>
+                <th scope="col">Teléfono</th>
                 <th scope="col">Lugar De Procedencia</th>
-                <th scope="col">Más Detalles</th>
                 <th scope="col">Editar</th>
             </tr>
         </thead>
@@ -58,8 +58,8 @@
                 <th scope="row">{{ $cliente->id }}</th>
                 <td scope="col">{{ $cliente->IdentidadDelCliente}}</td>
                 <td scope="col">{{ $cliente->NombresDelCliente}} {{ $cliente->ApellidosDelCliente}}</td>
+                <td scope="col">{{ $cliente->Teléfono }}</td>
                 <td scope="col">{{ $cliente->LugarDeProcedencia }}</td>
-                <td> <a class="btn btn-success" href="{{ route('cliente.mostrar',['id' => $cliente->id]) }}" > Más Detalles </a></td>
                 <td> <a class="btn btn-success" href="{{ route('cliente.edit',['id' => $cliente->id]) }}"> Editar </a></td>
 
             </tr>

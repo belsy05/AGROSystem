@@ -8,10 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class ClienteController extends Controller
 {
-    public function index(){
-        $clientes = Cliente::paginate(10);
-        return view('Clientes.raizcliente')->with('clientes', $clientes);
-    }
+    
 
     public function show($id){
         $cliente = Cliente::findOrFail($id);

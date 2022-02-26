@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\CargoController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProveedorController;
 use Illuminate\Support\Facades\Route;
 
@@ -110,5 +111,19 @@ Route::put('/proveedors/{id}/editar', [ProveedorController::class, 'update'])
 Route::get('/clientes', [ClienteController::class, 'index'])
 ->name('cliente.index');
 
-Route::get('/clientes/buscar', [clienteController::class, 'index2'])
+Route::get('/clientes/buscar', [ClienteController::class, 'index2'])
 ->name('cliente.index2');
+
+Route::get('/clientes/{id}', [ClienteController::class, 'show'])
+->name('cliente.mostrar')->where('id', '[0-9]+');
+
+
+Route::get('/clientes/edit', [ClienteController::class, 'edit'])
+->name('cliente.edit');
+
+
+Route::get('/clientes/crear', [ClienteController::class, 'crear'])
+->name('cliente.crear');
+
+Route::post('/clientes/guardar', [ClienteController::class, 'store'])
+->name('cliente.guardar');

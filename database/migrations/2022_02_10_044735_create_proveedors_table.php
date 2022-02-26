@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('proveedors', function (Blueprint $table) {
             $table->id();
-            $table->string('EmpresaProveedora');
+            $table->string('EmpresaProveedora')->unique();
             $table->string('DirecciónDeLaEmpresa');
             $table->string('CorreoElectrónicoDeLaEmpresa')->unique()->nullable();
             $table->string('TeléfonoDeLaEmpresa');

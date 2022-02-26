@@ -8,7 +8,24 @@ use Illuminate\Support\Facades\DB;
 
 class ClienteController extends Controller
 {
-    
+    public function index(){
+        $cliente = Cliente::paginate(10);
+        return view('Clientes.raizcliente')->with('clientes', $cliente);
+    }
+
+    //funcion para la barra
+    public function index2(Request $request){
+
+        $texto =trim($request->get('texto'));
+
+        $clientes = DB::table('clientes')
+                        ->where('NombresDelCliente', 'LIKE', '%'.$texto.'%')
+                        ->orwhere('ApellidosDelCliente', 'LIKE', '%'.$texto.'%')
+                        ->orwhere('IdentidadDelCliente', 'LIKE', '%'.$texto.'%')
+                        ->orwhere('LugarDeProcedencia', 'LIKE', '%'.$texto.'%')
+                        ->paginate(10);
+        return view('Clientes.raizcliente', compact('clientes', 'texto'));
+    }
 
     public function show($id){
         $cliente = Cliente::findOrFail($id);

@@ -1,8 +1,8 @@
 @extends('plantillas.plantilla')
-@section('titulo', 'Alumno')
+@section('titulo', 'Personal')
 @section('contenido')
 
-<h1> Detalles de {{$personal->NombrePersonal}} {{$personal->ApellidoPersonal}}
+<h1> Detalles de {{$personal->NombresDelEmpleado}} {{$personal->ApellidosDelEmpleado}}
 </h1>
 <br>
 <table class="table">

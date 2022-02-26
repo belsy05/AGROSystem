@@ -31,6 +31,21 @@
             <th scope="row">Teléfono de la Empresa</th>
             <td scope="col">{{ $proveedor->TeléfonoDeLaEmpresa }} </td>
         </tr>
+    </tbody>   
+</table>
+<br>
+<h1> Detalles del Encargado {{$proveedor->NombresDelEncargado}} {{ $proveedor->ApellidosDelEncargado}}
+</h1>
+<br>
+
+<table class="table">
+    <thead class="table-secondary">
+        <tr>
+            <th scope="col">Campos</th>
+            <th scope="col">Información del encargado</th>
+        </tr>  
+    </thead>
+    <tbody>
 
         <tr>
             <th scope="row">Nombres del Encargado</th>
@@ -49,6 +64,7 @@
         
     </tbody>
 </table>
+<br>
 
 <a class="btn btn-primary" href="{{route('proveedor.index')}}"> Regresar </a>
 @endsection

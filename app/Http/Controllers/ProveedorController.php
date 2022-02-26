@@ -36,7 +36,7 @@ class ProveedorController extends Controller
     public function store(Request $request){
         //Validar
         $request->validate([
-            'EmpresaProveedora'=>'required|max:40',
+            'EmpresaProveedora'=>'required|unique:proveedors|max:40',
             'DirecciónDeLaEmpresa'=>'required|max:150',
             'CorreoElectrónicoDeLaEmpresa'=>'nullable|email|unique:proveedors|max:40',
             'TeléfonoDeLaEmpresa'=>'required',

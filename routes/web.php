@@ -117,10 +117,11 @@ Route::get('/clientes/buscar', [ClienteController::class, 'index2'])
 Route::get('/clientes/{id}', [ClienteController::class, 'show'])
 ->name('cliente.mostrar')->where('id', '[0-9]+');
 
+Route::get('/clientes/{id}/edit', [ClienteController::class, 'edit'])
+->name('cliente.edit')->where('id', '[0-9]+');
 
-Route::get('/clientes/edit', [ClienteController::class, 'edit'])
-->name('cliente.edit');
-
+Route::put('/clientes/{id}/editar', [ClienteController::class, 'update'])
+->name('cliente.update')->where('id', '[0-9]+');
 
 Route::get('/clientes/crear', [ClienteController::class, 'crear'])
 ->name('cliente.crear');

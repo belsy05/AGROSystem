@@ -65,7 +65,7 @@
            var formul = document.getElementById("form_guardarC");
 
             Swal.fire({
-                title: '¿Está seguro que desea guardar al cliente?',
+                title: '¿Está seguro que desea guardar los datos del nuevo cliente?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

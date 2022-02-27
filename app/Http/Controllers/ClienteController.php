@@ -44,7 +44,7 @@ class ClienteController extends Controller
             'IdentidadDelCliente'=>'required|max:13',
             'NombresDelCliente'=>'required||max:30',
             'ApellidosDelCliente'=>'required|max:40',
-            'Telefono'=>'required',
+            'Telefono'=>'max:9',
             'LugarDeProcedencia'=>'required|max:120'
         ]);
 

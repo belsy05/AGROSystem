@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class ClienteController extends Controller
 {
@@ -41,10 +42,9 @@ class ClienteController extends Controller
         //VALIDAR
 
         $request->validate([
-            'IdentidadDelCliente'=>'required|max:13',
+            'IdentidadDelCliente'=>'required||unique:clientes|max:13',
             'NombresDelCliente'=>'required||max:30',
             'ApellidosDelCliente'=>'required|max:40',
-            'Telefono'=>'max:9',
             'LugarDeProcedencia'=>'required|max:120'
         ]);
 
@@ -64,18 +64,46 @@ class ClienteController extends Controller
         }
     }
 
+    //funcion para editar los datos
+    public function edit($id){
+        $cliente = Cliente::findOrFail($id);
+        return view('Clientes.formularioEditarCliente')->with('cliente', $cliente);
 
-    public function edit(Request $request){
-        //VALIDAR
+    }
+
+    public function update(Request $request, $id){
+
+        $cliente = Cliente::findOrFail($id);
+
         $request->validate([
-            'IdentidadDelCliente'=>'required|max:13',
+            'IdentidadDelCliente'=> [
+                'required',
+                'max:13',
+                Rule::unique('clientes')->ignore($cliente->id),
+            ],
             'NombresDelCliente'=>'required||max:30',
             'ApellidosDelCliente'=>'required|max:40',
-            'Telefono'=>'required',
+            'Telefono'=>'nullable|max:9',
             'LugarDeProcedencia'=>'required|max:120'
         ]);
 
+        $cliente->IdentidadDelCliente = $request->input('IdentidadDelCliente');
+        $cliente->NombresDelCliente = $request->input('NombresDelCliente');
+        $cliente->ApellidosDelCliente = $request->input('ApellidosDelCliente');
+        $cliente->Telefono = $request->input('Telefono');
+        $cliente->LugarDeProcedencia = $request->input('LugarDeProcedencia');
+
+        $creado = $cliente->update();
+
+        if($creado){
+            return redirect()->route('cliente.index')
+                ->with('mensaje', 'El cliente fue modificado exitosamente.');
+        }else{
+            //retornar con un mensaje de error
+        }
 
     }
+
+
 
 }

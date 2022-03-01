@@ -42,7 +42,7 @@
     <div class="form-group">
         <label for="Telefono"> Teléfono </label>
         <input type="tel" class="form-control" name="Telefono" id="Telefono" placeholder="00000000"
-        pattern="([3, 8-9][0-9]{7})" required value="{{old('Telefono')}}">
+        pattern="([3, 8-9][0-9]{7})" value="{{old('Telefono')}}">
     </div>
 
     <div class="form-group">

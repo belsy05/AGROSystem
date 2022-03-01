@@ -2,7 +2,7 @@
 @section('titulo', 'Proveedores')
 @section('contenido')
 
-<h1> Detalles de la {{$proveedor->EmpresaProveedora}}
+<h1> Detalles de la Empresa {{$proveedor->EmpresaProveedora}}
 </h1>
 <br>
 <table class="table">
@@ -34,7 +34,7 @@
     </tbody>   
 </table>
 <br>
-<h1> Detalles del Encargado {{$proveedor->NombresDelEncargado}} {{ $proveedor->ApellidosDelEncargado}}
+<h1> Detalles del Encargad@ {{$proveedor->NombresDelEncargado}} {{ $proveedor->ApellidosDelEncargado}}
 </h1>
 <br>
 

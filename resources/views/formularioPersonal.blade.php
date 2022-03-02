@@ -136,23 +136,7 @@
         }
     </script>
 @endpush
-{{-- <script>
-    function correoocultar(){
-        var x = document.getElementById("errorcorreo");
-        x.style.display = "none";
-        document.getElementById("CorreoElectronico").className =document.getElementById("CorreoElectronico").className.replace( /(?:^|\s)is-invalid(?!\S)/g , '' )
-    }
-</script> --}}
 
-@if($errors->has('CorreoElectrónico'))
-<div class="invalid-feedback" id="errorcorreo" style="margin-left: 31%;">
-    @if($errors->first('CorreoElectrónico')=== 'validation.unique')
-        <strong>Valor en uso</strong>
-    @else
-        <strong>Dato incorrecto</strong>
-    @endif
-</div>
-@endif
 
 </div>
 @endsection

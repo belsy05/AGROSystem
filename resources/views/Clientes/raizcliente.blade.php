@@ -44,7 +44,6 @@
     <table class="table table-bordered border-dark mt-3" >
         <thead class="table table-striped table-hover">
             <tr class="success">
-                <th scope="col">N°</th>
                 <th scope="col">N° De Identidad</th>
                 <th scope="col">Nombre Completo</th>
                 <th scope="col">Teléfono</th>
@@ -56,7 +55,6 @@
         <tbody>
         @forelse ($clientes as $cliente)
             <tr class="active">
-                <th scope="row">{{ $cliente->id }}</th>
                 <td scope="col">{{ $cliente->IdentidadDelCliente}}</td>
                 <td scope="col">{{ $cliente->NombresDelCliente}} {{ $cliente->ApellidosDelCliente}}</td>
                 <td scope="col">{{ $cliente->Telefono }}</td>

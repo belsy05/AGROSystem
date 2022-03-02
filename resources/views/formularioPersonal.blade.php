@@ -61,7 +61,7 @@
 
     <div class="form-group">
         <label for="Teléfono"> Teléfono </label>
-        <input type="tel" class="form-control" name="Teléfono" id="Teléfono" placeholder="00000000" 
+        <input type="tel" class="form-control" name="Teléfono" id="Teléfono" placeholder="00000000"
         pattern="([3, 8-9][0-9]{7})" required value="{{old('Teléfono')}}">
     </div>
 
@@ -87,7 +87,7 @@
 
     <div class="form-group">
         <label for="Ciudad"> Ciudad </label>
-        <input type="text" class="form-control" name="Ciudad" id="Ciudad" placeholder="Ciudad del empleado" 
+        <input type="text" class="form-control" name="Ciudad" id="Ciudad" placeholder="Ciudad del empleado"
         maxlength="20" value="{{old('Ciudad')}}">
     </div>
 
@@ -121,7 +121,8 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar'
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar'
             }).then((result)=>{
                 if (result.isConfirmed) {
                     formul.submit();

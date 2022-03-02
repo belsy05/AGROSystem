@@ -102,3 +102,38 @@
     <a class="btn btn-info" href="{{route('personal.index')}}">Cerrar</a>
 </form> 
 @endsection
+
+
+@push('alertas')
+<script>
+
+    $('#Cargo').val({{$personal->cargo_id}});
+
+</script>
+
+<script>
+    function confirmar(id) {
+       var formul = document.getElementById("form_editar");
+
+
+        Swal.fire({
+            title: '¿Está seguro que desea actualizar los datos del empleado?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Aceptar'
+        }).then((result)=>{
+            if (result.isConfirmed) {
+                formul.submit();
+            }
+
+        })
+
+        event.preventDefault()
+
+
+    }
+</script>
+@endpush

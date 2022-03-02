@@ -102,7 +102,6 @@
     <input type="reset" class="btn btn-danger" value="Limpiar">
     <a class="btn btn-info" href="{{route('personal.index')}}">Cerrar</a>
 
-    {{--  --}}
 
 </form>
 
@@ -137,6 +136,4 @@
     </script>
 @endpush
 
-
-</div>
 @endsection

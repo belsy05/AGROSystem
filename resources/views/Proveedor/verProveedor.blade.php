@@ -42,7 +42,7 @@
     <thead class="table-secondary">
         <tr>
             <th scope="col">Campos</th>
-            <th scope="col">Información del encargado</th>
+            <th scope="col">Información del encargad@</th>
         </tr>  
     </thead>
     <tbody>

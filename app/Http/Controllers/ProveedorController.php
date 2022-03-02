@@ -64,7 +64,7 @@ class ProveedorController extends Controller
         }
     }
     
-    //funcion para editar los datos
+  //funcion para editar los datos
      public function edit($id){
         $proveedor = Proveedor::findOrFail($id);
         return view('Proveedors.formularioEditarProveedor')->with('proveedor', $proveedor);
@@ -76,9 +76,19 @@ class ProveedorController extends Controller
         $proveedor = Proveedor::findOrFail($id);
 
             $request->validate([
-                'EmpresaProveedora'=>'required|max:40',
+            
+                'EmpresaProveedora'=> [
+                    'required',
+                    'max:40',
+                    Rule::unique('proveedors')->ignore($proveedor->id),
+                ],
                 'DirecciónDeLaEmpresa'=>'required|max:150',
-                'CorreoElectrónicoDeLaEmpresa'=>'nullable|email|unique:proveedors|max:40',
+                'CorreoElectrónicoDeLaEmpresa'=> [
+                'nullable',
+                'email',
+                'max:40',
+                Rule::unique('proveedors')->ignore($proveedor->id),
+                ],
                 'TeléfonoDeLaEmpresa'=>'required',
                 'NombresDelEncargado'=>'required||max:30',
                 'ApellidosDelEncargado'=>'required|max:40',

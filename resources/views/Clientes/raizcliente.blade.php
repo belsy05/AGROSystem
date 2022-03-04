@@ -8,7 +8,7 @@
             <form action="{{route('cliente.index2')}}" method="GET">
                 <div class="form-row">
                     <div class="col-sm-4 my-1">
-                        <input type="search" class="form-control" name="texto" placeholder="Buscar">
+                        <input type="search" class="form-control" name="texto" placeholder="Buscar por identidad, nombre, apellido o lugar de procedencia.">
                     </div>
                     <div class="col-auto my-1">
                         <input type="submit" class="btn btn-secondary" value="Buscar">

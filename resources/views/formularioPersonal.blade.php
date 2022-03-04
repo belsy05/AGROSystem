@@ -61,7 +61,7 @@
 
     <div class="form-group">
         <label for="Teléfono"> Teléfono </label>
-        <input type="tel" class="form-control" name="Teléfono" id="Teléfono" placeholder="00000000" 
+        <input type="tel" class="form-control" name="Teléfono" id="Teléfono" placeholder="00000000"
         pattern="([3, 8-9][0-9]{7})" required value="{{old('Teléfono')}}">
     </div>
 
@@ -87,7 +87,7 @@
 
     <div class="form-group">
         <label for="Ciudad"> Ciudad </label>
-        <input type="text" class="form-control" name="Ciudad" id="Ciudad" placeholder="Ciudad del empleado" 
+        <input type="text" class="form-control" name="Ciudad" id="Ciudad" placeholder="Ciudad del empleado"
         maxlength="20" value="{{old('Ciudad')}}">
     </div>
 
@@ -102,7 +102,6 @@
     <input type="reset" class="btn btn-danger" value="Limpiar">
     <a class="btn btn-info" href="{{route('personal.index')}}">Cerrar</a>
 
-    {{--  --}}
 
 </form>
 
@@ -121,7 +120,8 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar'
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar'
             }).then((result)=>{
                 if (result.isConfirmed) {
                     formul.submit();
@@ -135,23 +135,5 @@
         }
     </script>
 @endpush
-{{-- <script>
-    function correoocultar(){
-        var x = document.getElementById("errorcorreo");
-        x.style.display = "none";
-        document.getElementById("CorreoElectronico").className =document.getElementById("CorreoElectronico").className.replace( /(?:^|\s)is-invalid(?!\S)/g , '' )
-    }
-</script> --}}
 
-@if($errors->has('CorreoElectrónico'))
-<div class="invalid-feedback" id="errorcorreo" style="margin-left: 31%;">
-    @if($errors->first('CorreoElectrónico')=== 'validation.unique')
-        <strong>Valor en uso</strong>
-    @else
-        <strong>Dato incorrecto</strong>
-    @endif
-</div>
-@endif
-
-</div>
 @endsection

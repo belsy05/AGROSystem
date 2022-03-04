@@ -8,7 +8,7 @@
             <form action="{{route('proveedor.index2')}}" method="GET">
                 <div class="form-row">
                     <div class="col-sm-4 my-1">
-                        <input type="search" class="form-control" name="texto" placeholder="Buscar">
+                        <input type="search" class="form-control" name="texto" placeholder="Buscar por nombre de la empresa o del encargad@">
                     </div>
                     <div class="col-auto my-1">
                         <input type="submit" class="btn btn-secondary" value="Buscar">

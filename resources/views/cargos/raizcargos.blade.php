@@ -7,8 +7,8 @@
         <div class="col-xl-12">
             <form action="{{route('cargo.index2')}}" method="GET">
                 <div class="form-row">
-                    <div class="col-sm-4 my-1">
-                        <input type="search" class="form-control" name="texto" name="texto" placeholder="Buscar">
+                    <div class="col-sm-6 my-1">
+                        <input type="search" class="form-control" name="texto" name="texto" placeholder="Buscar por nombre del cargo">
                     </div>
                     <div class="col-auto my-1">
                         <input type="submit" class="btn btn-secondary" value="Buscar">

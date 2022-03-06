@@ -6,8 +6,23 @@ use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
+    public function index(){
+        $categoria = Categoria::paginate(10);
+        return view('Categorias.raizcategorias')->with('categorias', $categoria);
+    }
+
+    public function index2(Request $request){
+
+        $texto =trim($request->get('texto'));
+
+        $categorias = DB::table('Categorias')
+                        ->where('NombreDeLaCategoría', 'LIKE', '%'.$texto.'%')
+                        ->paginate(10);
+        return view('Categorias.raizcategorias', compact('categorias', 'texto'));
+    }
+
     public function crear(){
-        return view('categorias.formularioCategoria');
+        return view('Categorias.formularioCategoria');
     }
 
     //funcion para guardar los datos creados o insertados

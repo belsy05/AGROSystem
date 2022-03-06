@@ -10,11 +10,29 @@ class ProductoController extends Controller
 {
 
 
-    //funcion para crear o insertar datos
+    public function index(){
+        $producto = Producto::paginate(10);
+        return view('Productos.raizproducto')->with('productos', $producto);
+    }
+
+    //funcion para la barra
+    public function index2(Request $request){
+
+        $texto =trim($request->get('texto'));
+
+        $personals = DB::table('Productos')
+                        ->where('NombreDelProducto', 'LIKE', '%'.$texto.'%')
+                        ->orwhere('NombreDeLaCategoría', 'LIKE', '%'.$texto.'%')
+                        ->orwhere('CódigoDelProducto', 'LIKE', '%'.$texto.'%')
+                        ->paginate(10);
+
+        return view('Productos.raizproducto', compact('productos', 'texto'));
+    }
+    
     public function crear(){
         $categorias = Categoria::all();
         return view('Productos.formularioProducto', compact('categorias'));
-    }
+    } 
 
     //funcion para guardar los datos creados o insertados
     public function store(Request $request){

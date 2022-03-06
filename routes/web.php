@@ -123,21 +123,36 @@ Route::get('/clientes/crear', [ClienteController::class, 'crear'])
 Route::post('/clientes/guardar', [ClienteController::class, 'store'])
 ->name('cliente.guardar');
 
-/********************************* CATEGORIA *********************************/
+/********************************* CATEGORIAS *********************************/
+Route::get('/categorias', [CategoriaController::class, 'index'])
+->name('categoria.index');
+
+Route::get('/categorias/buscar', [CategoriaController::class, 'index2'])
+->name('categoria.index2');
 
 Route::get('/categorias/crear', [CategoriaController::class, 'crear'])
 ->name('categoria.crear');
 
-Route::post('/categorias/crear', [CategoriaController::class, 'store'])
+Route::post('/categorias/guardar', [CategoriaController::class, 'store'])
 ->name('categoria.guardar');
 
-/********************************* PRODUCTO *********************************/
+Route::get('/categorias/{id}/editar', [CategoriaController::class, 'edit'])
+->name('categoria.edit')->where('id', '[0-9]+');
+
+/********************************* Productos *********************************/
 
 Route::get('/productos', [ProductoController::class, 'index'])
 ->name('producto.index');
+
+Route::get('/productos/buscar', [ProductoController::class, 'index2'])
+->name('producto.index2');
 
 Route::get('/productos/crear', [ProductoController::class, 'crear'])
 ->name('producto.crear');
 
 Route::post('/productos/crear', [ProductoController::class, 'store'])
 ->name('producto.guardar');
+
+Route::get('/productos/{id}/editar', [ProductoController::class, 'edit'])
+->name('producto.edit')->where('id', '[0-9]+');
+

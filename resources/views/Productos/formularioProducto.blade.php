@@ -19,13 +19,13 @@
 
 
 <form id="form_guardar" name="form_guardar" method="POST" action="{{ route('producto.guardar') }}" onsubmit="confirmar()">
-    @csrf
+@csrf
     <div class="form-group">
-        <label for="cargo">Categoria</label>
+        <label for="categoria">Categoria</label>
         <select class="form-control" name="Categoria" id="Categoria" required>
             <option value="">--Seleccione--</option>
             @foreach ($categorias as $categoria)
-                <option value="{{$categoria['id']}}">{{$categoria['NombreDeLaCategoria']}}</option>
+                <option value="{{$categoria['id']}}">{{$categoria['NombreDeLaCategoría']}}</option>
             @endforeach
         </select>
     </div>
@@ -33,7 +33,7 @@
     <div class="form-group">
         <label for="CódigoDelProducto"> Código </label>
         <input type="tel" class="form-control" name="CódigoDelProducto" id="CódigoDelProducto"
-        placeholder="Código del producto" pattern="[0-1][0-8][0-2][0-9]{10}" required value="{{old('CódigoDelProducto')}}">
+        placeholder="Código del producto"  required value="{{old('CódigoDelProducto')}}">
     </div>
 
     <div class="form-group">
@@ -57,7 +57,7 @@
     <div class="form-group">
         <label for="Impuesto"> Impuesto </label>
         <input type="text" class="form-control" name="Impuesto" id="Impuesto" required
-        placeholder="Impuesto del producto" maxlength="40" value="{{old('Impuesto')}}">
+        placeholder="Impuesto del producto" maxlength="10" value="{{old('Impuesto')}}">
     </div>
 
     <div class="form-group">

@@ -8,7 +8,7 @@
             <form action="{{route('producto.index2')}}" method="GET">
                 <div class="form-row">
                     <div class="col-sm-6 my-1">
-                        <input type="search" class="form-control" name="texto" placeholder="Buscar por nombre del productos, código y categoría">
+                        <input type="search" class="form-control" name="texto" name="texto" placeholder="Buscar por nombre, categoría y código del producto">
                     </div>
                     <div class="col-auto my-1">
                         <input type="submit" class="btn btn-secondary" value="Buscar">
@@ -25,30 +25,28 @@
             {{ session('mensaje') }}
         </div>
     @endif
-    <br>
+
+    <h1> Listado De Productos </h1>
+    <br><br>
 
 
-
-    <h1 class=""> Listado De Productos </h1>
-    <br>
-    <div class="d-grid gap-2 d-md-block ">
-        <a class="btn btn-success float-" href="{{route('producto.crear')}}"> Agregar Producto </a>
+    <div class="d-grid gap-2 d-md-block">
+        <a class="btn btn-success float-end" href="{{route('producto.crear')}}"> Agregar Producto </a>
         <a class="btn btn-success float-end me-md-2" href=""> Regresar </a>
     </div>
 
+
         <br>
 
+    {{ $productos->links()}}
 
-
-
-    <table class="table table-bordered border-dark mt-3" >
-        <thead class="table table-striped table-hover">
+    <table class="table table-bordered border-dark">
+        <thead class="table-dark">
             <tr class="success">
                 <th scope="col">N°</th>
-                <th scope="col">Producto</th>
-                <th scope="col">Código</th>
                 <th scope="col">Categoría</th>
-                
+                <th scope="col">Código</th>
+                <th scope="col">Producto</th>
                 <th scope="col">Presentación</th>
                 <th scope="col">Más Detalles</th>
                 <th scope="col">Editar</th>
@@ -58,24 +56,12 @@
         @forelse ($productos as $producto)
             <tr class="active">
                 <th scope="row">{{ $producto->id }}</th>
-                <td scope="col">{{ $producto->NombreDelProducto}}</td>
+                <td scope="col">{{ $producto->categorias->NombreDeLaCategoría}}</td>
                 <td scope="col">{{ $producto->CódigoDelProducto}}</td>
-                
+                <td scope="col">{{ $producto->NombreDelProducto}}</td>
                 <td scope="col">{{ $producto->PresentaciónDelProducto}}</td>
-
-                <td scope="col">{{ $producto->Impuesto}}</td>
-       
-                <td>
-                    @csrf 
-                    <select class="form-control" name="Categoria" id="Categoria" >
-                        @foreach ($categorias as $categoria)
-                            <option value="{{$categoria['id']}}">{{$categoria['NombreDeLaCategoría']}}</option>
-                        @endforeach
-                    </select> 
-                </td>
                 <td> <a class="btn btn-success" href="{{ route('producto.mostrar',['id' => $producto->id]) }}" > Más Detalles </a></td>
                 <td> <a class="btn btn-success" href="{{ route('producto.edit',['id' => $producto->id]) }}"> Editar </a></td>
-
             </tr>
         @empty
             <tr>
@@ -85,10 +71,5 @@
 
         </tbody>
     </table>
-    {{ $productos->links()}}
 
 @endsection
-
-
-
-

@@ -84,6 +84,9 @@ Route::get('/proveedors', [ProveedorController::class, 'index'])
 Route::get('/proveedors/buscar', [ProveedorController::class, 'index2'])
 ->name('proveedor.index2');
 
+Route::get('/productos/{id}', [ProductoController::class, 'show'])
+->name('producto.mostrar')->where('id', '[0-9]+');
+
 Route::get('/proveedors/crear', [ProveedorController::class, 'crear'])
 ->name('proveedor.crear');
 

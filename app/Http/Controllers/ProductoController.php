@@ -28,6 +28,13 @@ class ProductoController extends Controller
 
         return view('Productos.raizproducto', compact('productos', 'texto'));
     }
+
+    public function show($id){
+        $producto = Producto::findOrFail($id);
+        $categoriaId = $producto->categoria_id;
+        $categorias = Categoria::findOrFail($categoriaId);
+        return view('Productos.verProducto', compact('categorias'))->with('producto', $producto);
+    }
     
     public function crear(){
         $categorias = Categoria::all();

@@ -57,7 +57,7 @@ class ProductoController extends Controller
 
         //Formulario
         $nuevoProducto = new Producto();
-        $nuevoProducto->categoria_id = $request->categoria;
+        $nuevoProducto->categorias_id = $request->categoria;
         $nuevoProducto->CódigoDelProducto = $request->input('CódigoDelProducto');
         $nuevoProducto->NombreDelProducto = $request->input('NombreDelProducto');
         $nuevoProducto->DescripciónDelProducto = $request->input('DescripciónDelProducto');

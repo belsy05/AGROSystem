@@ -163,3 +163,7 @@ Route::post('/productos/crear', [ProductoController::class, 'store'])
 Route::get('/productos/{id}/editar', [ProductoController::class, 'edit'])
 ->name('producto.edit')->where('id', '[0-9]+');
 
+Route::put('/productos/{id}/editar', [ProductoController::class, 'update'])
+->name('producto.update')->where('id', '[0-9]+');
+
+

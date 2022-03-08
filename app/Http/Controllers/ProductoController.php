@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Categoria;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
@@ -35,14 +36,15 @@ class ProductoController extends Controller
         $categorias = Categoria::findOrFail($categoriaId);
         return view('Productos.verProducto', compact('categorias'))->with('producto', $producto);
     }
-    
+
     public function crear(){
         $categorias = Categoria::all();
         return view('Productos.formularioProducto', compact('categorias'));
-    } 
+    }
 
     //funcion para guardar los datos creados o insertados
     public function store(Request $request){
+
         //VALIDAR
         $request->validate([
             'Categoria'=>'required',
@@ -57,7 +59,7 @@ class ProductoController extends Controller
 
         //Formulario
         $nuevoProducto = new Producto();
-        $nuevoProducto->categorias_id = $request->categoria;
+        $nuevoProducto->categoria_id = $request->input('Categoria');
         $nuevoProducto->CódigoDelProducto = $request->input('CódigoDelProducto');
         $nuevoProducto->NombreDelProducto = $request->input('NombreDelProducto');
         $nuevoProducto->DescripciónDelProducto = $request->input('DescripciónDelProducto');
@@ -72,6 +74,38 @@ class ProductoController extends Controller
                 ->with('mensaje', 'El producto fue creado exitosamente');
         }else{
             //retornar con un mensaje de error
-        } 
+        }
+    }
+
+    //funcion para editar los datos
+    public function edit($id){
+        $categorias = Categoria::all();
+        $producto = Producto::findOrFail($id);
+        return view('Productos.formularioEditarProducto', compact('categorias'))->with('producto', $producto);
+    }
+
+
+    //funcion para editar los datos
+    public function update(Request $request, $id){
+
+        $producto = Producto::findOrFail($id);
+
+        //Formulario
+        $producto->categoria_id = $request->input('Categoria');
+        $producto->CódigoDelProducto = $request->input('CódigoDelProducto');
+        $producto->NombreDelProducto = $request->input('NombreDelProducto');
+        $producto->DescripciónDelProducto = $request->input('DescripciónDelProducto');
+        $producto->PresentaciónDelProducto = $request->input('PresentaciónDelProducto');
+        $producto->Impuesto = $request->input('Impuesto');
+        $producto->FechaDeElaboración = $request->input('FechaDeElaboración');
+        $producto->FechaDeVencimiento = $request->input('FechaDeVencimiento');
+        $creado = $producto->save();
+
+        if($creado){
+            return redirect()->route('producto.index')
+                ->with('mensaje', 'El producto fue actualizado exitosamente');
+        }else{
+            //retornar con un mensaje de error
+        }
     }
 }

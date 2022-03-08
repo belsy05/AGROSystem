@@ -1,6 +1,6 @@
 @extends('Plantillas.plantilla')
 
-@section('titulo', 'Editar Cargos')
+@section('titulo', 'Editar Categoría')
 
 @section('contenido')
 
@@ -24,7 +24,7 @@
 
     <div class="form-group">
         <label for="NombreDeLaCategoría"> Nombre: </label>
-        <input type="text" class="form-control" name="NombreDeLaCategoría" id="NombreDeLaCategoría" placeholder="Nombre del cargo"
+        <input type="text" class="form-control" name="NombreDeLaCategoría" id="NombreDeLaCategoría" placeholder="Nombre de la categoría"
         value="{{old('NombreDeLaCategoría', $categoria->NombreDeLaCategoría)}}" maxlength="40">
     </div>
 

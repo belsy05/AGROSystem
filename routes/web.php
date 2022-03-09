@@ -127,6 +127,7 @@ Route::post('/clientes/guardar', [ClienteController::class, 'store'])
 ->name('cliente.guardar');
 
 /********************************* CATEGORIAS *********************************/
+
 Route::get('/categorias', [CategoriaController::class, 'index'])
 ->name('categoria.index');
 
@@ -146,7 +147,7 @@ Route::get('/categorias/{id}/editar', [CategoriaController::class, 'edit'])
 Route::put('/categorias/{id}/editar', [CategoriaController::class, 'update'])
 ->name('categorias.update')->where('id', '[0-9]+');
 
-/********************************* Productos *********************************/
+/********************************* PRODUCTOS *********************************/
 
 Route::get('/productos', [ProductoController::class, 'index'])
 ->name('producto.index');

@@ -18,10 +18,6 @@
             <td scope="col">{{ $categorias->NombreDeLaCategoría}} </td>
         </tr>
         <tr>
-            <th scope="row">Código</th>
-            <td scope="col">{{ $producto->CódigoDelProducto }} </td>
-        </tr>
-        <tr>
             <th scope="row">Nombre</th>
             <td scope="col">{{ $producto->NombreDelProducto }} </td>
         </tr>

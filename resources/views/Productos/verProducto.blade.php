@@ -33,14 +33,6 @@
             <th scope="row">Impuesto</th>
             <td scope="col">{{ $producto->Impuesto}} </td>
         </tr>
-        <tr>
-            <th scope="row">Fecha De elaboración</th>
-            <td scope="col">{{ $producto->FechaDeElaboración}} </td>
-        </tr>
-        <tr>
-            <th scope="row">Fecha de vencimiento</th>
-            <td scope="col">{{ $producto->FechaDeVencimiento}} </td>
-        </tr>
     </tbody>
 </table>
 

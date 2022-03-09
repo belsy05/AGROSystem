@@ -142,6 +142,10 @@ Route::post('/categorias/guardar', [CategoriaController::class, 'store'])
 Route::get('/categorias/{id}/editar', [CategoriaController::class, 'edit'])
 ->name('categoria.edit')->where('id', '[0-9]+');
 
+//para actualizar los datos
+Route::put('/categorias/{id}/editar', [CategoriaController::class, 'update'])
+->name('categorias.update')->where('id', '[0-9]+');
+
 /********************************* Productos *********************************/
 
 Route::get('/productos', [ProductoController::class, 'index'])
@@ -158,4 +162,8 @@ Route::post('/productos/crear', [ProductoController::class, 'store'])
 
 Route::get('/productos/{id}/editar', [ProductoController::class, 'edit'])
 ->name('producto.edit')->where('id', '[0-9]+');
+
+Route::put('/productos/{id}/editar', [ProductoController::class, 'update'])
+->name('producto.update')->where('id', '[0-9]+');
+
 

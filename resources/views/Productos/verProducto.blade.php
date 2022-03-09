@@ -22,7 +22,7 @@
             <td scope="col">{{ $producto->NombreDelProducto }} </td>
         </tr>
         <tr>
-            <th scope="row">CDescripción</th>
+            <th scope="row">Descripción</th>
             <td scope="col">{{ $producto->DescripciónDelProducto}} </td>
         </tr>
         <tr>

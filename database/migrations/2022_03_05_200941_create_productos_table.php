@@ -17,16 +17,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('categoria_id');
             $table->foreign('categoria_id')->references('id')->on('categorias');
-            $table->string('CódigoDelProducto')->unique();
             $table->string('NombreDelProducto');
             $table->text('DescripciónDelProducto');
             $table->string('PresentaciónDelProducto');
-            $table->boolean('Impuesto');
-            $table->date('FechaDeElaboración');
-            $table->date('FechaDeVencimiento');
+            $table->boolean('Impuesto')->default(true);
             $table->timestamps();
         });
-
     }
 
     /**

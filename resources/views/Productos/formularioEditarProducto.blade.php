@@ -34,12 +34,6 @@
     </div>
 
     <div class="form-group">
-        <label for="CódigoDelProducto"> Código </label>
-        <input type="tel" class="form-control" name="CódigoDelProducto" id="CódigoDelProducto"
-        placeholder="Código del producto"  required value="{{old('CódigoDelProducto',$producto->CódigoDelProducto)}}">
-    </div>
-
-    <div class="form-group">
         <label for="NombreDelProducto"> Nombre </label>
         <input type="text" class="form-control" name="NombreDelProducto" id="NombreDelProducto" required
         placeholder="Nombre del producto" maxlength="30" value="{{old('NombreDelProducto',$producto->NombreDelProducto)}}">
@@ -47,8 +41,9 @@
 
     <div class="form-group">
         <label for="DescripciónDelProducto"> Descripción </label>
-        <input type="text" class="form-control" name="DescripciónDelProducto" id="DescripciónDelProducto" required
-        placeholder="Descripción del producto" maxlength="40" value="{{old('DescripciónDelProducto',$producto->DescripciónDelProducto)}}">
+        <textarea class="form-control" name="DescripciónDelProducto" id="DescripciónDelProducto"
+            cols="30" rows="10"  placeholder="Breve descripción deL producto"
+                maxlength="150">{{old('DescripciónDelProducto', $producto->DescripciónDelProducto)}}</textarea>
     </div>
 
     <div class="form-group">
@@ -58,22 +53,9 @@
     </div>
 
     <div class="form-group">
-        <label for="Impuesto"> Impuesto </label>
-        <input type="text" class="form-control" name="Impuesto" id="Impuesto" required
-        placeholder="Impuesto del producto" maxlength="10" value="{{old('Impuesto',$producto->Impuesto)}}">
-    </div>
-
-    <div class="form-group">
-        <label for="FechaDeElaboración">Fecha De Elaboración</label>
-        <input require type="date" class="form-control" name="FechaDeElaboración" id="FechaDeElaboración"
-        value="{{old('FechaDeElaboración',$producto->FechaDeElaboración)}}">
-    </div>
-
-
-    <div class="form-group">
-        <label for="FechaDeVencimiento">Fecha De Vencimiento</label>
-        <input require type="date" class="form-control " name="FechaDeVencimiento" id="FechaDeVencimiento"
-        value="{{old('FechaDeVencimiento',$producto->FechaDeVencimiento)}}">
+        <label for="">Seleccione una opción para el impuesto</label><br>
+        <input type="radio" name="Impuesto" value="{{old('Impuesto',$producto->Impuesto)}}"> Impuesto
+        <input type="radio" name="Impuesto" value="{{old('Impuesto',$producto->Impuesto)}}"> Exento
     </div>
 
     <br>

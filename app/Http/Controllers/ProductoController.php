@@ -92,13 +92,10 @@ class ProductoController extends Controller
 
         //Formulario
         $producto->categoria_id = $request->input('Categoria');
-        $producto->CódigoDelProducto = $request->input('CódigoDelProducto');
         $producto->NombreDelProducto = $request->input('NombreDelProducto');
         $producto->DescripciónDelProducto = $request->input('DescripciónDelProducto');
         $producto->PresentaciónDelProducto = $request->input('PresentaciónDelProducto');
         $producto->Impuesto = $request->input('Impuesto');
-        $producto->FechaDeElaboración = $request->input('FechaDeElaboración');
-        $producto->FechaDeVencimiento = $request->input('FechaDeVencimiento');
         $creado = $producto->save();
 
         if($creado){

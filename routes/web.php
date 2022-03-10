@@ -145,7 +145,7 @@ Route::get('/categorias/{id}/editar', [CategoriaController::class, 'edit'])
 
 //para actualizar los datos
 Route::put('/categorias/{id}/editar', [CategoriaController::class, 'update'])
-->name('categorias.update')->where('id', '[0-9]+');
+->name('categoria.update')->where('id', '[0-9]+');
 
 /********************************* PRODUCTOS *********************************/
 

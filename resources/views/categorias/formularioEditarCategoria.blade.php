@@ -18,7 +18,7 @@
     </div>
 @endif
 
-<form id="form_editarC" name="form_editarC" method="POST" action="{{ route('categorias.update', $categoria->id) }}" onsubmit="confirmar()">
+<form id="form_editarC" name="form_editarC" method="POST" action="{{ route('categoria.update', $categoria->id) }}" onsubmit="confirmar()">
     @method('put')
     @csrf <!-- PARA PODER ENVIAR EL FORMULARIO -->
 

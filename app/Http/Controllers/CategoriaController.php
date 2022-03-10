@@ -54,7 +54,7 @@ class CategoriaController extends Controller
     //funcion para editar los datos
     public function edit($id){
         $categoria = Categoria::findOrFail($id);
-        return view('categorias.formularioEditarCargo')->with('categoria', $categoria);
+        return view('categorias.formularioEditarCategoria')->with('categoria', $categoria);
 
     }
 

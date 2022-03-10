@@ -40,33 +40,24 @@ class ProductoController extends Controller
     public function crear(){
         $categorias = Categoria::all();
         return view('Productos.formularioProducto', compact('categorias'));
-    }
+    } 
 
-    //funcion para guardar los datos creados o insertados
-    public function store(Request $request){
-
+     public function store(Request $request){
         //VALIDAR
         $request->validate([
             'Categoria'=>'required',
-            'CódigoDelProducto'=>'required|unique:productos|max:8',
-            'NombreDelProducto'=>'required||max:20',
+            'NombreDelProducto'=>'required|unique:productos|string|max:40|min:5',
             'DescripciónDelProducto'=>'required|string|max:150|min:10',
-            'PresentaciónDelProducto'=>'required|max:30',
-            'Impuesto'=>'required|max:10',
-            'FechaDeElaboración'=>'required|date',
-            'FechaDeVencimiento'=>'required|date',
+            'PresentaciónDelProducto'=>'required|max:30'
         ]);
 
         //Formulario
         $nuevoProducto = new Producto();
-        $nuevoProducto->categoria_id = $request->input('Categoria');
-        $nuevoProducto->CódigoDelProducto = $request->input('CódigoDelProducto');
+        $nuevoProducto->categoria_id = $request->Categoria;
         $nuevoProducto->NombreDelProducto = $request->input('NombreDelProducto');
         $nuevoProducto->DescripciónDelProducto = $request->input('DescripciónDelProducto');
         $nuevoProducto->PresentaciónDelProducto = $request->input('PresentaciónDelProducto');
-        $nuevoProducto->Impuesto = $request->input('Impuesto');
-        $nuevoProducto->FechaDeElaboración = $request->input('FechaDeElaboración');
-        $nuevoProducto->FechaDeVencimiento = $request->input('FechaDeVencimiento');
+        $nuevoProducto->Impuesto = $request->Impuesto;
         $creado = $nuevoProducto->save();
 
         if($creado){
@@ -74,7 +65,7 @@ class ProductoController extends Controller
                 ->with('mensaje', 'El producto fue creado exitosamente');
         }else{
             //retornar con un mensaje de error
-        }
+        } 
     }
 
     //funcion para editar los datos

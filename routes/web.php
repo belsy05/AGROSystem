@@ -149,7 +149,7 @@ Route::put('/categorias/{id}/editar', [CategoriaController::class, 'update'])
 
 /********************************* PRODUCTOS *********************************/
 
-Route::get('/productos', [ProductoController::class, 'index'])
+RRoute::get('/productos', [ProductoController::class, 'index'])
 ->name('producto.index');
 
 Route::get('/productos/buscar', [ProductoController::class, 'index2'])

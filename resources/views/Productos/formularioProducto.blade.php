@@ -45,12 +45,12 @@
     <div class="form-group">
         <label for="PresentaciónDelProducto"> Presentación  </label>
         <input type="text" class="form-control" name="PresentaciónDelProducto" id="PresentaciónDelProducto" required
-        placeholder="Presentación del producto" required value="{{old('PresentaciónDelProducto')}}">
+        placeholder="Presentación del producto" maxlength="60" value="{{old('PresentaciónDelProducto')}}">
     </div>
 
     <div class="form-group">
         <label for="">Seleccione una opción para el impuesto</label><br>
-        <input required type="radio" id="Impuesto" name="Impuesto" value="15"> 15%
+        <input required type="radio" id="Impuesto" name="Impuesto" value="0.15"> 15%
         <input required type="radio" id="Exento" name="Impuesto" value="0"> 0%
     </div>
 

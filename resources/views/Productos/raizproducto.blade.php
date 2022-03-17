@@ -38,8 +38,6 @@
 
         <br>
 
-    {{ $productos->links()}}
-
     <table class="table table-bordered border-dark">
         <thead class="table-dark">
             <tr class="success">
@@ -69,5 +67,6 @@
 
         </tbody>
     </table>
+    {{ $productos->links()}}
 
 @endsection

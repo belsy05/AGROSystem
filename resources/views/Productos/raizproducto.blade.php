@@ -8,7 +8,7 @@
             <form action="{{route('producto.index2')}}" method="GET">
                 <div class="form-row">
                     <div class="col-sm-6 my-1">
-                        <input type="search" class="form-control" name="texto" name="texto" placeholder="Buscar por nombre, categoría y código del producto">
+                        <input type="search" class="form-control" name="texto" name="texto" placeholder="Buscar por nombre y categoría del producto">
                     </div>
                     <div class="col-auto my-1">
                         <input type="submit" class="btn btn-secondary" value="Buscar">
@@ -44,9 +44,8 @@
         <thead class="table-dark">
             <tr class="success">
                 <th scope="col">N°</th>
+                <th scope="col">Nombre del Producto</th>
                 <th scope="col">Categoría</th>
-                <th scope="col">Código</th>
-                <th scope="col">Producto</th>
                 <th scope="col">Presentación</th>
                 <th scope="col">Más Detalles</th>
                 <th scope="col">Editar</th>
@@ -56,11 +55,10 @@
         @forelse ($productos as $producto)
             <tr class="active">
                 <th scope="row">{{ $producto->id }}</th>
-                <td scope="col">{{ $producto->categorias->NombreDeLaCategoría}}</td>
-                <td scope="col">{{ $producto->CódigoDelProducto}}</td>
                 <td scope="col">{{ $producto->NombreDelProducto}}</td>
+                <td scope="col">{{ $producto->categorias->NombreDeLaCategoría}}</td>
                 <td scope="col">{{ $producto->PresentaciónDelProducto}}</td>
-                <td> <a class="btn btn-success" href="{{ route('producto.mostrar',['id' => $producto->id]) }}" > Más Detalles </a></td>
+                <td> <a class="btn btn-success" href="{{ route('producto.mostrar',['id' => $producto->id]) }}" > Más Detalles </a></td> 
                 <td> <a class="btn btn-success" href="{{ route('producto.edit',['id' => $producto->id]) }}"> Editar </a></td>
             </tr>
         @empty

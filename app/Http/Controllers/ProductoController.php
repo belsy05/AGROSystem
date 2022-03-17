@@ -21,14 +21,17 @@ class ProductoController extends Controller
 
         $texto =trim($request->get('texto'));
 
-        $personals = DB::table('Productos')
-                        ->where('NombreDelProducto', 'LIKE', '%'.$texto.'%')
-                        ->orwhere('NombreDeLaCategoría', 'LIKE', '%'.$texto.'%')
-                        ->orwhere('CódigoDelProducto', 'LIKE', '%'.$texto.'%')
-                        ->paginate(10);
-
-        return view('Productos.raizproducto', compact('productos', 'texto'));
+        $producto = Producto::where('NombreDelProducto', 'LIKE', '%'.$texto.'%',)
+                    ->orwhereRaw('(SELECT NombreDeLaCategoría
+                                    FROM categorias WHERE categorias.id = productos.categoria_id ) LIKE "%'.$texto.'%"')
+                    ->paginate(10);
+        return view('Productos.raizproducto')->with('productos', $producto)->with('texto', $texto);
     }
+    
+    public function crear(){
+        $categorias = Categoria::all();
+        return view('Productos.formularioProducto', compact('categorias'));
+    } 
 
     public function show($id){
         $producto = Producto::findOrFail($id);

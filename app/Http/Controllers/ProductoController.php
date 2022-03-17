@@ -37,10 +37,10 @@ class ProductoController extends Controller
         return view('Productos.verProducto', compact('categorias'))->with('producto', $producto);
     }
 
-    public function crear(){
+     public function crear(){
         $categorias = Categoria::all();
         return view('Productos.formularioProducto', compact('categorias'));
-    } 
+    }  
 
      public function store(Request $request){
         //VALIDAR
@@ -81,12 +81,24 @@ class ProductoController extends Controller
 
         $producto = Producto::findOrFail($id);
 
+        $request->validate([
+            'Categoria'=>'required',
+            'NombreDelProducto'=> [
+                'required',
+                'max:40',
+                'min:5',
+                Rule::unique('productos')->ignore($producto->id),
+            ],    
+            'DescripciónDelProducto'=>'required|string|max:150|min:10',
+            'PresentaciónDelProducto'=>'required|max:60'
+        ]);
+
         //Formulario
         $producto->categoria_id = $request->input('Categoria');
         $producto->NombreDelProducto = $request->input('NombreDelProducto');
         $producto->DescripciónDelProducto = $request->input('DescripciónDelProducto');
         $producto->PresentaciónDelProducto = $request->input('PresentaciónDelProducto');
-        $producto->Impuesto = $request->input('Impuesto');
+        $producto->Impuesto= $request->Impuesto;
         $creado = $producto->save();
 
         if($creado){

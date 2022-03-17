@@ -21,7 +21,7 @@
 <form id="form_guardar" name="form_guardar" method="POST" action="{{ route('producto.guardar') }}" onsubmit="confirmar()">
 @csrf
     <div class="form-group">
-        <label for="categoria">Categoria</label>
+        <label for="categoria">Categoría</label>
         <select class="form-control" name="Categoria" id="Categoria" required>
             <option value="">--Seleccione--</option>
             @foreach ($categorias as $categoria)
@@ -31,53 +31,33 @@
     </div>
 
     <div class="form-group">
-        <label for="CódigoDelProducto"> Código </label>
-        <input type="tel" class="form-control" name="CódigoDelProducto" id="CódigoDelProducto"
-        placeholder="Código del producto"  required value="{{old('CódigoDelProducto')}}">
-    </div>
-
-    <div class="form-group">
         <label for="NombreDelProducto"> Nombre </label>
         <input type="text" class="form-control" name="NombreDelProducto" id="NombreDelProducto" required
-        placeholder="Nombre del producto" maxlength="30" value="{{old('NombreDelProducto')}}">
+        placeholder="Nombre del producto" maxlength="40" value="{{old('NombreDelProducto')}}">
     </div>
 
     <div class="form-group">
         <label for="DescripciónDelProducto"> Descripción </label>
-        <input type="text" class="form-control" name="DescripciónDelProducto" id="DescripciónDelProducto" required
-        placeholder="Descripción del producto" maxlength="40" value="{{old('DescripciónDelProducto')}}">
+        <textarea class="form-control" name="DescripciónDelProducto" id="DescripciónDelProducto" cols="30" rows="10" 
+        placeholder="Breve descripción del producto">{{old('DescripciónDelProducto')}}</textarea>
     </div>
 
     <div class="form-group">
         <label for="PresentaciónDelProducto"> Presentación  </label>
         <input type="text" class="form-control" name="PresentaciónDelProducto" id="PresentaciónDelProducto" required
-        placeholder="Presentación del producto" required value="{{old('PresentaciónDelProducto')}}">
+        placeholder="Presentación del producto" maxlength="60" value="{{old('PresentaciónDelProducto')}}">
     </div>
 
     <div class="form-group">
-        <label for="Impuesto"> Impuesto </label>
-        <input type="text" class="form-control" name="Impuesto" id="Impuesto" required
-        placeholder="Impuesto del producto" maxlength="10" value="{{old('Impuesto')}}">
-    </div>
-
-    <div class="form-group">
-        <label for="FechaDeElaboración">Fecha De Elaboración</label>
-        <input require type="date" class="form-control" name="FechaDeElaboración" id="FechaDeElaboración"
-        value="{{old('FechaDeElaboración')}}">
-    </div>
-
-
-    <div class="form-group">
-        <label for="FechaDeVencimiento">Fecha De Vencimiento</label>
-        <input require type="date" class="form-control " name="FechaDeVencimiento" id="FechaDeVencimiento"
-        value="{{old('FechaDeVencimiento')}}">
+        <label for="">Seleccione una opción para el impuesto</label><br>
+        <input required type="radio" id="Impuesto" name="Impuesto" value="0.15"> 15%
+        <input required type="radio" id="Exento" name="Impuesto" value="0"> 0%
     </div>
 
     <br>
     <input type="submit" class="btn btn-primary" value="Guardar">
     <input type="reset" class="btn btn-danger" value="Limpiar">
     <a class="btn btn-info" href="{{route('producto.index')}}">Cerrar</a>
-
 
 </form>
 
@@ -88,8 +68,6 @@
     <script>
         function confirmar() {
            var formul = document.getElementById("form_guardar");
-
-
             Swal.fire({
                 title: '¿Está seguro que desea guardar los datos del nuevo producto?',
                 icon: 'warning',
@@ -102,11 +80,10 @@
                 if (result.isConfirmed) {
                     formul.submit();
                 }
-
             })
-
             event.preventDefault()
         }
     </script>
+
 @endpush
 @endsection

@@ -27,11 +27,6 @@ class ProductoController extends Controller
                     ->paginate(10);
         return view('Productos.raizproducto')->with('productos', $producto)->with('texto', $texto);
     }
-    
-    public function crear(){
-        $categorias = Categoria::all();
-        return view('Productos.formularioProducto', compact('categorias'));
-    } 
 
     public function show($id){
         $producto = Producto::findOrFail($id);

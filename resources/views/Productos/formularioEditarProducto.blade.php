@@ -33,6 +33,7 @@
         </select>
     </div>
 
+
     <div class="form-group">
         <label for="NombreDelProducto"> Nombre </label>
         <input type="text" class="form-control" name="NombreDelProducto" id="NombreDelProducto" required
@@ -49,18 +50,18 @@
     <div class="form-group">
         <label for="PresentaciónDelProducto"> Presentación  </label>
         <input type="text" class="form-control" name="PresentaciónDelProducto" id="PresentaciónDelProducto" required
-        placeholder="Presentación del producto" required value="{{old('PresentaciónDelProducto',$producto->PresentaciónDelProducto)}}">
+        placeholder="Presentación del producto" maxlength="60" value="{{old('PresentaciónDelProducto',$producto->PresentaciónDelProducto)}}">
     </div>
 
     <div class="form-group">
         <label for="">Seleccione una opción para el impuesto</label><br>
-        <input type="radio" name="Impuesto" value="{{old('Impuesto',$producto->Impuesto)}}"> Impuesto
-        <input type="radio" name="Impuesto" value="{{old('Impuesto',$producto->Impuesto)}}"> Exento
+        <input required type="radio" id="impu"name="Impuesto" value="0.15" @if ($producto->Impuesto == 0.15) checked @endif> 15%
+        <input required type="radio" id="exce" name="Impuesto" value="0" @if ($producto->Impuesto == 0) checked @endif> 0%
     </div>
 
-    <br>
+ <br>
     <input type="submit" class="btn btn-primary" value="Actualizar">
-    <input type="reset" class="btn btn-danger" value="Limpiar">
+    <input type="button" class="btn btn-danger" value="Restaurar" onclick="restaurar()">
     <a class="btn btn-info" href="{{route('producto.index')}}">Cerrar</a>
 
 
@@ -70,12 +71,18 @@
 
 @section('js')
 @push('alertas')
-
     <script>
+
+         function restaurar() {
+                $("#Categoria").val('{{$personal->categoria_id}}');
+                $("#PresentaciónDelProducto").val('{{$personal->PresentaciónDelProducto}}');
+                $("#DescripciónDelProducto").val('{{$personal->DescripciónDelProducto}}');
+                $("#NombreDelProducto").val('{{$personal->NombreDelProducto}}');
+        }
+
+
         function confirmar() {
            var formul = document.getElementById("form_editarP");
-
-
             Swal.fire({
                 title: '¿Está seguro que desea actualizar los datos del producto?',
                 icon: 'warning',
@@ -88,9 +95,7 @@
                 if (result.isConfirmed) {
                     formul.submit();
                 }
-
             })
-
             event.preventDefault()
         }
     </script>

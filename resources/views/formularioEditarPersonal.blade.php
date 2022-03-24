@@ -1,7 +1,5 @@
 @extends('Plantillas.plantilla')
-
 @section('titulo', 'Formulario De Personal')
-
 @section('contenido')
 
 <h1> Personal </h1>
@@ -25,10 +23,14 @@
         <select class="form-control" name="Cargo" id="Cargo" >
             <option value="">--Seleccione--</option>
             @foreach ($cargos as $cargo)
-                <option value="{{$cargo['id']}}">{{$cargo['NombreDelCargo']}}</option>
+                <option @if ($personal->cargo_id == $cargo['id'])
+                    selected
+                @endif
+                 value="{{$cargo['id']}}">{{$cargo['NombreDelCargo']}}</option>
             @endforeach
         </select>
     </div>
+
 
     <div class="form-group">
         <label for="IdentidadDelEmpleado"> Identidad </label>
@@ -38,13 +40,13 @@
 
     <div class="form-group">
         <label for="NombresDelEmpleado"> Nombres </label>
-        <input type="text" class="form-control" name="NombresDelEmpleado" id="NombresDelEmpleado" 
+        <input type="text" class="form-control" name="NombresDelEmpleado" id="NombresDelEmpleado"
         placeholder="Nombre del personal" value="{{old('NombresDelEmpleado', $personal->NombresDelEmpleado)}}" maxlength="20">
     </div>
 
     <div class="form-group">
         <label for="ApellidosDelEmpleado"> Apellidos </label>
-        <input type="text" class="form-control" name="ApellidosDelEmpleado" id="ApellidosDelEmpleado" 
+        <input type="text" class="form-control" name="ApellidosDelEmpleado" id="ApellidosDelEmpleado"
         placeholder="Apellido del personal" value="{{old('ApellidosDelEmpleado', $personal->ApellidosDelEmpleado)}}" maxlength="40">
     </div>
 
@@ -86,22 +88,23 @@
 
     <div class="form-group">
         <label for="Ciudad"> Ciudad </label>
-        <input type="text" class="form-control" name="Ciudad" id="Ciudad" 
+        <input type="text" class="form-control" name="Ciudad" id="Ciudad"
         placeholder="Ciudad" value="{{old('Ciudad', $personal->Ciudad)}}" maxlength="20">
     </div>
 
     <div class="form-group">
         <label for="Dirección"> Dirección </label>
-        <input type="text" class="form-control" name="Dirección" id="Dirección" 
+        <input type="text" class="form-control" name="Dirección" id="Dirección"
         placeholder="Dirección" value="{{old('Dirección', $personal->Dirección)}}" maxlength="150">
     </div>
 
     <br>
     <input type="submit" class="btn btn-primary" value="Actualizar" >
-    <input type="reset" class="btn btn-danger" value="Restaurar"> 
+    <input type="button" class="btn btn-danger" value="Restaurar" onclick="restaurar()">
     <a class="btn btn-info" href="{{route('personal.index')}}">Cerrar</a>
-</form> 
+</form>
 @endsection
+
 
 
 @push('alertas')
@@ -112,6 +115,18 @@
 </script>
 
 <script>
+    function restaurar() {
+        $("#Dirección").val('{{$personal->Dirección}}');
+        $("#ApellidosDelEmpleado").val('{{$personal->ApellidosDelEmpleado}}');
+        $("#NombresDelEmpleado").val('{{$personal->NombresDelEmpleado}}');
+        $("#Ciudad").val('{{$personal->Ciudad}}');
+        $("#FechaDeIngreso").val('{{$personal->FechaDeIngreso}}');
+        $("#FechaDeNacimiento").val('{{$personal->FechaDeNacimiento}}');
+        $("#Teléfono").val('{{$personal->Teléfono}}');
+        $("#CorreoElectrónico").val('{{$personal->CorreoElectrónico}}');
+        $("#IdentidadDelEmpleado").val('{{$personal->IdentidadDelEmpleado}}');
+        $("#Cargo").val('{{$personal->cargo_id}}');
+    }
     function confirmar(id) {
        var formul = document.getElementById("form_editar");
 
@@ -130,9 +145,7 @@
             }
 
         })
-
         event.preventDefault()
-
 
     }
 </script>

@@ -52,7 +52,7 @@
 
     <br>
     <input type="submit" class="btn btn-primary" value="Actualizar">
-    <input type="reset" class="btn btn-danger" value="Restaurar">
+    <input type="button" class="btn btn-danger" value="Restaurar" onclick="restaurar()">
     <a class="btn btn-info" href="{{route('cliente.index')}}">Cerrar</a>
 
 </form>
@@ -60,6 +60,13 @@
 @endsection
 @push('alertas')
     <script>
+        function restaurar() {
+            $("#IdentidadDelCliente").val('{{$cliente->IdentidadDelCliente}}');
+            $("#NombresDelCliente").val('{{$cliente->NombresDelCliente}}');
+            $("#ApellidosDelCliente").val('{{$cliente->ApellidosDelCliente}}');
+            $("#Telefono").val('{{$cliente->Telefono}}');
+            $("#LugarDeProcedencia").val('{{$cliente->LugarDeProcedencia}}');
+        }
         function confirmar() {
            var formul = document.getElementById("form_editarC");
             Swal.fire({

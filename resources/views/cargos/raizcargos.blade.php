@@ -1,5 +1,4 @@
 @extends('Plantillas.plantilla')
-
 @section('titulo', 'Cargos')
 @section('barra')
 <div class="container">
@@ -29,12 +28,10 @@
     <h1> Listado De Cargos </h1>
     <br><br>
 
-
     <div class="d-grid gap-2 d-md-block">
         <a class="btn btn-success float-end" href="{{route('cargo.crear')}}"> Agregar Cargo </a>
         <a class="btn btn-success float-end me-md-2" href=""> Regresar </a>
     </div>
-
 
         <br>
 
@@ -67,5 +64,4 @@
 
         </tbody>
     </table>
-
 @endsection

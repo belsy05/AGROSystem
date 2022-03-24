@@ -76,7 +76,7 @@
 
     <br>
     <input type="submit" class="btn btn-primary" value="Actualizar">
-    <input type="reset" class="btn btn-danger" value="Restaurar">
+    <input type="button" class="btn btn-danger" value="Restaurar" onclick="restaurar()">
     <a class="btn btn-info" href="{{route('proveedor.index')}}">Cerrar</a>
 
 </form>
@@ -86,6 +86,16 @@
 @section('js')
     @push('alertas')
         <script>
+            function restaurar() {
+        $("#EmpresaProveedora").val('{{$proveedor->EmpresaProveedora}}');
+        $("#DirecciónDeLaEmpresa").val('{{$proveedor->DirecciónDeLaEmpresa}}');
+        $("#CorreoElectrónicoDeLaEmpresa").val('{{$proveedor->CorreoElectrónicoDeLaEmpresa}}');
+        $("#TeléfonoDeLaEmpresa").val('{{$proveedor->TeléfonoDeLaEmpresa}}');
+        $("#NombresDelEncargado").val('{{$proveedor->NombresDelEncargado}}');
+        $("#ApellidosDelEncargado").val('{{$proveedor->ApellidosDelEncargado}}');
+        $("#TeléfonoDelEncargado").val('{{$proveedor->TeléfonoDelEncargado}}');
+    }
+
             function confirmar() {
             var formul = document.getElementById("form_editar");
                 Swal.fire({

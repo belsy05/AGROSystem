@@ -65,13 +65,65 @@
         </div>
     </div>
     <br>
+    
+    <div class="row" style="width: 87%" >
+        <div class="col-sm-16">
+
+    <table class="table table-bordered border-dark mt-3" >
+        <thead class="table table-striped table-hover">
+            <tr class="success">
+                <th scope="col">N°</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Presentación</th>
+                <th scope="col">Precio de venta</th>
+                <th scope="col">Precio de compra</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Total Producto</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        @forelse ($detalles as $i => $de)
+            <tr class="active">
+                <th scope="row">{{ ($i+1) }}</th>
+                <td scope="col">{{ $de->producto->NombreDelProducto .', '.$de->producto->DescripciónDelProducto}}</td>
+                <td scope="col">{{ $de->presentacion->informacion }}</td>
+                <td scope="col">{{ $de->Precio_venta }}</td>
+                <td scope="col">{{ $de->Precio_compra }}</td>
+                <td scope="col">{{ $de->Cantidad }}</td>
+                <td scope="col">{{ $de->Cantidad*$de->Precio_compra }}</td>
+                <td>
+                    <a href={{"/detalle_compra/eliminar/".$de->id}} class="btn btn-danger" >Eliminar</a>
+                </td>
+                <td>
+                    <button onclick="editar_detalle(  {{ $de->producto->id }},
+                                                        {{ $de->producto->categoria_id }},
+                                                        {{ $de->IdPresentacion }},
+                                                        '{{ $de->fecha_vencimiento }}',
+                                                       '{{ $de->fecha_elaboración }}',
+                                                       '{{ $de->Cantidad }}',
+                                                       '{{ $de->Precio_venta }}',
+                                                       '{{ $de->Precio_compra }}',
+                                                       {{ $de->id }})" data-toggle="modal" data-target="#editar_detalle" type="button" class="btn btn-success">Editar</button>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="4"> No hay detalles agregados </td>
+            </tr>
+        @endforelse
+
+        </tbody>
+    </table>
+
+        </div>
+    </div>
 
     <br>
     <input type="submit" class="btn btn-primary" value="Guardar">
     <a class="btn btn-danger" href="#" onclick="limpiarCompra()">Limpiar</a>
     <a class="btn btn-info" href="{{route('compras.index')}}">Cerrar</a>
-
-    {{--  --}}
 
 </form>
 
@@ -243,6 +295,181 @@
       </div>
     </div>
 </div>
+
+
+{{-- Modal de editar los detalles --}}
+<div class="modal fade" id="editar_detalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form action="{{ route('detalle_compra.editar') }}" method="POST">
+            @csrf
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Agregar Detalles</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="row" style="width: 100%" >
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Categoría</label>
+                        <select name="IdCategoria" id="e_IdCategoria" style="width: 95%" class="form-control" onchange="e_cambio()">
+                            <option style="display: none" value="">Seleccione una categoría</option>
+                                @foreach ($categoria as $cat)
+                            <option value="{{$cat->id}}">{{$cat->NombreDeLaCategoría}}</option>
+                                @endforeach
+                        </select>
+
+                        <input type="text" name="IdDetalle" id="e_IdDetalle" hidden>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Producto</label>
+                        <select name="IdProducto" id="e_IdProducto" style="width: 100%" class="form-control" onchange="e_impuesto()">
+                        <option style="display: none" value="">Seleccione un producto</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+              <script>
+                  function e_cambio(){
+                    $("#e_IdProducto").find('option').not(':first').remove();
+                    $("#e_IdPresentacion").find('option').not(':first').remove();
+                    var select = document.getElementById("e_IdCategoria");
+                    var valor = select.value;
+                    var selectnw = document.getElementById("e_IdProducto");
+                    var selectpw = document.getElementById("e_IdPresentacion");
+
+                    @foreach ($productos as $p)
+                        if({{$p->categoria_id}} == valor){
+
+                            // creando la nueva option
+                            var opt = document.createElement('option');
+
+                            // Añadiendo texto al elemento (opt)
+                            opt.innerHTML = "{{$p->NombreDelProducto}}";
+
+                            //Añadiendo un valor al elemento (opt)
+                            opt.value = "{{$p->id}}";
+
+                            // Añadiendo opt al final del selector (sel)
+                            selectnw.appendChild(opt);
+
+                        }
+                    @endforeach
+
+                    @foreach ($presentacion as $p)
+                        if({{$p->categoria_id}} == valor){
+
+                            // creando la nueva option
+                            var opt = document.createElement('option');
+
+                            // Añadiendo texto al elemento (opt)
+                            opt.innerHTML = "{{$p->informacion}}";
+
+                            //Añadiendo un valor al elemento (opt)
+                            opt.value = "{{$p->id}}";
+
+                            // Añadiendo opt al final del selector (sel)
+                            selectpw.appendChild(opt);
+
+                        }
+                    @endforeach
+
+                  }
+
+                  function e_impuesto(){
+                    var select = document.getElementById("e_IdProducto");
+                    var valor = select.value;
+
+                    @foreach ($productos as $p)
+                        if({{$p->id}} == valor){
+                            document.getElementById("e_calimp").value= 'El producto tiene '+{{$p->Impuesto*100}}+'% de impuestos.';
+                        }
+                    @endforeach
+
+                  }
+              </script>
+
+            <div class="row" style="width: 100%" >
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Presentación</label>
+                        <select name="IdPresentacion" id="e_IdPresentacion" style="width: 100%" class="form-control">
+                            <option style="display: none" value="">Seleccione una presentación</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label style="width: 100%"  for="">Precio de compra</label>
+                        <input style="width: 100%" type="number" name="Precio_compra" class="form-control {{ $errors->has('Precio_compra') ? 'is-invalid' : '' }}"
+                               value="{{ old('Precio_compra',0) }}" id="e_Precio_compra" required
+                               title="Ingrese el Precio de Compra">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="width: 100%" >
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label style="width: 100%"  for="">Precio de venta</label>
+                        <input style="width: 100%" type="number" name="Precio_venta" class="form-control {{ $errors->has('Precio_venta') ? 'is-invalid' : '' }}"
+                               value="{{ old('Precio_venta',0) }}" id="e_Precio_venta" required
+                               title="Ingrese el Precio de venta">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label style="width: 100%"  for="">Cantidad</label>
+                        <input style="width: 100%" type="number" name="Cantidad" class="form-control {{ $errors->has('Cantidad') ? 'is-invalid' : '' }}"
+                               value="{{ old('Cantidad',0) }}" id="e_Cantidad" required
+                               title="Ingrese cantidad de la compra">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="width: 100%" >
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label style="width: 100%"  for="">Fecha de elaboración</label>
+                        <input style="width: 100%" type="date" name="fecha_elaboración" class="form-control {{ $errors->has('fecha') ? 'is-invalid' : '' }}"
+                         id="e_fecha_elaboración" title="Ingrese la fecha de elaboración">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label style="width: 100%"  for="">Fecha de vencimiento</label>
+                        <input style="width: 100%" type="date" name="fecha" class="form-control {{ $errors->has('fecha') ? 'is-invalid' : '' }}"
+                               value="{{ old('fecha',0) }}" id="e_fecha"
+                               title="Ingrese la fecha de vencimiento">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input class="form-control" id="e_calimp" style="width: 95%;text-align: center;color: black" type="text" value="" disabled>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <a class="btn btn-info" href="{{route('categoria.crear')}}">Ir a categorías</a>
+          <a class="btn btn-info" href="{{route('producto.crear')}}">Ir a productos </a>
+          <button type="submit" class="btn btn-primary">Actualizar</button>
+        </div>
+
+    </form>
+      </div>
+    </div>
+</div>
+
+
 @endsection
 @section('js')
 @push('alertas')
@@ -261,30 +488,6 @@
            $('#e_Precio_venta').val(Precio_venta);
            $('#e_Precio_compra').val(Precio_compra);
            $('#e_IdDetalle').val(id);
-
-        }
-
-        function confirmar() {
-           var formul = document.getElementById("form_guardar");
-
-
-            Swal.fire({
-                title: '¿Está seguro que desea guardar los datos de esta nueva compra?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                cancelButtonText: 'Cancelar',
-                confirmButtonText: 'Aceptar'
-            }).then((result)=>{
-                if (result.isConfirmed) {
-                    formul.submit();
-                }
-
-            })
-
-            event.preventDefault()
-
 
         }
 

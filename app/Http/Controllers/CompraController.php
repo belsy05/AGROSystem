@@ -15,6 +15,41 @@ use Illuminate\Support\Facades\DB;
 
 class CompraController extends Controller
 {
+    public function index()
+    {
+        $id = 0;
+        $fechadesde = now();
+        $fechahasta = now();
+        $proveedores = Proveedor::all();
+        $compras = Compra::paginate(10);
+
+        return view('Compras.raizCompras', compact('proveedores', 'compras', 'id', 'fechadesde', 'fechahasta'));
+    }
+
+    public function reporte(Request $request){
+        $proveedores = Proveedor::all();
+        $id = $request->get('id');
+        $fechadesde = $request->get('FechaDesde');
+        $fechahasta = $request->get('FechaHasta');
+
+        $request->validate([
+            'FechaDesde'=>'required',
+            'FechaHasta'=>'required||after_or_equal:FechaDesde',
+        ]);
+
+        $compras = DB::table('compras')
+        ->select('compras.*')
+        ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
+        ->whereBetween('FechaCompra', [$fechadesde, $fechahasta])
+        ->where('compras.proveedor_id', '=', $id)
+        ->paginate(15);
+
+        foreach ($compras as $key => $value) {
+            $value->proveedors = Proveedor::findOrFail($value->proveedor_id);
+        }
+        
+        return view('Compras.raizCompras', compact('proveedores', 'compras', 'id', 'fechadesde', 'fechahasta'));
+    }
 
     public function create()
     {
@@ -135,6 +170,26 @@ class CompraController extends Controller
 
         return redirect()->route('compras.crear');
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    public function pdf($anio1, $anio2, $proveeforR)
+    {
+        $proveedor = Proveedor::findOrFail($proveeforR);
+        $provee = $proveedor->EmpresaProveedora;
+
+        $compras = DB::table('compras')
+        ->select('compras.*')
+        ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
+        ->whereBetween('FechaCompra', [$anio1, $anio2])
+        ->where('compras.proveedor_id', '=', $proveeforR)
+        ->paginate(15);
+
+        foreach ($compras as $key => $value) {
+            $value->proveedors = Proveedor::findOrFail($value->proveedor_id);
+        }
+
+        $pdf = PDF::loadView('Compras.pdf', ['compras'=>$compras, 'provee'=>$provee]);
+        return $pdf->stream(); 
+        //return $pdf->download('__compras.pdf');
+    }
 
 }

@@ -39,6 +39,7 @@
                     </div>
                     <br>
                     <input type="submit" class="btn btn-success my-8" value="Buscar">
+                    <a href="{{ route('compras.index') }}" class="btn btn-success my-8">Borrar Busqueda</a>
                 </form>
             </div>
         </div>

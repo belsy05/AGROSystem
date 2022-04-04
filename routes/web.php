@@ -9,7 +9,6 @@ use App\Http\Controllers\CompraController;
 use App\Http\Controllers\DetalleCompraController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\InventarioController;
-use App\Models\DetalleCompra;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -187,6 +186,14 @@ Route::get('/compras/{id}', [CompraController::class, 'show'])
 
 Route::get('/compras/pdf/{anio1}/{anio2}/{proveeforR}', [CompraController::class, 'pdf'])
 ->name('compras.pdf');
+
+/******************************* DETALLE COMPRAS *******************************/
+
+Route::get('/detalle_compra/eliminar/{DetalleCompra}', [DetalleCompraController::class, 'destroy'])
+->name('detalle_compra.eliminar');
+
+Route::post('/detalle_compra/editar', [DetalleCompraController::class, 'agregar_detalle_edit'])
+->name('detalle_compra.editar');
 
 /********************************* INVENTARIO *********************************/
 

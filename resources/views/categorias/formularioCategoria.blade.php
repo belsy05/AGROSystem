@@ -22,23 +22,52 @@
     @csrf
 
     <div class="form-group">
-        <label for="NombreDeLaCategoría"> Nombre: </label>
+        <label for="NombreDeLaCategoría"> Nombre </label>
         <input type="text" class="form-control" name="NombreDeLaCategoría" id="NombreDeLaCategoría"
         placeholder="Nombre de la categoría" value="{{old('NombreDeLaCategoría')}}" maxlength="30">
     </div>
 
     <div class="form-group">
-        <label for="DescripciónDeLaCategoría"> Descripción: </label>
+        <label for="DescripciónDeLaCategoría"> Descripción </label>
         <textarea class="form-control" name="DescripciónDeLaCategoría" id="DescripciónDeLaCategoría" cols="30" rows="10" 
         placeholder="Breve descripción de la categoría" maxlength="150">{{old('DescripciónDeLaCategoría')}}</textarea>
     </div>
 
-    <br>
+    <div class="form-group">
+        <label for="">Los productos de esta categoría tendrán fecha de vencimiento </label><br>
+        <input required type="radio" id="Si" name="vencimiento" value="0"> Si
+        <input required type="radio" id="No" name="vencimiento" value="1"> No
+    </div>
+
+    <div class="form-group">
+        <label for="">Los productos de esta categoría tendrán fecha de elaboración </label><br>
+        <input required type="radio" id="Si" name="elaboracion" value="0"> Si
+        <input required type="radio" id="No" name="elaboracion" value="1"> No
+    </div>
+
+    <div class="form-group">
+        <label for="NombreDeLaCategoría">Presentación de los productos de esta categoría </label>
+        <div id="presentation">
+            <div id="campo">
+                <input style='width: 95%;float: left;' type='text' class='form-control' name='presentacion[]' id='presentacion[]'
+                placeholder='Presentacion' value="{{old('presentacion[]')}}"  maxlength='30'>
+            </div>
+        </div>
+        <button type="button" onclick="clonar()" style="width: 5%;float: left;font-size: 16px" class="btn btn-info">+</button>
+    </div>
+
+    <br><br>
     <input type="submit" class="btn btn-primary" value="Guardar">
     <input type="reset" class="btn btn-danger" value="Limpiar">
     <a class="btn btn-info" href="{{route('categoria.index')}}">Cerrar</a>
 
 </form>
+<script>
+    function clonar(){
+        var prueba = document.getElementById('presentacion[]').value;
+        document.getElementById('campo').innerHTML+="<br><br><input style='width: 95%;float: left;' type='text' class='form-control' name='presentacion[]' id='presentacion[]' placeholder='Presentacion' value='"+prueba+"' maxlength='30'>";
+    }
+</script>
 
 @endsection
 @section('name')

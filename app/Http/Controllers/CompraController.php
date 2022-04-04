@@ -72,6 +72,54 @@ class CompraController extends Controller
 
            $total_cantidad += $de->Cantidad;
 
+           $existe = DB::table('inventarios')->where('IdProducto', '=', $de->IdProducto)->exists();
+
+           if($existe){
+                $inve =  Inventario::where('IdProducto', '=', $de->IdProducto)->firstOrFail();
+
+                $inve->Existencia = $inve->Existencia + $de->Cantidad;
+
+                $inve->CostoPromedio = ($inve->CostoPromedio + $de->Precio_compra)/2;
+
+                $inve->save();
+
+           }else{
+
+                $inve = new Inventario();
+
+                $inve->IdProducto = $de->IdProducto;
+
+                $inve->Existencia = $inve->Existencia + $de->Cantidad;
+
+                $inve->CostoPromedio =  $de->Precio_compra;
+
+                $inve->save();
+           }
+           
+           $exis = DB::table('precios')->where('IdProducto', '=', $de->IdProducto)
+                        ->where('IdPresentación', '=', $de->IdPresentacion)->exists();
+
+           if($exis){
+                $pre =  Precio::where('IdProducto', '=', $de->IdProducto)
+                ->where('IdPresentación', '=', $de->IdPresentacion)->firstOrFail();
+
+                $pre->Precio = $de->Precio_venta;
+
+                $pre->save();
+
+           }else{
+
+                $pre = new Precio();
+
+                $pre->IdProducto = $de->IdProducto;
+
+                $pre->IdPresentación = $de->IdPresentacion;
+
+                $pre->Precio = $de->Precio_venta;
+
+                $pre->save();
+           }
+
         }
 
         return redirect()->route('compras.index');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\Presentacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -40,10 +41,21 @@ class CategoriaController extends Controller
         $nuevaCategoria = new Categoria();
         $nuevaCategoria->NombreDeLaCategoría = $request->input('NombreDeLaCategoría');
         $nuevaCategoria->DescripciónDeLaCategoría = $request->DescripciónDeLaCategoría;
+        $nuevaCategoria->vencimiento = $request->input('vencimiento');
+        $nuevaCategoria->elaboracion = $request->input('elaboracion');
 
         $creado = $nuevaCategoria->save();
 
         if($creado){
+
+            foreach ($request->input('presentacion') as $presentation) {
+                $presentacion = new Presentacion();
+                $presentacion->categoria_id = $nuevaCategoria->id;
+                $presentacion->informacion = $presentation;
+
+                $creado2 = $presentacion->save();
+            }
+
             return redirect()->route('categoria.index')
                 ->with('mensaje', 'La categoría fue creada exitosamente');
         }else{

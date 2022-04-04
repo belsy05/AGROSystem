@@ -160,6 +160,15 @@ class CompraController extends Controller
         return redirect()->route('compras.index');
     }
 
+    public function show($id)
+    {
+        $compra = Compra::findOrFail($id);
+        $detalles =  DetalleCompra::where('IdCompra', $compra->id)->get();
+
+        return view('Compras.verCompra')->with('compra',$compra)
+        ->with('detalles',$detalles);
+    }
+
 
     public function limpiar()
     {

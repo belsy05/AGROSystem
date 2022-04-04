@@ -170,4 +170,17 @@ Route::put('/productos/{id}/editar', [ProductoController::class, 'update'])
 Route::get('/productos/{id}', [ProductoController::class, 'show'])
 ->name('producto.mostrar')->where('id', '[0-9]+');
 
+/********************************* INVENTARIO *********************************/
+
+Route::get('/inventario', [InventarioController::class, 'index'])
+->name('inventario.index');
+
+Route::get('/inventario/buscar', [InventarioController::class, 'index2'])
+->name('inventario.index2');
+
+Route::get('/inventario/precios/{id}', [InventarioController::class, 'precios'])
+->name('inventario.precio')->where('id', '[0-9]+');
+
+Route::get('/inventario/detalles/{id}', [InventarioController::class, 'detalles'])
+->name('inventario.detalle')->where('id', '[0-9]+');
 

@@ -244,4 +244,68 @@
     </div>
 </div>
 @endsection
+@section('js')
+@push('alertas')
 
+    <script>
+
+        function editar_detalle(IdProducto,categoria_id,IdPresentacion,fecha,fecha_elaboración,Cantidad,Precio_venta,Precio_compra,id) {
+           $('#e_IdCategoria').val(categoria_id);
+           e_cambio();
+           $('#e_IdProducto').val(IdProducto);
+           $('#e_IdPresentacion').val(IdPresentacion);
+           e_impuesto();
+           $('#e_fecha').val(fecha);
+           $('#e_fecha_elaboración').val(fecha_elaboración);
+           $('#e_Cantidad').val(Cantidad);
+           $('#e_Precio_venta').val(Precio_venta);
+           $('#e_Precio_compra').val(Precio_compra);
+           $('#e_IdDetalle').val(id);
+
+        }
+
+        function confirmar() {
+           var formul = document.getElementById("form_guardar");
+
+
+            Swal.fire({
+                title: '¿Está seguro que desea guardar los datos de esta nueva compra?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Aceptar'
+            }).then((result)=>{
+                if (result.isConfirmed) {
+                    formul.submit();
+                }
+
+            })
+
+            event.preventDefault()
+
+
+        }
+
+        function limpiarCompra() {
+            Swal.fire({
+                title: '¿Está seguro que desea limpiar los datos de la compra?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Aceptar'
+            }).then((result)=>{
+                if (result.isConfirmed) {
+                    window.location.href = '/compras/limpiar';
+                }
+
+            })
+
+        }
+
+    </script>
+@endpush
+@endsection

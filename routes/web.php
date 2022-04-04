@@ -174,6 +174,20 @@ Route::put('/productos/{id}/editar', [ProductoController::class, 'update'])
 Route::get('/productos/{id}', [ProductoController::class, 'show'])
 ->name('producto.mostrar')->where('id', '[0-9]+');
 
+/********************************* COMPRAS y REPORTE *********************************/
+
+Route::get('/compras', [CompraController::class, 'index'])
+->name('compras.index');
+
+Route::get('/compras/reporte', [CompraController::class, 'reporte'])
+->name('compras.reporte');
+
+Route::get('/compras/{id}', [CompraController::class, 'show'])
+->name('compras.mostrar');
+
+Route::get('/compras/pdf/{anio1}/{anio2}/{proveeforR}', [CompraController::class, 'pdf'])
+->name('compras.pdf');
+
 /********************************* INVENTARIO *********************************/
 
 Route::get('/inventario', [InventarioController::class, 'index'])

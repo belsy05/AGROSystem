@@ -19,6 +19,111 @@ use Illuminate\Support\Facades\DB;
 class VentaController extends Controller
 {
 
+    public function index()
+    {
+        $clien = 0;
+        $empleado = 0;
+        $fechadesde = 0;
+        $fechahasta = 0;
+        $clientes = Cliente::all();
+        $personal = Personal::all();
+        $ventas = Venta::paginate(10);
+        foreach ($ventas as $key => $value) {
+            if ($value->cliente_id != null) {
+                $value->clientes = Cliente::findOrFail($value->cliente_id);
+            }
+        }
+
+        return view('Ventas.raizVentas', compact('clientes', 'ventas', 'personal', 'fechadesde', 'fechahasta', 'clien', 'empleado'));
+    }
+    
+     public function reporte(Request $request)
+    {
+        $clientes = Cliente::all();
+        $personal = Personal::all();
+        $clien = $request->get('cliente');
+        $empleado = $request->get('empleado');
+        $fechadesde = $request->get('FechaDesde');
+        $fechahasta = $request->get('FechaHasta');
+
+        if ($fechadesde == '' && $clien != 0 && $empleado != 0) {
+            if ($clien == 'a') {
+                $clien = null;
+            }
+            $ventas = Venta::select('ventas.*')
+                ->whereBetween('personal_id', [$empleado, $empleado])
+                ->where('cliente_id', '=', $clien)
+                ->paginate(15);
+        } else {
+            if ($fechadesde != '' && $clien == 0 && $empleado == 0) {
+                $ventas = Venta::select('ventas.*')
+                    ->whereBetween('FechaVenta', [$fechadesde, $fechahasta])
+                    ->paginate(15);
+            } else {
+                if ($fechadesde != '' && $clien == 0 && $empleado != 0) {
+                    $ventas = Venta::select('ventas.*')
+                        ->whereBetween('FechaVenta', [$fechadesde, $fechahasta])
+                        ->where('personal_id', '=', $empleado)
+                        ->paginate(15);
+                } else {
+                    if ($fechadesde != '' && $clien != 0 && $empleado == 0) {
+                        if ($clien == 'a') {
+                            $clien = null;
+                        }
+
+                        $ventas = Venta::select('ventas.*')
+                            ->whereBetween('FechaVenta', [$fechadesde, $fechahasta])
+                            ->where('cliente_id', '=', $clien)
+                            ->paginate(15);
+                    } else {
+                        if ($fechadesde == '' && $clien != 0 && $empleado == 0) {
+                            if ($clien == 'a') {
+                                $clien = null;
+                            }
+
+                            $ventas = Venta::select('ventas.*')
+                                ->where('cliente_id', '=', $clien)
+                                ->paginate(15);
+                        } else {
+                            if ($fechadesde == '' && $clien == 0 && $empleado != 0) {
+                                $ventas = Venta::select('ventas.*')
+                                    ->where('personal_id', '=', $empleado)
+                                    ->paginate(15);
+                            } else {
+                                if ($clien == 'a') {
+                                    $clien = null;
+                                }
+
+                                $ventas = Venta::select('ventas.*')
+                                    ->whereBetween('FechaVenta', [$fechadesde, $fechahasta])
+                                    ->where('personal_id', '=', $empleado)
+                                    ->where('cliente_id', '=', $clien)
+                                    ->paginate(15);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach ($ventas as $key => $value) {
+            if ($value->cliente_id != null) {
+                $value->clientes = Cliente::findOrFail($value->cliente_id);
+            }
+        }
+
+        if ($fechadesde == '') {
+            $fechadesde = 0;
+        }
+        if ($fechahasta == '') {
+            $fechahasta = 0;
+        }
+        if ($clien == null) {
+            $clien = '*';
+        }
+
+        return view('Ventas.raizVentas', compact('clientes', 'personal', 'ventas', 'fechadesde', 'fechahasta', 'clien', 'empleado'));
+    }
    
     public function create()
     {

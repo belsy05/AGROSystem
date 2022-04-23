@@ -71,7 +71,8 @@
                 <th scope="col">Número de Factura</th>
                 <th scope="col">Proveedor</th>
                 <th scope="col">Fecha</th>
-                <th scope="col">Total Impuesto (Lps.)</th>
+                <th scope="col">Subtotal (Lps.)</th>
+                <th scope="col">Impuesto (Lps.)</th>
                 <th scope="col">Total Compra (Lps.)</th>
                 <th scope="col"></th>
             </tr>
@@ -83,8 +84,9 @@
                     <td scope="col">{{ $compra->NumFactura }}</td>
                     <td scope="col">{{ $compra->proveedors->EmpresaProveedora }}</td>
                     <td scope="col">{{ $compra->FechaCompra }}</td>
-                    <td scope="col">{{ $compra->TotalImpuesto }}</td>
                     <td scope="col">{{ $compra->TotalCompra }}</td>
+                    <td scope="col">{{ $compra->TotalImpuesto }}</td>
+                    <td scope="col">{{ $compra->TotalCompra + $compra->TotalImpuesto}}</td>
 
                     <td>
                         <a class="btn btn-success" href="{{ route('compras.mostrar', ['id' => $compra->id]) }}">

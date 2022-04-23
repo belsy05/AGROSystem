@@ -120,61 +120,7 @@
 
         <br>
 
-        <div class="row" style="width: 150%">
-            <div class="col-sm-8">
-
-                <table class="table table-bordered border-dark mt-3">
-                    <thead class="table table-striped table-hover">
-                        <tr class="success">
-                            <th scope="col">N°</th>
-                            <th scope="col">Producto</th>
-                            <th scope="col">Presentación</th>
-                            <th scope="col">Precio de venta</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Total Producto</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($detalles as $i => $de)
-                            <tr class="active">
-                                <th scope="row">{{ $i + 1 }}</th>
-                                <td scope="col">
-                                    {{ $de->producto->NombreDelProducto }}
-                                </td>
-                                <td scope="col">{{ $de->presentacion->informacion }}</td>
-                                <td scope="col">{{ $de->Precio_venta }}</td>
-                                <td scope="col">{{ $de->Cantidad }}</td>
-                                <td scope="col">{{ $de->Cantidad * $de->Precio_venta }}</td>
-                                <td>
-                                    <a href={{ '/detalle_venta/eliminar/' . $de->id }}
-                                        class="btn btn-danger">Eliminar</a>
-                                </td>
-                                <td>
-                                    <button onclick="editar_detalle(  {{ $de->producto->id }},
-                                                                                            {{ $de->producto->categoria_id }},
-                                                                                            {{ $de->IdPresentacion }},
-                                                                                           '{{ $de->Cantidad }}',
-                                                                                           '{{ $de->Precio_venta }}',
-                                                                                           {{ $de->id }})"
-                                        data-toggle="modal" data-target="#editar_detalle" type="button"
-                                        class="btn btn-success">Editar</button>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4"> No hay detalles agregados </td>
-                            </tr>
-                        @endforelse
-
-                    </tbody>
-                </table>
-
-            </div>
-
-
-        </div>
+        
 
         <br>
         <input type="submit" class="btn btn-primary" value="Guardar">

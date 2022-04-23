@@ -25,6 +25,7 @@ class InventarioController extends Controller
 
         foreach ($inventarios as $key => $value) {
             $value->producto = Producto::findOrFail($value->IdProducto);
+            $value->presentacion = Presentacion::findOrFail($value->IdPresentacion);
             $value->categoria = Categoria::findOrFail($value->producto->categoria_id);
         }
 
@@ -44,6 +45,7 @@ class InventarioController extends Controller
 
         foreach ($inventarios as $key => $value) {
             $value->producto = Producto::findOrFail($value->IdProducto);
+            $value->presentacion = Presentacion::findOrFail($value->IdPresentacion);
             $value->categoria = Categoria::findOrFail($value->producto->categoria_id);
         }
 
@@ -52,12 +54,13 @@ class InventarioController extends Controller
 
     
 
-    public function precios($id){
+    public function precios($id, $presentacion){
         $producto = Producto::findOrFail($id);
         $nombre = $producto->NombreDelProducto;
         $precios = DB::table('detalle_compras')
         ->join('compras', 'compras.id', '=', 'detalle_compras.IdCompra')
         ->where('IdProducto', '=', $id)
+        ->where('IdPresentacion', '=', $presentacion)
         ->select('compras.FechaCompra', 'detalle_compras.IdPresentacion', 'detalle_compras.Precio_compra')
         ->paginate(10);
 
@@ -68,11 +71,12 @@ class InventarioController extends Controller
         return view('Inventario.precios', compact('precios', 'nombre'));
     }
 
-    public function detalles($id){
+    public function detalles($id, $presentacion){
         $producto = Producto::findOrFail($id);
         $nombre = $producto->NombreDelProducto;
         $precios = DB::table('precios')
         ->where('IdProducto', '=', $id)
+        ->where('IdPresentación', '=', $presentacion)
         ->paginate(10);
 
 
@@ -85,6 +89,7 @@ class InventarioController extends Controller
 
         $vencimientos = DB::table('detalle_compras')
         ->where('IdProducto', '=', $id)
+        ->where('IdPresentacion', '=', $presentacion)
         ->whereMonth('fecha_vencimiento', '>=', now())
         ->orderBy('fecha_vencimiento', 'asc')
         ->paginate(10);

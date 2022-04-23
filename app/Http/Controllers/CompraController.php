@@ -182,7 +182,14 @@ class CompraController extends Controller
         return redirect()->route('compras.index');
     }
 
-   
+    public function show($id)
+    {
+        $compra = Compra::findOrFail($id);
+        $detalles =  DetalleCompra::where('IdCompra', $compra->id)->get();
+
+        return view('Compras.verCompra')->with('compra', $compra)
+            ->with('detalles', $detalles);
+    }
 
 
     public function limpiar()
@@ -195,6 +202,43 @@ class CompraController extends Controller
         return redirect()->route('compras.crear');
     }
     
-    
+    public function pdf($anio1, $anio2, $proveeforR)
+    {
+
+        if ($proveeforR == 0) {
+
+            $compras = DB::table('compras')
+                ->select('compras.*')
+                ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
+                ->whereBetween('FechaCompra', [$anio1, $anio2])
+                ->paginate(15);
+                $provee = 0;
+        } else {
+            if ($anio1 == 0) {
+                $compras = DB::table('compras')
+                    ->select('compras.*')
+                    ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
+                    ->where('compras.proveedor_id', '=', $proveeforR)
+                    ->paginate(15);
+            } else {
+                $compras = DB::table('compras')
+                    ->select('compras.*')
+                    ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
+                    ->whereBetween('FechaCompra', [$anio1, $anio2])
+                    ->where('compras.proveedor_id', '=', $proveeforR)
+                    ->paginate(15);
+            }
+            $proveedor = Proveedor::findOrFail($proveeforR);
+            $provee = $proveedor->EmpresaProveedora;
+        }
+
+        foreach ($compras as $key => $value) {
+            $value->proveedors = Proveedor::findOrFail($value->proveedor_id);
+        }
+
+        $pdf = PDF::loadView('Compras.pdf', ['compras' => $compras, 'provee' =>$provee, 'anio1'=>$anio1, 'anio2'=>$anio2]);
+        return $pdf->stream();
+        //return $pdf->download('__compras.pdf');
+    }
 
 }

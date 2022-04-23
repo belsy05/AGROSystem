@@ -124,6 +124,96 @@ class VentaController extends Controller
 
         return view('Ventas.raizVentas', compact('clientes', 'personal', 'ventas', 'fechadesde', 'fechahasta', 'clien', 'empleado'));
     }
+    
+    public function pdf($fechadesde, $fechahasta, $cliente, $empleado)
+    {
+
+        if ($fechadesde == 0 && $cliente != 0 && $empleado != 0) {
+            if ($cliente == '*') {
+                $cliente = null;
+            }
+
+            $ventas = Venta::select('ventas.*')
+                ->whereBetween('personal_id', [$empleado, $empleado])
+                ->where('cliente_id', '=', $cliente)
+                ->paginate(15);
+        }elseif($fechadesde != 0 && $cliente == 0 && $empleado == 0) {
+                $ventas = Venta::select('ventas.*')
+                    ->whereBetween('FechaVenta', [$fechadesde, $fechahasta])
+                    ->paginate(15);
+            } elseif ($fechadesde != 0 && $cliente == 0 && $empleado != 0) {
+                    $ventas = Venta::select('ventas.*')
+                        ->whereBetween('FechaVenta', [$fechadesde, $fechahasta])
+                        ->where('personal_id', '=', $empleado)
+                        ->paginate(15);
+                } elseif ($fechadesde != 0 && $cliente != 0 && $empleado == 0) {
+                        if ($cliente == '*') {
+                            $cliente = null;
+                        }
+
+                        $ventas = Venta::select('ventas.*')
+                            ->whereBetween('FechaVenta', [$fechadesde, $fechahasta])
+                            ->where('cliente_id', '=', $cliente)
+                            ->paginate(15);
+                    } elseif ($fechadesde == 0 && $cliente != 0 && $empleado == 0) {
+                            if ($cliente == '*') {
+                                $cliente = null;
+                            }
+
+                            $ventas = Venta::select('ventas.*')
+                                ->where('cliente_id', '=', $cliente)
+                                ->paginate(15);
+                        } elseif ($fechadesde == 0 && $cliente == 0 && $empleado != 0) {
+                                $ventas = Venta::select('ventas.*')
+                                    ->whereBetween('personal_id', [$empleado, $empleado])
+                                    ->paginate(15);
+                            } else {
+                                if ($cliente == '*') {
+                                    $cliente = null;
+                                }
+                                
+                                $ventas = Venta::select('ventas.*')
+                                    ->whereBetween('FechaVenta', [$fechadesde, $fechahasta])
+                                    ->where('personal_id', '=', $empleado)
+                                    ->where('cliente_id', '=', $cliente)
+                                    ->paginate(15);
+                            }
+                        
+                    
+
+
+        foreach ($ventas as $key => $value) {
+            if ($value->cliente_id != null) {
+                $value->clientes = Cliente::findOrFail($value->cliente_id);
+            }
+        }
+        
+        $c = Cliente::where('id', $cliente)->first();
+        $e = Personal::where('id', $empleado)->first();
+
+        if ($cliente == 0) {
+            $nombre_cliente = '';
+        } else {
+            if ($cliente == null) {
+                $nombre_cliente = 'Consumidor Final';
+            } else {
+                $nombre_cliente = $c->NombresDelCliente . ' ' . $c->ApellidosDelCliente;
+            }
+        }
+        if ($empleado != 0) {
+            $nombre_empleado = $e->NombresDelEmpleado . ' ' . $e->ApellidosDelEmpleado;
+        } else {
+            $nombre_empleado = '';
+        }
+
+
+        $pdf = PDF::loadView('Ventas.pdf', [
+            'ventas' => $ventas, 'cliente' => $cliente, 'empleado' => $empleado,
+            'fechadesde' => $fechadesde, 'fechahasta' => $fechahasta, 'n_c' => $nombre_cliente, 'n_e' => $nombre_empleado
+        ]);
+        return $pdf->stream();
+        //return $pdf->download('__compras.pdf');
+    }
    
     public function create()
     {

@@ -215,3 +215,14 @@ Route::get('/inventario/precios/{id}', [InventarioController::class, 'precios'])
 Route::get('/inventario/detalles/{id}', [InventarioController::class, 'detalles'])
 ->name('inventario.detalle')->where('id', '[0-9]+');
 
+/********************************* VENTAS *********************************/
+
+Route::get('/ventas/crear',[VentaController::class, 'create'])
+->name('ventas.crear');
+
+Route::get('/ventas/limpiar',[VentaController::class, 'limpiar'])
+->name('ventas.limpir');
+
+Route::post('/ventas/guardar', [VentaController::class, 'store'])
+->name('ventas.guardar');
+

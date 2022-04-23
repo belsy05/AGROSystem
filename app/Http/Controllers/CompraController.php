@@ -107,42 +107,44 @@ class CompraController extends Controller
 
            $total_cantidad += $de->Cantidad;
 
-           $existe = DB::table('inventarios')->where('IdProducto', '=', $de->IdProducto)->exists();
+           $existe = DB::table('inventarios')->where('IdProducto', '=', $de->IdProducto)
+                        ->where('IdPresentacion', '=', $de->IdPresentacion)->exists();
 
-           if($existe){
-                $inve =  Inventario::where('IdProducto', '=', $de->IdProducto)->firstOrFail();
+            if ($existe) {
+                $inve =  Inventario::where('IdProducto', '=', $de->IdProducto)
+                        ->where('IdPresentacion', '=', $de->IdPresentacion)->firstOrFail();
 
                 $inve->Existencia = $inve->Existencia + $de->Cantidad;
 
-                $inve->CostoPromedio = ($inve->CostoPromedio + $de->Precio_compra)/2;
+                $inve->CostoPromedio = ($inve->CostoPromedio + $de->Precio_compra) / 2;
 
                 $inve->save();
-
-           }else{
+            } else {
 
                 $inve = new Inventario();
 
                 $inve->IdProducto = $de->IdProducto;
+
+                $inve->IdPresentacion = $de->IdPresentacion;
 
                 $inve->Existencia = $inve->Existencia + $de->Cantidad;
 
                 $inve->CostoPromedio =  $de->Precio_compra;
 
                 $inve->save();
-           }
-           
-           $exis = DB::table('precios')->where('IdProducto', '=', $de->IdProducto)
-                        ->where('IdPresentación', '=', $de->IdPresentacion)->exists();
+            }
 
-           if($exis){
+            $exis = DB::table('precios')->where('IdProducto', '=', $de->IdProducto)
+                ->where('IdPresentación', '=', $de->IdPresentacion)->exists();
+
+            if ($exis) {
                 $pre =  Precio::where('IdProducto', '=', $de->IdProducto)
-                ->where('IdPresentación', '=', $de->IdPresentacion)->firstOrFail();
+                    ->where('IdPresentación', '=', $de->IdPresentacion)->firstOrFail();
 
                 $pre->Precio = $de->Precio_venta;
 
                 $pre->save();
-
-           }else{
+            } else {
 
                 $pre = new Precio();
 
@@ -153,7 +155,7 @@ class CompraController extends Controller
                 $pre->Precio = $de->Precio_venta;
 
                 $pre->save();
-           }
+            }
 
         }
 

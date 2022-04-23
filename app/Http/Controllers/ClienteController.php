@@ -37,6 +37,7 @@ class ClienteController extends Controller
         return view('Clientes.formularioCliente');
     }
 
+
     //funcion para guardar los datos creados o insertados
     public function store(Request $request){
         //VALIDAR
@@ -58,6 +59,38 @@ class ClienteController extends Controller
 
         if($creado){
             return redirect()->route('cliente.index')
+                ->with('mensaje', 'El cliente fue creado exitosamente.');
+        }else{
+            //retornar con un mensaje de error
+        }
+    }
+
+    public function crear2(){
+        return view('Ventas.formularioCliente');
+    }
+
+    //funcion para guardar los datos creados o insertados
+    public function store2(Request $request){
+        //VALIDAR
+
+        $request->validate([
+            'IdentidadDelCliente'=>'required|unique:clientes|max:13',
+            'NombresDelCliente'=>'required||max:30',
+            'ApellidosDelCliente'=>'required|max:40',
+            'Telefono'=>'nullable|max:9',
+            'LugarDeProcedencia'=>'required|max:120'
+        ]);
+
+        $nuevoCliente = new Cliente();
+        $nuevoCliente->IdentidadDelCliente = $request->input('IdentidadDelCliente');
+        $nuevoCliente->NombresDelCliente = $request->input('NombresDelCliente');
+        $nuevoCliente->ApellidosDelCliente = $request->input('ApellidosDelCliente');
+        $nuevoCliente->Telefono = $request->input('Telefono');
+        $nuevoCliente->LugarDeProcedencia = $request->input('LugarDeProcedencia');
+        $creado = $nuevoCliente->save();
+
+        if($creado){
+            return redirect()->route('ventas.crear')
                 ->with('mensaje', 'El cliente fue creado exitosamente.');
         }else{
             //retornar con un mensaje de error

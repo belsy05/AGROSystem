@@ -44,8 +44,9 @@
         <thead class="table table-striped table-hover">
             <tr class="success">
                 <th scope="col">N°</th>
-                <th scope="col">Producto</th>
                 <th scope="col">Categoría</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Presentación</th>
                 <th scope="col">Existencia</th>
                 <th scope="col">Precio Promedio</th>
                 <th scope="col">Costo total</th>
@@ -56,14 +57,15 @@
         @forelse ($inventarios as $i => $inventario)
             <tr class="active">
                 <th scope="row">{{ ($i+1) }}</th>
-                <td scope="col">{{ $inventario->producto->NombreDelProducto}}</td>
                 <td scope="col">{{ $inventario->categoria->NombreDeLaCategoría }}</td>
+                <td scope="col">{{ $inventario->producto->NombreDelProducto}}</td>
+                <td scope="col">{{ $inventario->presentacion->informacion }}</td>
                 <td scope="col">{{ $inventario->Existencia }}</td>
                 <td scope="col">{{ $inventario->CostoPromedio}}</td>
                 <td scope="col">{{ $inventario->Existencia * $inventario->CostoPromedio}}</td>
                 <td scope="col">
-                    <a href="{{route('inventario.precio', ['id'=>$inventario->IdProducto])}}" class="btn btn-success">Historial de Precios</a>
-                    <a href="{{route('inventario.detalle', ['id'=>$inventario->IdProducto])}}" class="btn btn-success">Más Detalles</a>
+                    <a href="{{route('inventario.precio', ['id'=>$inventario->IdProducto, 'presentacion'=>$inventario->IdPresentacion])}}" class="btn btn-success">Historial de Precios</a>
+                    <a href="{{route('inventario.detalle', ['id'=>$inventario->IdProducto, 'presentacion'=>$inventario->IdPresentacion])}}" class="btn btn-success">Más Detalles</a>
                 </td>
 
 

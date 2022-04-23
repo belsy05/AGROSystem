@@ -182,14 +182,7 @@ class CompraController extends Controller
         return redirect()->route('compras.index');
     }
 
-    public function show($id)
-    {
-        $compra = Compra::findOrFail($id);
-        $detalles =  DetalleCompra::where('IdCompra', $compra->id)->get();
-
-        return view('Compras.verCompra')->with('compra',$compra)
-        ->with('detalles',$detalles);
-    }
+   
 
 
     public function limpiar()
@@ -202,25 +195,6 @@ class CompraController extends Controller
         return redirect()->route('compras.crear');
     }
     
-    public function pdf($anio1, $anio2, $proveeforR)
-    {
-        $proveedor = Proveedor::findOrFail($proveeforR);
-        $provee = $proveedor->EmpresaProveedora;
-
-        $compras = DB::table('compras')
-        ->select('compras.*')
-        ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
-        ->whereBetween('FechaCompra', [$anio1, $anio2])
-        ->where('compras.proveedor_id', '=', $proveeforR)
-        ->paginate(15);
-
-        foreach ($compras as $key => $value) {
-            $value->proveedors = Proveedor::findOrFail($value->proveedor_id);
-        }
-
-        $pdf = PDF::loadView('Compras.pdf', ['compras'=>$compras, 'provee'=>$provee]);
-        return $pdf->stream(); 
-        //return $pdf->download('__compras.pdf');
-    }
+    
 
 }

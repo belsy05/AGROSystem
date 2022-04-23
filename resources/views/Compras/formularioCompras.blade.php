@@ -491,23 +491,48 @@
 
         }
 
-        function limpiarCompra() {
-            Swal.fire({
-                title: '¿Está seguro que desea limpiar los datos de la compra?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                cancelButtonText: 'Cancelar',
-                confirmButtonText: 'Aceptar'
-            }).then((result)=>{
-                if (result.isConfirmed) {
-                    window.location.href = '/compras/limpiar';
-                }
+        
+        function confirmar() {
+                var formul = document.getElementById("form_guardar");
 
-            })
 
-        }
+                Swal.fire({
+                    title: '¿Está seguro que desea guardar los datos de esta nueva compra?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formul.submit();
+                    }
+
+                })
+
+                event.preventDefault()
+
+
+            }
+
+            function limpiarCompra() {
+                Swal.fire({
+                    title: '¿Está seguro que desea limpiar los datos de la compra?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/compras/limpiar';
+                    }
+
+                })
+
+            }
 
     </script>
 @endpush

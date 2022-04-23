@@ -54,7 +54,6 @@ class ProductoController extends Controller
         $nuevoProducto->categoria_id = $request->Categoria;
         $nuevoProducto->NombreDelProducto = $request->input('NombreDelProducto');
         $nuevoProducto->DescripciónDelProducto = $request->input('DescripciónDelProducto');
-        $nuevoProducto->PresentaciónDelProducto = $request->input('PresentaciónDelProducto');
         $nuevoProducto->Impuesto = $request->Impuesto;
         $creado = $nuevoProducto->save();
 

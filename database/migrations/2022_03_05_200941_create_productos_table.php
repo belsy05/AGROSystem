@@ -19,8 +19,7 @@ return new class extends Migration
             $table->foreign('categoria_id')->references('id')->on('categorias');
             $table->string('NombreDelProducto');
             $table->text('DescripciónDelProducto');
-            $table->string('PresentaciónDelProducto');
-            $table->boolean('Impuesto')->default(true);
+            $table->float('Impuesto');
             $table->timestamps();
         });
     }

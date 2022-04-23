@@ -129,6 +129,12 @@ Route::get('/clientes/crear', [ClienteController::class, 'crear'])
 Route::post('/clientes/guardar', [ClienteController::class, 'store'])
 ->name('cliente.guardar');
 
+Route::get('/clientes/crear2', [ClienteController::class, 'crear2'])
+->name('cliente.crear2');
+
+Route::post('/clientes/guardar2', [ClienteController::class, 'store2'])
+->name('cliente.guardar2');
+
 /********************************* CATEGORIAS *********************************/
 
 Route::get('/categorias', [CategoriaController::class, 'index'])

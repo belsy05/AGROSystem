@@ -22,17 +22,18 @@
         onsubmit="confirmar()">
         @csrf
         <div class="row" style="width: 80%">
-            <div class="col-sm-6">
+            <div class="col-sm-6" >
                 <div class="form-group">
                     <label for="NumFactura"> Número de Factura </label>
                     <input type="text" readonly style="width: 100%" name="NumFactura"
-                        class="form-control {{ $errors->has('NumFactura') ? 'is-invalid' : '' }}" id="NumFactura"
-                        placeholder="Número de factura sin guiones" required value="{{ $numfactura }}">
-
+                        class="form-control {{ $errors->has('NumFactura') ? 'is-invalid' : '' }}"  id="NumFactura"
+                        placeholder="Número de factura sin guiones" required
+                        value="{{ $numfactura}}">  
+                     
                 </div>
-
+                
             </div>
-
+            
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="Empleado"> Empleado </label>
@@ -44,7 +45,7 @@
                     </select>
                 </div>
             </div>
-
+            
         </div>
 
         <div class="row" style="width: 80%">
@@ -55,17 +56,7 @@
                         <option style="display: none;" value="">Seleccione un cliente</option>
                         <option value="">Consumidor Final</option>
                         @foreach ($cliente as $c)
-<<<<<<< Updated upstream
-                            <option value="{{ $c->id }}">{{ $c->NombresDelCliente }}
-                                {{ $c->ApellidosDelCliente }}
-=======
-<<<<<<< HEAD
                             <option value="{{ $c->id }}">{{$c->IdentidadDelCliente}}-{{ $c->NombresDelCliente }} {{ $c->ApellidosDelCliente }}
-=======
-                            <option value="{{ $c->id }}">{{ $c->NombresDelCliente }}
-                                {{ $c->ApellidosDelCliente }}
->>>>>>> a5ecf2e39502cbd57195c9943c125d7ebcf7589b
->>>>>>> Stashed changes
                             </option>
                         @endforeach
                     </select>
@@ -74,11 +65,11 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label style="width: 100%" for="FechaVenta"> Fecha de la Venta </label>
-                    <input style="width: 100%" readonly type="date" class="form-control" name="FechaVenta" id="FechaVenta"
-                        required maxlength="40" value="{{ now()->format('Y-m-d') }}">
+                    <input style="width: 100%" readonly type="date" class="form-control" name="FechaVenta" id="FechaVenta" required
+                                maxlength="40" value="{{now()->format('Y-m-d')}}">     
                 </div>
             </div>
-
+            
         </div>
 
 
@@ -96,25 +87,16 @@
                     <label style="width: 100%" for="">Impuesto</label>
                     <input style="width: 100%" readonly type="email" name="TotalImpuesto"
                         class="form-control {{ $errors->has('TotalImpuesto') ? 'is-invalid' : '' }}"
-                        value="{{ round($total_impuesto, 2) }}" id="TotalImpuesto" required title="Total del impuesto">
+                        value="{{ round($total_impuesto, 2) }}" id="TotalImpuesto" required
+                        title="Total del impuesto">
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label style="width: 100%" for="">Total Venta</label>
-<<<<<<< HEAD
                     <input style="width: 100%" readonly type="email" name="TotalVentaT"
                         class="form-control {{ $errors->has('TotalVentaT') ? 'is-invalid' : '' }}"
                         value="{{ round($total_precio + $total_impuesto, 2) }}" id="TotalVentaT" required title="Total de la Venta">       
-=======
-                    <input style="width: 100%" readonly type="email" name="TotalVenta"
-                        class="form-control {{ $errors->has('TotalVenta') ? 'is-invalid' : '' }}"
-                        value="{{ round($total_precio + $total_impuesto, 2) }}" id="TotalVenta" required
-                        title="Total de la Venta">
-<<<<<<< Updated upstream
-=======
->>>>>>> a5ecf2e39502cbd57195c9943c125d7ebcf7589b
->>>>>>> Stashed changes
                 </div>
             </div>
         </div>

@@ -55,8 +55,17 @@
                         <option style="display: none;" value="">Seleccione un cliente</option>
                         <option value="">Consumidor Final</option>
                         @foreach ($cliente as $c)
+<<<<<<< Updated upstream
                             <option value="{{ $c->id }}">{{ $c->NombresDelCliente }}
                                 {{ $c->ApellidosDelCliente }}
+=======
+<<<<<<< HEAD
+                            <option value="{{ $c->id }}">{{$c->IdentidadDelCliente}}-{{ $c->NombresDelCliente }} {{ $c->ApellidosDelCliente }}
+=======
+                            <option value="{{ $c->id }}">{{ $c->NombresDelCliente }}
+                                {{ $c->ApellidosDelCliente }}
+>>>>>>> a5ecf2e39502cbd57195c9943c125d7ebcf7589b
+>>>>>>> Stashed changes
                             </option>
                         @endforeach
                     </select>
@@ -77,14 +86,14 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label style="width: 100%" for="">Subtotal</label>
-                    <input style="width: 100%" readonly type="email" name="Subtotal"
-                        class="form-control {{ $errors->has('Subtotal') ? 'is-invalid' : '' }}"
-                        value="{{ $total_precio }}" id="Subtotal" required title="Subtotal de la Venta">
+                    <input style="width: 100%" readonly type="email" name="TotalVenta"
+                        class="form-control {{ $errors->has('TotalVenta') ? 'is-invalid' : '' }}"
+                        value="{{ $total_precio }}" id="TotalVenta" required title="Subtotal de la Venta">
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
-                    <label style="width: 100%" for="">Total Impuesto</label>
+                    <label style="width: 100%" for="">Impuesto</label>
                     <input style="width: 100%" readonly type="email" name="TotalImpuesto"
                         class="form-control {{ $errors->has('TotalImpuesto') ? 'is-invalid' : '' }}"
                         value="{{ round($total_impuesto, 2) }}" id="TotalImpuesto" required title="Total del impuesto">
@@ -93,14 +102,23 @@
             <div class="col-sm-4">
                 <div class="form-group">
                     <label style="width: 100%" for="">Total Venta</label>
+<<<<<<< HEAD
+                    <input style="width: 100%" readonly type="email" name="TotalVentaT"
+                        class="form-control {{ $errors->has('TotalVentaT') ? 'is-invalid' : '' }}"
+                        value="{{ round($total_precio + $total_impuesto, 2) }}" id="TotalVentaT" required title="Total de la Venta">       
+=======
                     <input style="width: 100%" readonly type="email" name="TotalVenta"
                         class="form-control {{ $errors->has('TotalVenta') ? 'is-invalid' : '' }}"
                         value="{{ round($total_precio + $total_impuesto, 2) }}" id="TotalVenta" required
                         title="Total de la Venta">
+<<<<<<< Updated upstream
+=======
+>>>>>>> a5ecf2e39502cbd57195c9943c125d7ebcf7589b
+>>>>>>> Stashed changes
                 </div>
             </div>
         </div>
-
+        
         <div class="row" style="width: 100%">
             <div class="col-sm-12">
                 <button data-toggle="modal" data-target="#agreagar_detalle" type="button" class="btn btn-success">Agregar

@@ -17,8 +17,8 @@
                     <div class="form-row">
                         <div class="col-sm-3 my-1">
                             <label for="id">Proveedor</label>
-                            <select class="form-control" name="id" id="id" required>
-                                <option value="">--Seleccione--</option>
+                            <select class="form-control" name="id" id="id">
+                                <option value="0">--Seleccione--</option>
                                 @foreach ($proveedores as $proveedor)
                                     <option value="{{ $proveedor['id'] }}">{{ $proveedor['EmpresaProveedora'] }}</option>
                                 @endforeach
@@ -28,12 +28,12 @@
                         <div class="col-sm-2 my-1">
                         <label for="id">Fecha desde</label>
                         <input style="width: 100%" type="date" class="form-control" name="FechaDesde" id="Fechadesde"
-                            required maxlength="40" value="{{ old('Fechadesde', Carbon\Carbon::now()->format('Y-m-d')) }}">
+                             maxlength="40" >
                         </div>
                         <div class="col-sm-2 my-1">
                             <label for="id">Fecha hasta</label>
                             <input style="width: 100%" type="date" class="form-control" name="FechaHasta" id="Fechahasta"
-                            required maxlength="40" value="{{ old('Fechahasta', Carbon\Carbon::now()->format('Y-m-d')) }}">
+                             maxlength="40" >
                         </div>
 
                     </div>
@@ -71,6 +71,7 @@
                 <th scope="col">Número de Factura</th>
                 <th scope="col">Proveedor</th>
                 <th scope="col">Fecha</th>
+                <th scope="col">Total Impuesto (Lps.)</th>
                 <th scope="col">Total Compra (Lps.)</th>
                 <th scope="col"></th>
             </tr>
@@ -82,6 +83,7 @@
                     <td scope="col">{{ $compra->NumFactura }}</td>
                     <td scope="col">{{ $compra->proveedors->EmpresaProveedora }}</td>
                     <td scope="col">{{ $compra->FechaCompra }}</td>
+                    <td scope="col">{{ $compra->TotalImpuesto }}</td>
                     <td scope="col">{{ $compra->TotalCompra }}</td>
 
                     <td>

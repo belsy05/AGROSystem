@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Proveedor;
 use Illuminate\Http\Request;
 
 class ProveedorController extends Controller
@@ -11,7 +12,7 @@ class ProveedorController extends Controller
         return view('Proveedor.raizproveedor')->with('proveedors', $proveedor);
     }
 
-    //funcion para la barra
+    //funcion para la barra de navegacion
     public function index2(Request $request){
 
         $texto =trim($request->get('texto'));
@@ -27,11 +28,11 @@ class ProveedorController extends Controller
     public function crear(){
         return view('proveedor.formularioProveedor');
     }
-    
+
     public function show($id){
         $proveedor = Proveedor::findOrFail($id);
         return view('Proveedor.verProveedor')->with( 'proveedor', $proveedor);
-    } 
+    }
 
     public function store(Request $request){
         //Validar
@@ -63,7 +64,7 @@ class ProveedorController extends Controller
             //retornar con un mensaje de error
         }
     }
-    
+
     public function crear2(){
         return view('Compras.formularioProveedor');
     }
@@ -98,7 +99,7 @@ class ProveedorController extends Controller
             //retornar con un mensaje de error
         }
     }
-    
+
   //funcion para editar los datos
      public function edit($id){
         $proveedor = Proveedor::findOrFail($id);
@@ -111,7 +112,7 @@ class ProveedorController extends Controller
         $proveedor = Proveedor::findOrFail($id);
 
             $request->validate([
-            
+
                 'EmpresaProveedora'=> [
                     'required',
                     'max:40',
@@ -129,7 +130,7 @@ class ProveedorController extends Controller
                 'ApellidosDelEncargado'=>'required|max:40',
                 'TeléfonoDelEncargado'=>'required',
             ]);
-        
+
                 $proveedor->EmpresaProveedora = $request->input('EmpresaProveedora');
                 $proveedor->DirecciónDeLaEmpresa = $request->input('DirecciónDeLaEmpresa');
                 $proveedor->CorreoElectrónicoDeLaEmpresa = $request->input('CorreoElectrónicoDeLaEmpresa');
@@ -146,6 +147,6 @@ class ProveedorController extends Controller
                 }else{
                     //retornar con un mensaje de error
                 }
-    } 
+    }
 
 }

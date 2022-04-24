@@ -15,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('compras', function (Blueprint $table) {
             $table->id();
-            $table->string('NumFactura',20);
-            $table->string('Proveedor',100);
+            $table->string('NumFactura',16);
+            $table->unsignedBigInteger('proveedor_id');
+            $table->foreign('proveedor_id')->references('id')->on('proveedors');
             $table->date('FechaCompra');
-            $table->integer('TotalCantidadCompra')->nullable();
             $table->float('TotalCompra');
+            $table->float('TotalImpuesto');
             $table->timestamps();
         });
     }

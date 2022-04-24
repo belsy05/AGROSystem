@@ -46,18 +46,17 @@
             <tr class="success">
                 <th scope="col">Categoría</th>
                 <th scope="col">Descripción</th>
-                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
         @forelse ($categorias as $categoria)
             <tr class="active">
-                
+
                 <td scope="col">{{ $categoria->NombreDeLaCategoría}}</td>
                 <td scope="col">{{ $categoria->DescripciónDeLaCategoría}}</td>
-
+                <!--
                 <td> <a class="btn btn-success" href="{{ route('categoria.edit',['id' => $categoria->id]) }}"> Editar </a></td>
-
+                -->
             </tr>
         @empty
             <tr>

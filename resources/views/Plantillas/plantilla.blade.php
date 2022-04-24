@@ -273,51 +273,57 @@
 
         <ul class="list-unstyled components">
             <li class="active">
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="true">
                     <i class="glyphicon glyphicon-home"></i>
                     Menú
                 </a>
             </li>
             <li>
-                <a href="/cargos" data-toggle="collapse" aria-expanded="false">
+                <a href="/cargos" aria-expanded="true">
                     <i class="glyphicon glyphicon-briefcase"></i>
                     Cargos
                 </a>
             </li>
 
             <li>
-                <a href="/personals">
+                <a href="/personals" aria-expanded="true">
                     <i class="glyphicon glyphicon-user"></i>
                     Personal
                 </a>
             </li>
 
             <li>
-                <a href="/proveedors">
+                <a href="/proveedors" aria-expanded="true">
                     <i class="glyphicon glyphicon-fire"></i>
                     Proveedores
                 </a>
             </li>
             <li>
-                <a href="/clientes">
+                <a href="/clientes" aria-expanded="true">
                     <i class="glyphicon glyphicon-leaf"></i>
                     Clientes
                 </a>
             </li>
             <li>
-                <a href="/productos">
+                <a href="/categorias" aria-expanded="true">
+                    <i class=" 	glyphicon glyphicon-th-large"></i>
+                    Categorias
+                </a>
+            </li>
+            <li>
+                <a href="/productos" aria-expanded="true">
                     <i class="glyphicon glyphicon-send"></i>
                     Productos
                 </a>
             </li>
             <li>
-                <a href="/compras">
+                <a href="/compras" aria-expanded="true">
                     <i class="glyphicon glyphicon-log-in"></i>
                     Compras
                 </a>
             </li>
-            <li>
-                <a href="/ventas">
+            <li class="active">
+                <a href="/ventas" data-toggle="collapse" aria-expanded="false">
                     <i class="glyphicon glyphicon-log-out"></i>
                     Ventas
                 </a>
@@ -340,10 +346,10 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
+                        <li><a href="#">Page 1</a></li>
+                        <li><a href="#">Page 2</a></li>
+                        <li><a href="#">Page 3</a></li>
+                        <li><a href="#">Page 4</a></li>
                     </ul>
                 </div>
             </div>

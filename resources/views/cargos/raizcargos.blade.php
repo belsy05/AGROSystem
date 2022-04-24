@@ -44,7 +44,7 @@
                 <th scope="col">Nombre del Cargo</th>
                 <th scope="col">Descripción del Cargo</th>
                 <th scope="col">Sueldo</th>
-                <th scope="col">Editar</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>

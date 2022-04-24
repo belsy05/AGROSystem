@@ -83,7 +83,7 @@
                     <th scope="row">{{ $compra->id }}</th>
                     <td scope="col">{{ $compra->NumFactura }}</td>
                     <td scope="col">{{ $compra->proveedors->EmpresaProveedora }}</td>
-                    <td scope="col">{{ $compra->FechaCompra }}</td>
+                    <td scope="col">{{\Carbon\Carbon::parse($compra->FechaCompra)->locale("es")->isoFormat("DD MMMM, YYYY")}}</td>
                     <td scope="col">{{ $compra->TotalCompra }}</td>
                     <td scope="col">{{ $compra->TotalImpuesto }}</td>
                     <td scope="col">{{ $compra->TotalCompra + $compra->TotalImpuesto}}</td>

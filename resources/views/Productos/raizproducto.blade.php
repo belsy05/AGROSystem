@@ -45,8 +45,8 @@
                 <th scope="col">Nombre del Producto</th>
                 <th scope="col">Categoría</th>
                 <th scope="col">Presentación</th>
-                <th scope="col">Más Detalles</th>
-                <th scope="col">Editar</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>

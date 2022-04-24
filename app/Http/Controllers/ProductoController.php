@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
-
-
     public function index(){
         $producto = Producto::paginate(10);
         return view('Productos.raizproducto')->with('productos', $producto);

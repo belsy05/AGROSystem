@@ -52,9 +52,9 @@
                 <th scope="col">Teléfono</th>
                 <th scope="col">Fecha de Ingreso</th>
                 <th scope="col">Estado</th>
-                <th scope="col">Más Detalles</th>
-                <th scope="col">Editar</th>
                 <th scope="col">Cambiar Estado</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -67,11 +67,6 @@
                 <td scope="col">{{ $personal->Teléfono}}</td>
                 <td scope="col">{{ $personal->FechaDeIngreso}}</td>
                 <td scope="col">{{$personal->EmpleadoActivo}}
-                    {{-- @if ($personal->EmpleadoActivo)
-                        Activo
-                    @else
-                        Inactivo
-                    @endif --}}
                 </td>
 
                 <td> <a class="btn btn-success" href="{{ route('personal.mostrar',['id' => $personal->id]) }}" > Más Detalles </a></td>

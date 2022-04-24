@@ -50,7 +50,7 @@
 
         <div class="row" style="width: 80%">
             <div class="col-sm-6">
-                <div class="form-group">
+            <div class="form-group">
                     <label for="Cliente"> Cliente </label>
                     <select name="Cliente" id="Cliente" class="form-control" required style="width: 100%">
                         <option style="display: none;" value="">Seleccione un cliente</option>
@@ -60,7 +60,7 @@
                             </option>
                         @endforeach
                     </select>
-                </div>
+            </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">

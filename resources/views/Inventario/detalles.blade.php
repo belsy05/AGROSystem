@@ -56,7 +56,7 @@
             <tr class="active">
                 <th scope="row">{{ ($i+1) }}</th>
                 <td scope="col">{{ $vencimiento->presentacion->informacion}}</td>
-                <td scope="col">{{ $vencimiento->fecha_vencimiento }}</td>
+                <td scope="col">{{\Carbon\Carbon::parse($vencimiento->fecha_vencimiento)->locale("es")->isoFormat("DD MMMM, YYYY")}}</td>
             </tr>
         @empty
             <tr>

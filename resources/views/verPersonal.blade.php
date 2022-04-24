@@ -35,11 +35,11 @@
         </tr>
         <tr>
             <th scope="row">Fecha De Nacimiento</th>
-            <td scope="col">{{ $personal->FechaDeNacimiento}} </td>
+            <td scope="col">{{\Carbon\Carbon::parse($personal->FechaDeNacimiento)->locale("es")->isoFormat("DD MMMM, YYYY")}}</td>
         </tr>
         <tr>
             <th scope="row">Fecha De Ingreso</th>
-            <td scope="col">{{ $personal->FechaDeIngreso}} </td>
+            <td scope="col">{{\Carbon\Carbon::parse($personal->FechaDeIngreso)->locale("es")->isoFormat("DD MMMM, YYYY")}} </td>
         </tr>
         <tr>
             <th scope="row">Ciudad</th>

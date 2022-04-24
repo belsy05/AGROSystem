@@ -64,6 +64,35 @@ class ProductoController extends Controller
             //retornar con un mensaje de error
         } 
     }
+    
+    public function crear2(){
+        $categorias = Categoria::all();
+        return view('Compras.formularioProducto', compact('categorias'));
+    } 
+
+    public function store2(Request $request){
+        //VALIDAR
+        $request->validate([
+            'Categoria'=>'required',
+            'NombreDelProducto'=>'required|unique:productos|string|max:40',
+            'DescripciónDelProducto'=>'required|string|max:150|min:10'
+        ]);
+
+        //Formulario
+        $nuevoProducto = new Producto();
+        $nuevoProducto->categoria_id = $request->Categoria;
+        $nuevoProducto->NombreDelProducto = $request->input('NombreDelProducto');
+        $nuevoProducto->DescripciónDelProducto = $request->input('DescripciónDelProducto');
+        $nuevoProducto->Impuesto = $request->Impuesto;
+        $creado = $nuevoProducto->save();
+
+        if($creado){
+            return redirect()->route('compras.crear')
+                ->with('mensaje', 'El producto fue creado exitosamente');
+        }else{
+            //retornar con un mensaje de error
+        } 
+    }
 
     //funcion para editar los datos
     public function edit($id){

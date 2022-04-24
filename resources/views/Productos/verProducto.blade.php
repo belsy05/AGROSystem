@@ -26,10 +26,6 @@
             <td scope="col">{{ $producto->DescripciónDelProducto}} </td>
         </tr>
         <tr>
-            <th scope="row">Presentación</th>
-            <td scope="col">{{ $producto->PresentaciónDelProducto }} </td>
-        </tr>
-        <tr>
             <th scope="row">Impuesto</th>
             <td scope="col">{{ $producto->Impuesto}} </td>
         </tr>

@@ -71,37 +71,49 @@ class CompraController extends Controller
 
         return view('Compras.raizCompras', compact('proveedores', 'compras', 'id', 'fechadesde', 'fechahasta'));
     }
-    public function create()
+    public function create($proveedors=0)
     {
         $total_cantidad = 0;
         $total_precio = 0;
+        $total_impuesto = 0;
         $detalles =  DetalleCompra::where('IdCompra', 0)->get();
-        foreach ( $detalles  as $key => $value) {
+        foreach ($detalles  as $key => $value) {
             $total_cantidad += $value->Cantidad;
             $total_precio += ($value->Cantidad * $value->Precio_compra);
+            $produc = Producto::findorFail($value->IdProducto);
+            if($produc->Impuesto == 0.15){
+                $total_impuesto += ($value->Cantidad * $value->Precio_compra)-(($value->Cantidad * $value->Precio_compra)/1.15);
+            }
         }
 
+        $prov = Proveedor::find($proveedors);
         $productos = Producto::all();
-        $proveedor= Proveedor::all();
-        $categoria= Categoria::all();
-        $presentacion= Presentacion::all();
+        $proveedor = Proveedor::all();
+        $categoria = Categoria::all();
+        $presentacion = Presentacion::all();
 
-        return view('Compras.formularioCompras')->with('detalles',$detalles)
-                                                ->with('productos',$productos)
-                                                ->with('proveedor',$proveedor)
-                                                ->with('presentacion',$presentacion)
-                                                ->with('categoria',$categoria)
-                                                ->with('total_cantidad',$total_cantidad)
-                                                ->with('total_precio',$total_precio);
+        return view('Compras.formularioCompras')->with('detalles', $detalles)
+            ->with('prov', $prov)
+            ->with('proveedors', $proveedors)
+            ->with('productos', $productos)
+            ->with('proveedor', $proveedor)
+            ->with('presentacion', $presentacion)
+            ->with('categoria', $categoria)
+            ->with('total_cantidad', $total_cantidad)
+            ->with('total_precio', $total_precio)
+            ->with('total_impuesto', $total_impuesto);
     }
 
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
         $request->validate([
-            'FechaCompra'=>'required|date|before:tomorrow',
+            'FechaCompra' => 'required|date|before:tomorrow',
+            'TotalCompra' => 'numeric|min:10.00',
         ], [
-            'FechaCompra.before'=> 'El campo fecha de compra debe de ser anterior al dia de mañana',
+            'FechaCompra.before' => 'El campo fecha de compra debe de ser anterior al dia de mañana',
+            'TotalCompra.min' => 'Ingrese detalles para esta compra',
         ]);
 
 
@@ -111,21 +123,20 @@ class CompraController extends Controller
         $compra->proveedor_id = $request->input('Proveedor');
         $compra->FechaCompra = $request->input('FechaCompra');
         $compra->TotalCompra = $request->input('TotalCompra');
-
+        $compra->TotalImpuesto = $request->input('TotalImpuesto');
         $compra->save();
-
 
         $detalles =  DetalleCompra::where('IdCompra', 0)->get();
 
         $total_cantidad = 0;
 
-        foreach ( $detalles  as $key => $value) {
-           $de = DetalleCompra::findOrFail($value->id);
-           $de->IdCompra = $compra->id;
+        foreach ($detalles  as $key => $value) {
+            $de = DetalleCompra::findOrFail($value->id);
+            $de->IdCompra = $compra->id;
 
-           $de->save();
+            $de->save();
 
-           $total_cantidad += $de->Cantidad;
+            $total_cantidad += $de->Cantidad;
 
            $existe = DB::table('inventarios')->where('IdProducto', '=', $de->IdProducto)
                         ->where('IdPresentacion', '=', $de->IdPresentacion)->exists();

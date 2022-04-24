@@ -63,6 +63,44 @@ class CategoriaController extends Controller
         }
     }
 
+    public function crear2(){
+        return view('Compras.formularioCategoria');
+    }
+    
+    //funcion para guardar los datos creados o insertados
+    public function store2(Request $request){
+        //VALIDAR
+        $request->validate([
+            'NombreDeLaCategoría'=>'required|unique:categorias|string|max:40|min:5',
+            'DescripciónDeLaCategoría'=>'required|string|max:150|min:5'
+        ]);
+
+        //Formulario
+        $nuevaCategoria = new Categoria();
+        $nuevaCategoria->NombreDeLaCategoría = $request->input('NombreDeLaCategoría');
+        $nuevaCategoria->DescripciónDeLaCategoría = $request->DescripciónDeLaCategoría;
+        $nuevaCategoria->vencimiento = $request->input('vencimiento');
+        $nuevaCategoria->elaboracion = $request->input('elaboracion');
+
+        $creado = $nuevaCategoria->save();
+
+        if($creado){
+
+            foreach ($request->input('presentacion') as $presentation) {
+                $presentacion = new Presentacion();
+                $presentacion->categoria_id = $nuevaCategoria->id;
+                $presentacion->informacion = $presentation;
+
+                $creado2 = $presentacion->save();
+            }
+
+            return redirect()->route('compras.crear')
+                ->with('mensaje', 'La categoría fue creada exitosamente');
+        }else{
+            //retornar con un mensaje de error
+        }
+    }
+    
     //funcion para editar los datos
     public function edit($id){
         $categoria = Categoria::findOrFail($id);

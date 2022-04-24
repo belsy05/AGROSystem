@@ -48,7 +48,7 @@
                 <th scope="col">Nombre Completo</th>
                 <th scope="col">Teléfono</th>
                 <th scope="col">Lugar De Procedencia</th>
-                <th scope="col">Editar</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>

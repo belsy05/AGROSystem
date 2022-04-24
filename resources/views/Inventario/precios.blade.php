@@ -25,7 +25,7 @@
         @forelse ($precios as $i => $precio)
             <tr class="active">
                 <th scope="row">{{ ($i+1) }}</th>
-                <td scope="col">{{ $precio->FechaCompra}}</td>
+                <td scope="col">{{\Carbon\Carbon::parse($precio->FechaCompra)->locale("es")->isoFormat("DD MMMM, YYYY")}}</td>
                 <td scope="col">{{ $precio->presentacion->informacion}}</td>
                 <td scope="col">{{ $precio->Precio_compra }}</td>
             </tr>

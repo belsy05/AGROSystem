@@ -65,12 +65,9 @@
                 <td scope="col">{{ $personal->NombresDelEmpleado }}</td>
                 <td scope="col">{{ $personal->ApellidosDelEmpleado }}</td>
                 <td scope="col">{{ $personal->Teléfono}}</td>
-                <td scope="col">{{ $personal->FechaDeIngreso}}</td>
+                <td scope="col">{{\Carbon\Carbon::parse($personal->FechaDeIngreso)->locale("es")->isoFormat("DD MMMM, YYYY")}}</td>
                 <td scope="col">{{$personal->EmpleadoActivo}}
                 </td>
-
-                <td> <a class="btn btn-success" href="{{ route('personal.mostrar',['id' => $personal->id]) }}" > Más Detalles </a></td>
-                <td> <a class="btn btn-success" href="{{ route('personal.edit',['id' => $personal->id]) }}"> Editar </a></td>
                 <td>
                     @if ($personal->EmpleadoActivo == 'Activo')
                         <a class="btn btn-danger" href="#" onclick="desactivar({{ $personal->id}})">Desactivar</a>
@@ -78,6 +75,10 @@
                         <a class="btn btn-success" href="#" onclick="activar({{ $personal->id}})">Activar</a>
                     @endif
                 </td>
+
+                <td> <a class="btn btn-success" href="{{ route('personal.mostrar',['id' => $personal->id]) }}" > Más Detalles </a></td>
+                <td> <a class="btn btn-success" href="{{ route('personal.edit',['id' => $personal->id]) }}"> Editar </a></td>
+                
 
             </tr>
         @empty

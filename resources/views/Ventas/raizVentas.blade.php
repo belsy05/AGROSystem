@@ -116,7 +116,7 @@
                     @else
                         <td scope="col">{{ $compra->clientes->NombresDelCliente }} {{ $compra->clientes->ApellidosDelCliente }}</td>
                     @endif
-                    <td scope="col">{{ $compra->FechaVenta }}</td>
+                    <td scope="col">{{\Carbon\Carbon::parse($compra->FechaVenta)->locale("es")->isoFormat("DD MMMM, YYYY")}}</td>
                     <td scope="col">{{ $compra->TotalVenta }}</td>
                     <td scope="col">{{ $compra->TotalImpuesto }}</td>
                     <td scope="col">{{ $compra->TotalVenta + $compra->TotalImpuesto}}</td>                    

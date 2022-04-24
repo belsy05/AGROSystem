@@ -22,7 +22,7 @@
         </tr>
         <tr>
             <th scope="row">Fecha de compra</th>
-            <td scope="col">{{ $compra->FechaCompra }} </td>
+            <td scope="col">{{\Carbon\Carbon::parse($compra->FechaCompra)->locale("es")->isoFormat("DD MMMM, YYYY")}} </td>
         </tr>
 
     </tbody>

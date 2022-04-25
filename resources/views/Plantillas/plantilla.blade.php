@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,14 +10,13 @@
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-{{--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">--}}
-<!-- Our Custom CSS -->
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> --}}
+    <!-- Our Custom CSS -->
     {{-- <link rel="stylesheet" href="style4.css"> --}}
 
     <style>
-        {{-- DEMO STYLE --}}
+        {{-- DEMO STYLE --}} @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
         body {
             font-family: 'Poppins', sans-serif;
             background: #ffffff;
@@ -44,7 +44,7 @@
             border: none;
             border-radius: 0;
             margin-bottom: 40px;
-            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: 6px 6px 8px #3a993e;
         }
 
         .navbar-btn {
@@ -67,9 +67,7 @@
 
         {{-- /* ---------------------------------------------------
             SIDEBAR STYLE
-        ----------------------------------------------------- */ --}}
-
-        .wrapper {
+        ----------------------------------------------------- */ --}} .wrapper {
             display: flex;
             align-items: stretch;
         }
@@ -82,6 +80,7 @@
             transition: all 0.3s;
         }
 
+        
         #sidebar.active {
             min-width: 80px;
             max-width: 80px;
@@ -194,28 +193,36 @@
         }
 
 
-        {{--  /* ---------------------------------------------------
+        {{-- /* ---------------------------------------------------
             CONTENT STYLE
-        ----------------------------------------------------- */ --}}
-
+        ----------------------------------------------------- */ --}} 
         #content {
             width: 100%;
-            padding: 20px;
+            padding: 30px;
             min-height: 100vh;
             transition: all 0.3s;
         }
 
+        #barras {
+            width: 100%;
+            height: 5%;
+            padding: 5px;
+            min-height: 5vh;
+            transition: all 0.3s;
+        }
+
+        
+
         {{-- /* ---------------------------------------------------
             MEDIAQUERIES
-        ----------------------------------------------------- */ --}}
-
-        @media (max-width: 768px) {
+        ----------------------------------------------------- */ --}} @media (max-width: 768px) {
             #sidebar {
                 min-width: 80px;
                 max-width: 80px;
                 text-align: center;
                 margin-left: -80px !important;
             }
+
             .dropdown-toggle::after {
                 top: auto;
                 bottom: 10px;
@@ -224,172 +231,190 @@
                 -ms-transform: translateX(50%);
                 transform: translateX(50%);
             }
+
             #sidebar.active {
                 margin-left: 0 !important;
             }
+
             #sidebar .sidebar-header h3,
             #sidebar .CTAs {
                 display: none;
             }
+
             #sidebar .sidebar-header strong {
                 display: block;
             }
+
             #sidebar ul li a {
                 padding: 20px 10px;
             }
+
             #sidebar ul li a span {
                 font-size: 0.85em;
             }
+
             #sidebar ul li a i {
                 margin-right: 0;
                 display: block;
             }
+
             #sidebar ul ul a {
                 padding: 10px !important;
             }
+
             #sidebar ul li a i {
                 font-size: 1.3em;
             }
+
             #sidebar {
                 margin-left: 0;
             }
+
             #sidebarCollapse span {
                 display: none;
             }
         }
+
     </style>
 </head>
+
 <body>
 
 
 
-<div class="wrapper">
-    <!-- Sidebar Holder -->
-    <nav id="sidebar">
-        <div class="sidebar-header">
-            <h3>AGRO System</h3>
-            <strong>AS</strong>
-        </div>
-
-        <ul class="list-unstyled components">
-            <li class="active">
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="true">
-                    <i class="glyphicon glyphicon-home"></i>
-                    Menú
-                </a>
-            </li>
-            <li>
-                <a href="/cargos" aria-expanded="true">
-                    <i class="glyphicon glyphicon-briefcase"></i>
-                    Cargos
-                </a>
-            </li>
-
-            <li>
-                <a href="/personals" aria-expanded="true">
-                    <i class="glyphicon glyphicon-user"></i>
-                    Personal
-                </a>
-            </li>
-
-            <li>
-                <a href="/proveedors" aria-expanded="true">
-                    <i class="glyphicon glyphicon-fire"></i>
-                    Proveedores
-                </a>
-            </li>
-            <li>
-                <a href="/clientes" aria-expanded="true">
-                    <i class="glyphicon glyphicon-leaf"></i>
-                    Clientes
-                </a>
-            </li>
-            <li>
-                <a href="/categorias" aria-expanded="true">
-                    <i class=" 	glyphicon glyphicon-th-large"></i>
-                    Categorias
-                </a>
-            </li>
-            <li>
-                <a href="/productos" aria-expanded="true">
-                    <i class="glyphicon glyphicon-send"></i>
-                    Productos
-                </a>
-            </li>
-            <li>
-                <a href="/compras" aria-expanded="true">
-                    <i class="glyphicon glyphicon-log-in"></i>
-                    Compras
-                </a>
-            </li>
-            <li class="active">
-                <a href="/ventas" data-toggle="collapse" aria-expanded="false">
-                    <i class="glyphicon glyphicon-log-out"></i>
-                    Ventas
-                </a>
-            </li>
-        </ul>
-    </nav>
-
-    <!-- Page Content Holder -->
-    <div id="content">
-
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-
-                <div class="navbar-header">
-                    {{-- <button type="button" id="sidebarCollapse" class="btn btn-success navbar-btn">
-                        <i class="glyphicon glyphicon-align-left"></i>
-                        <span></span>
-                    </button> --}}
-                </div>
-
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Page 1</a></li>
-                        <li><a href="#">Page 2</a></li>
-                        <li><a href="#">Page 3</a></li>
-                        <li><a href="#">Page 4</a></li>
-                    </ul>
-                </div>
+    <div class="wrapper">
+        <!-- Sidebar Holder -->
+        <nav id="sidebar">
+            <div class="sidebar-header" id="nombre">
+                <h3>AGRO System</h3>
+                <strong>AS</strong>
             </div>
+
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
+                        <i class="glyphicon glyphicon-home"></i>
+                        Menú
+                    </a>
+                </li>
+                <li>
+                    <a href="/cargos">
+                        <i class="glyphicon glyphicon-briefcase"></i>
+                        Cargos
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/personals">
+                        <i class="glyphicon glyphicon-user"></i>
+                        Personal
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/proveedors">
+                        <i class="glyphicon glyphicon-log-in"></i>
+                        Proveedores
+                    </a>
+                </li>
+                <li>
+                    <a href="/clientes">
+                        <i class="glyphicon glyphicon-user"></i>
+                        Clientes
+                    </a>
+                </li>
+                <li>
+                    <a href="/categorias">
+                        <i class="glyphicon glyphicon-tags"></i>
+                        Categorías
+                    </a>
+                </li>
+                <li>
+                    <a href="/productos">
+                        <i class="glyphicon glyphicon-qrcode"></i>
+                        Productos
+                    </a>
+                </li>
+                <li>
+                    <a href="/compras">
+                        <i class="glyphicon glyphicon-shopping-cart"></i>
+                        Compras
+                    </a>
+                </li>
+                <li>
+                    <a href="/ventas">
+                        <i class="glyphicon glyphicon-piggy-bank"></i>
+                        Ventas
+                    </a>
+                </li>
+                <li>
+                    <a href="/inventario">
+                        <i class="glyphicon glyphicon-list-alt"></i>
+                        Inventario
+                    </a>
+                </li>
+            </ul>
         </nav>
 
-        @yield('barra')
+        <!-- Page Content Holder -->
+        <div id="content">
+            <nav class="navbar navbar-default" id="barras">
+                    <div class="container-fluid">
 
-        <div class="container-fluid">
-            <!-- Begin page content -->
-            <main class="flex-shrink-0">
-                <div class="container">
-                    <br>
-                    @yield('contenido')
-                </div>
-            </main>
+                        {{-- <div class="navbar-header">
+                            <button type="button" id="sidebarCollapse" class="btn btn-success navbar-btn">
+                                <i class="glyphicon glyphicon-align-left"></i>
+                                <span></span>
+                            </button> 
+                        </div> --}}
+
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="#">Page</a></li>
+                                <li><a href="#">Page</a></li>
+                                <li><a href="#">Page</a></li>
+                                <li><a href="#">Page</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav> 
+
+
+            @yield('barra')
+
+            <div class="container-fluid">
+                <!-- Begin page content -->
+                <main class="flex-shrink-0">
+                    <div class="container">
+                        <br>
+                        @yield('contenido')
+                    </div>
+                </main>
+            </div>
         </div>
     </div>
-</div>
-</div>
+    </div>
 
 
 
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- jQuery CDN -->
-<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-<!-- Bootstrap Js CDN -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <!-- Bootstrap Js CDN -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#sidebarCollapse').on('click', function() {
+                $('#sidebar').toggleClass('active');
+            });
         });
-    });
+    </script>
 
-</script>
-
-@stack('alertas')
+    @stack('alertas')
 
 
 </body>
+
 </html>

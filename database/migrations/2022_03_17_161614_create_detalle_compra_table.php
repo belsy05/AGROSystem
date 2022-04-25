@@ -18,8 +18,13 @@ return new class extends Migration
             $table->integer('IdCompra')->nullable();
             $table->unsignedBigInteger('IdProducto');
             $table->foreign('IdProducto')->references('id')->on('productos');
+            $table->unsignedBigInteger('IdPresentacion');
+            $table->foreign('IdPresentacion')->references('id')->on('presentacions');
             $table->integer('Cantidad');
-            $table->float('Precio');
+            $table->float('Precio_compra');
+            $table->float('Precio_venta');
+            $table->date('fecha_vencimiento')->nullable();
+            $table->date('fecha_elaboración')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('detalle_compra');
+        Schema::dropIfExists('detalle_compras');
     }
 };

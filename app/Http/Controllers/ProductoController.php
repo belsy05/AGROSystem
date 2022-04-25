@@ -109,18 +109,15 @@ class ProductoController extends Controller
             'NombreDelProducto'=> [
                 'required',
                 'max:40',
-                'min:5',
                 Rule::unique('productos')->ignore($producto->id),
             ],    
             'DescripciónDelProducto'=>'required|string|max:150|min:10',
-            'PresentaciónDelProducto'=>'required|max:60'
         ]);
 
         //Formulario
         $producto->categoria_id = $request->input('Categoria');
         $producto->NombreDelProducto = $request->input('NombreDelProducto');
         $producto->DescripciónDelProducto = $request->input('DescripciónDelProducto');
-        $producto->PresentaciónDelProducto = $request->input('PresentaciónDelProducto');
         $producto->Impuesto= $request->Impuesto;
         $creado = $producto->save();
 

@@ -42,9 +42,8 @@ class ProductoController extends Controller
         //VALIDAR
         $request->validate([
             'Categoria'=>'required',
-            'NombreDelProducto'=>'required|unique:productos|string|max:40|min:5',
+            'NombreDelProducto'=>'required|unique:productos|string|max:40',
             'DescripciónDelProducto'=>'required|string|max:150|min:10',
-            'PresentaciónDelProducto'=>'required|max:30'
         ]);
 
         //Formulario

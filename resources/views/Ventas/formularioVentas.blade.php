@@ -368,6 +368,9 @@
                                 var select1 = document.getElementById("IdProducto");
                                 var valor1 = select1.value;
 
+                                document.getElementById("Precio_venta").value= 0;
+                                document.getElementById("Existencia").value= 0;
+
                                 @foreach ($precios as $p)
                                     if({{ $p->IdProducto }} == valor1 && {{ $p->IdPresentación }} == valor){
                                     document.getElementById("Precio_venta").value= '{{ $p->Precio }}';
@@ -552,6 +555,9 @@
                                 var valor = select.value;
                                 var select1 = document.getElementById("e_IdProducto");
                                 var valor1 = select1.value;
+
+                                document.getElementById("e_Precio_venta").value= 0;
+                                document.getElementById("e_Existencia").value= 0;
 
                                 @foreach ($precios as $p)
                                     if({{ $p->IdProducto }} == valor1 && {{ $p->IdPresentación }} == valor){

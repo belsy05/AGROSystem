@@ -2,8 +2,8 @@
 @section('titulo', 'Formulario De Compras')
 @section('contenido')
 
-    <h1> Registro de Compra </h1>
-    <br>
+    <h1> Registro de compra </h1>
+    <br><br>
 
     <!-- PARA LOS ERRORES -->
     @if ($errors->any())
@@ -19,24 +19,43 @@
     <form id="form_guardar" name="form_guardar" method="POST" action="{{ route('compras.guardar') }}"
         onsubmit="confirmar()">
         @csrf
-        <div class="form-group">
-            <label for="NumFactura"> Número de Factura </label>
-            <input type="text" style="width: 50%" class="form-control" name="NumFactura" id="NumFactura"
-                placeholder="Número de factura sin guiones" pattern="[0-9]{16}" required value="{{ old('NumFactura') }}">
-        </div>
-
-        <div class="row" style="width: 79%">
-            <div class="col-sm-4">
+        <div class="row" style="width: 87%">
+            <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="Proveedor"> Proveedor </label>
-            <select name="Proveedor" id="Proveedor" class="form-control" required style="width: 100%">
-                <option style="display: none;" value="">Seleccione un proveedor</option>
-                @foreach ($proveedor as $p)
-                    <option value="{{ $p->id }}">{{ $p->EmpresaProveedora }}</option>
-                @endforeach
-            </select>
+                        <label for="NumFactura"> Número de factura </label>
+                        <input type="text" style="width: 100%" class="form-control" name="NumFactura" id="NumFactura"
+                            placeholder="Número de factura sin guiones" pattern="[0-9]{16}" required maxlength="16"
+                            value="{{ old('NumFactura') }}" title="Ingrese 16 caracteres sin guiones">
                 </div>
             </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                        <label for="">Seleccione de que forma realizará la compra </label><br>
+                        <input required type="radio" id="Contado" name="PagoCompra" value="0"> Al contado <br>
+                        <input required type="radio" id="Crédito" name="PagoCompra" value="1"> A crédito
+                 </div>
+            </div>
+        </div>
+        
+        <div class="row" style="width: 79%">
+            <div class="col-sm-4">
+                 <div class="form-group">
+                    <label for="Proveedor"> Proveedor </label>
+                    <select name="Proveedor" id="Proveedor" class="form-control" required style="width: 100%">
+                        <option style="display: none;" value="">Seleccione un proveedor</option>
+                        @foreach ($proveedor as $p)
+                            <option value="{{ $p->id }}">{{ $p->EmpresaProveedora }}</option>
+                        @endforeach
+                    </select>
+                    <script>
+                        $("#Proveedor").select2();
+                    </script>
+                </div>
+            </div>
+             <?php
+            $fecha_actual = date('d-m-Y');
+            ?>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label style="width: 100%" for="FechaCompra"> Fecha de la compra </label>
@@ -45,35 +64,17 @@
                 </div>
             </div>
             
+             <div class="col-sm-4">
+                <div class="form-group">
+                    <label style="width: 100%" for=""> Fecha del pago </label>
+                    <input style="width: 100%" type="date" name="FechaPago"
+                        class="form-control {{ $errors->has('FechaPago') ? 'is-invalid' : '' }}"
+                        value="{{ old('FechaPago') }}" id="FechaPago" title="Ingrese la fecha en la que hara el pago">
+                </div>
+            </div>
+            
         </div>
-
-        <div class="row" style="width: 53%">
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label style="width: 100%" for="">Subtotal</label>
-                    <input style="width: 100%" readonly type="email" name="TotalCompra"
-                        class="form-control {{ $errors->has('TotalCompra') ? 'is-invalid' : '' }}"
-                        value="{{ $total_precio }}" id="TotalCompra" required title="Subtotal">
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label style="width: 100%" for="">Impuesto</label>
-                    <input style="width: 100%" readonly type="email" name="TotalImpuesto"
-                        class="form-control {{ $errors->has('TotalImpuesto') ? 'is-invalid' : '' }}"
-                        value="{{ round($total_impuesto, 2) }}" id="TotalImpuesto" required title="Total del impuesto" >
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label style="width: 100%" for="">Total Compra</label>
-                    <input style="width: 100%" readonly type="email" name="TotalCompraT"
-                        class="form-control {{ $errors->has('TotalCompraT') ? 'is-invalid' : '' }}"
-                        value="{{ round($total_precio + $total_impuesto, 2) }}" id="TotalCompraT" required title="Total de la Compra">       
-                </div>
-            </div>
-        </div>
-
+        
         <div class="row" style="width: 85%">
             <div class="col-sm-4">
                 <button data-toggle="modal" data-target="#agreagar_detalle" type="button" class="btn btn-success">Agregar
@@ -99,7 +100,7 @@
                             <th scope="col">Precio de compra</th>
                             <th scope="col">Precio de venta</th>
                             <th scope="col">Cantidad</th>
-                            <th scope="col">Total Producto</th>
+                            <th scope="col">Total producto</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                         </tr>
@@ -138,8 +139,36 @@
                                 <td colspan="4"> No hay detalles agregados </td>
                             </tr>
                         @endforelse
-
+                       
                     </tbody>
+                    <tfoot>
+                        <tr class="active">
+                            <td colspan="6">
+                                <div class="form-group">
+                                    <label style="width: 100%" for="">Subtotal</label>
+                                </div>
+                            </td>
+                            <td colspan="3"><input style="width: 100%" readonly type="email" name="TotalCompra"
+                                    class="form-control {{ $errors->has('TotalCompra') ? 'is-invalid' : '' }}"
+                                    value="{{ $total_precio }}" id="TotalCompra" required title="Subtotal">
+                            </td>
+                        </tr>
+                        <tr class="active">
+                            <td colspan="6"><label style="width: 100%" for="">Impuesto</label></td>
+                            <td colspan="3"><input style="width: 100%" readonly type="email" name="TotalImpuesto"
+                                    class="form-control {{ $errors->has('TotalImpuesto') ? 'is-invalid' : '' }}"
+                                    value="{{ round($total_impuesto, 2) }}" id="TotalImpuesto" required
+                                    title="Total del impuesto"></td>
+                        </tr>
+                        <tr class="active">
+                            <td colspan="6"><label style="width: 100%" for="">Total compra</label></td>
+                            <td colspan="3"><input style="width: 100%" readonly type="email" name="TotalCompraT"
+                                    class="form-control {{ $errors->has('TotalCompraT') ? 'is-invalid' : '' }}"
+                                    value="{{ round($total_precio + $total_impuesto, 2) }}" id="TotalCompraT" required
+                                    title="Total de la Compra">
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
 
             </div>
@@ -177,8 +206,11 @@
                                     <select name="IdCategoria" id="IdCategoria" style="width: 95%" class="form-control"
                                         onchange="cambio()">
                                         <option style="display: none" value="">Seleccione una categoría</option>
-                                        @foreach ($categoria as $cat)
-                                            <option value="{{ $cat->id }}">{{ $cat->NombreDeLaCategoría }}</option>
+                                         @foreach ($categoria as $cat)
+                                            <option value="{{ $cat->id }}"
+                                                @if (old("IdCategoria") == $cat->id)
+                                                    @selected(true)
+                                                @endif>{{ $cat->NombreDeLaCategoría }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -188,7 +220,15 @@
                                     <label for="recipient-name" class="col-form-label">Producto</label>
                                     <select name="IdProducto" id="IdProducto" style="width: 100%" class="form-control"
                                         onchange="impuesto()">
-                                        <option style="display: none" value="">Seleccione un producto</option>
+                                       @if (old("IdProducto"))
+                                            @foreach ($productos as $prod)
+                                                @if (old("IdProducto") == $prod->id)
+                                                    <option style="display: none" value="{{old("IdProducto")}}">{{$prod->NombreDelProducto}}</option>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            <option style="display: none" value="">Seleccione un producto</option>
+                                        @endif
                                     </select>
                                 </div>
                             </div>
@@ -260,7 +300,15 @@
                                     <label for="recipient-name" class="col-form-label">Presentación</label>
                                     <select name="IdPresentacion" id="IdPresentacion" style="width: 100%"
                                         class="form-control">
-                                        <option style="display: none" value="">Seleccione una presentación</option>
+                                        @if (old("IdPresentacion"))
+                                            @foreach ($presentacion as $pre)
+                                                @if (old("IdPresentacion") == $pre->id)
+                                                    <option style="display: none" value="{{old("IdPresentacion")}}">{{$pre->informacion}}</option>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            <option style="display: none" value="">Seleccione una presentación</option>
+                                        @endif
                                     </select>
                                 </div>
                             </div>
@@ -332,8 +380,6 @@
             </div>
         </div>
     </div>
-
-
 
 
     {{-- Modal de editar los detalles --}}

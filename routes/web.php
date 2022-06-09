@@ -313,3 +313,39 @@ Route::post('/detalle_pedidosProductoNuevoCliente/agregar', [DetallesPedidosProd
 
 Route::get('/detalle_pedidosProductoNuevoCliente/eliminar/{Detallepedido}', [DetallesPedidosProductosNuevosController::class, 'destroy'])
 ->name('detalle_pedidosClienteP.eliminar');
+
+
+/******************************* FACTURAS PROXIMAS A VENCER *******************************/
+
+Route::get('/compra', [FacturasVencerController::class, 'index'])
+->name('compra.index');
+
+Route::get('/compra/reporte', [FacturasVencerController::class, 'reporte'])
+->name('compra.reporte');
+
+
+/******************************* PRODUCTOS PROXIMOS A VENCER *******************************/
+
+Route::get('/Inventarios', [ProductosVencerController::class, 'index'])
+->name('Inventarios.index');
+
+Route::get('/Inventarios/buscar', [ProductosVencerController::class, 'index2'])
+->name('Inventarios.index2');
+
+
+/******************************* COTIZACIONES Y DETALLES DE LAS COTIZACIONES *******************************/
+
+Route::get('/cotizaciones/crear',[CotizacionController::class, 'create'])
+->name('cotizaciones.crear');
+
+Route::get('/cotizaciones/limpiar',[CotizacionController::class, 'limpiar'])
+->name('cotizaciones.limpir');
+
+Route::post('/detalle_cotizacion/agregar', [DetallesCotizacionController::class, 'agregar_detalle'])
+->name('detalle_cotizacion.crear');
+
+Route::get('/detalle_cotizacion/eliminar/{DetalleCotizacion}', [DetallesCotizacionController::class, 'destroy'])
+->name('detalle_cotizacion.eliminar');
+
+Route::post('/detalle_cotizacion/editar', [DetallesCotizacionController::class, 'agregar_detalle_edit'])
+->name('detalle_cotizacion.editar');

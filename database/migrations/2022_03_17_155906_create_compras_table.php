@@ -21,6 +21,8 @@ return new class extends Migration
             $table->date('FechaCompra');
             $table->float('TotalCompra');
             $table->float('TotalImpuesto');
+            $table->boolean('PagoCompra');
+            $table->date('FechaPago')->nullable();
             $table->timestamps();
         });
     }

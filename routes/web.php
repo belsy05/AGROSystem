@@ -13,6 +13,8 @@ use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\RangoController;
 use App\Http\Controllers\VentaController;
 use App\Models\DetalleCompra;
+use App\Http\Controllers\PedidosProductosNuevosController;
+use App\Http\Controllers\DetallesPedidosProductosNuevosController;
 use Illuminate\Support\Facades\Route;
 
 /*

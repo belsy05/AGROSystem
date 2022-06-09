@@ -290,3 +290,24 @@ Route::post('/detalle_venta/editar', [DetalleVentaController::class, 'agregar_de
 
 Route::post('/rango/agregar', [RangoController::class, 'agregar_detalle'])
     ->name('rango.crear');
+
+
+/******************************* PEDIDOS PRODUCTOS NUEVOS CLIENTES *******************************/
+
+Route::get('/pedidosProductoNuevoClientes/crear', [PedidosProductosNuevosController::class, 'create'])
+->name('pedidosClienteP.crear');
+
+Route::post('/pedidosProductoNuevo/crear', [PedidosProductosNuevosController::class, 'store'])
+->name('pedidosClienteP.guardar');
+
+Route::get('/pedidosProductoNuevoCliente/limpiar',[PedidosProductosNuevosController::class, 'limpiar'])
+->name('pedidosClienteP.limpiar');
+
+
+/******************************* DETALLE PEDIDO PRODUCTOS NUEVOS CLIENTES *******************************/
+
+Route::post('/detalle_pedidosProductoNuevoCliente/agregar', [DetallesPedidosProductosNuevosController::class, 'agregar_detalle'])
+->name('detalle_pedidosClienteP.crear');
+
+Route::get('/detalle_pedidosProductoNuevoCliente/eliminar/{Detallepedido}', [DetallesPedidosProductosNuevosController::class, 'destroy'])
+->name('detalle_pedidosClienteP.eliminar');

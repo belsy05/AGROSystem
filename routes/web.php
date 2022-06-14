@@ -305,6 +305,14 @@ Route::get('/pedidosClientes/crear', [PedidosClientesController::class, 'create'
 Route::post('/pedidos/crear', [PedidosClientesController::class, 'store'])
     ->name('pedidosCliente.guardar'); 
 
+/******************************* DETALLE PEDIDO CLIENTES *******************************/
+
+Route::post('/detalle_pedidosCliente/agregar', [DetallesPedidosClientesController::class, 'agregar_detalle'])
+->name('detalle_pedidosCliente.crear');
+
+Route::get('/detalle_pedidosCliente/eliminar/{DetalleCompra}', [DetallesPedidosClientesController::class, 'destroy'])
+->name('detalle_pedidosCliente.eliminar');
+
 /******************************* PEDIDOS PRODUCTOS NUEVOS CLIENTES *******************************/
 
 Route::get('/pedidosProductoNuevoClientes/crear', [PedidosProductosNuevosController::class, 'create'])

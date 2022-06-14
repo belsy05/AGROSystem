@@ -294,6 +294,17 @@ Route::post('/rango/agregar', [RangoController::class, 'agregar_detalle'])
     ->name('rango.crear');
 
 
+
+/******************************* PEDIDOS CLIENTES *******************************/
+Route::get('/pedidosClientes/detalle/{id}', [PedidosClientesController::class, 'show'])
+    ->name('pedidosCliente.show');
+    
+Route::get('/pedidosClientes/crear', [PedidosClientesController::class, 'create'])
+    ->name('pedidosCliente.crear');
+    
+Route::post('/pedidos/crear', [PedidosClientesController::class, 'store'])
+    ->name('pedidosCliente.guardar'); 
+
 /******************************* PEDIDOS PRODUCTOS NUEVOS CLIENTES *******************************/
 
 Route::get('/pedidosProductoNuevoClientes/crear', [PedidosProductosNuevosController::class, 'create'])

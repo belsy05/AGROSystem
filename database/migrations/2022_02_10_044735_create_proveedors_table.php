@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('EmpresaProveedora')->unique();
             $table->string('DirecciónDeLaEmpresa');
             $table->string('CorreoElectrónicoDeLaEmpresa')->unique()->nullable();
-            $table->string('TeléfonoDeLaEmpresa');
+            $table->string('TeléfonoDeLaEmpresa', 8);
             $table->string('NombresDelEncargado');
             $table->string('ApellidosDelEncargado');
-            $table->string('TeléfonoDelEncargado');
+            $table->string('TeléfonoDelEncargado', 8);
             $table->timestamps();
         });
     }

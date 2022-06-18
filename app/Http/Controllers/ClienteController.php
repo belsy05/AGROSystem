@@ -24,7 +24,7 @@ class ClienteController extends Controller
                         ->orwhere('ApellidosDelCliente', 'LIKE', '%'.$texto.'%')
                         ->orwhere('IdentidadDelCliente', 'LIKE', '%'.$texto.'%')
                         ->orwhere('LugarDeProcedencia', 'LIKE', '%'.$texto.'%')
-                        ->paginate(10);
+                        ->paginate(10)->withQueryString();
         return view('Clientes.raizcliente', compact('clientes', 'texto'));
     }
 
@@ -37,16 +37,18 @@ class ClienteController extends Controller
         return view('Clientes.formularioCliente');
     }
 
-
     //funcion para guardar los datos creados o insertados
     public function store(Request $request){
         //VALIDAR
 
         $request->validate([
-            'IdentidadDelCliente'=>'required||unique:clientes|max:13',
+            'IdentidadDelCliente'=>'required|unique:clientes|max:15',
             'NombresDelCliente'=>'required||max:30',
             'ApellidosDelCliente'=>'required|max:40',
+            'Telefono'=>'nullable|max:8|unique:clientes',
             'LugarDeProcedencia'=>'required|max:120'
+        ], [
+            'IdentidadDelCliente.require'=>'El numero de identidad debe comenzar con 0 o con 1'
         ]);
 
         $nuevoCliente = new Cliente();
@@ -74,10 +76,10 @@ class ClienteController extends Controller
         //VALIDAR
 
         $request->validate([
-            'IdentidadDelCliente'=>'required|unique:clientes|max:13',
+            'IdentidadDelCliente'=>'required|unique:clientes|max:15',
             'NombresDelCliente'=>'required||max:30',
             'ApellidosDelCliente'=>'required|max:40',
-            'Telefono'=>'nullable|max:9',
+            'Telefono'=>'nullable|max:8|unique:clientes',
             'LugarDeProcedencia'=>'required|max:120'
         ]);
 
@@ -90,7 +92,72 @@ class ClienteController extends Controller
         $creado = $nuevoCliente->save();
 
         if($creado){
-            return redirect()->route('ventas.crear')
+            return redirect()->route('ventas.crear', ['clientepedido' => $nuevoCliente->id])
+                ->with('mensaje', 'El cliente fue creado exitosamente.');
+        }else{
+            //retornar con un mensaje de error
+        }
+    }
+
+
+    public function crear3(){
+        return view('Ventas.formularioClienteDos');
+    }
+
+    //funcion para guardar los datos creados o insertados
+    public function store3(Request $request){
+        //VALIDAR
+
+        $request->validate([
+            'IdentidadDelCliente'=>'required|unique:clientes|max:15',
+            'NombresDelCliente'=>'required||max:30',
+            'ApellidosDelCliente'=>'required|max:40',
+            'Telefono'=>'nullable|max:8|unique:clientes',
+            'LugarDeProcedencia'=>'required|max:120'
+        ]);
+
+        $nuevoCliente = new Cliente();
+        $nuevoCliente->IdentidadDelCliente = $request->input('IdentidadDelCliente');
+        $nuevoCliente->NombresDelCliente = $request->input('NombresDelCliente');
+        $nuevoCliente->ApellidosDelCliente = $request->input('ApellidosDelCliente');
+        $nuevoCliente->Telefono = $request->input('Telefono');
+        $nuevoCliente->LugarDeProcedencia = $request->input('LugarDeProcedencia');
+        $creado = $nuevoCliente->save();
+
+        if($creado){
+            return redirect()->route('pedidosCliente.crear')
+                ->with('mensaje', 'El cliente fue creado exitosamente.');
+        }else{
+            //retornar con un mensaje de error
+        }
+    }
+
+    public function crear4(){
+        return view('Ventas.formularioClienteTres');
+    }
+
+    //funcion para guardar los datos creados o insertados
+    public function store4(Request $request){
+        //VALIDAR
+
+        $request->validate([
+            'IdentidadDelCliente'=>'required|unique:clientes|max:15',
+            'NombresDelCliente'=>'required||max:30',
+            'ApellidosDelCliente'=>'required|max:40',
+            'Telefono'=>'nullable|max:8|unique:clientes',
+            'LugarDeProcedencia'=>'required|max:120'
+        ]);
+
+        $nuevoCliente = new Cliente();
+        $nuevoCliente->IdentidadDelCliente = $request->input('IdentidadDelCliente');
+        $nuevoCliente->NombresDelCliente = $request->input('NombresDelCliente');
+        $nuevoCliente->ApellidosDelCliente = $request->input('ApellidosDelCliente');
+        $nuevoCliente->Telefono = $request->input('Telefono');
+        $nuevoCliente->LugarDeProcedencia = $request->input('LugarDeProcedencia');
+        $creado = $nuevoCliente->save();
+
+        if($creado){
+            return redirect()->route('pedidosClienteP.crear')
                 ->with('mensaje', 'El cliente fue creado exitosamente.');
         }else{
             //retornar con un mensaje de error
@@ -101,7 +168,6 @@ class ClienteController extends Controller
     public function edit($id){
         $cliente = Cliente::findOrFail($id);
         return view('Clientes.formularioEditarCliente')->with('cliente', $cliente);
-
     }
 
     public function update(Request $request, $id){
@@ -116,7 +182,11 @@ class ClienteController extends Controller
             ],
             'NombresDelCliente'=>'required||max:30',
             'ApellidosDelCliente'=>'required|max:40',
-            'Telefono'=>'nullable|max:9',
+            'Telefono'=>[
+                'nullable',
+                'max:9',
+                Rule::unique('clientes')->ignore($cliente->id),
+            ],
             'LugarDeProcedencia'=>'required|max:120'
         ]);
 
@@ -136,7 +206,6 @@ class ClienteController extends Controller
         }
 
     }
-
 
 
 }

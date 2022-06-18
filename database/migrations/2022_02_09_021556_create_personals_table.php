@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('cargo_id');
             $table->foreign('cargo_id')->references('id')->on('cargos');
-            $table->string('IdentidadDelEmpleado')->unique();
+            $table->string('IdentidadDelEmpleado', 15)->unique();
             $table->string('NombresDelEmpleado');
             $table->string('ApellidosDelEmpleado');
             $table->string('CorreoElectrónico')->unique();

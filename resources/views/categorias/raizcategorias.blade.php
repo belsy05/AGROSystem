@@ -12,6 +12,7 @@
                     </div>
                     <div class="col-auto my-1">
                         <input type="submit" class="btn btn-secondary" value="Buscar">
+                        <a href="{{ route('categoria.index') }}" class="btn btn-success my-8">Borrar búsqueda</a>
                     </div>
                 </div>
             </form>
@@ -25,14 +26,12 @@
             {{ session('mensaje') }}
         </div>
     @endif
-    <br>
 
-
-
-    <h1 class=""> Listado De Categorías </h1>
-    <br>
+    <br><br>
+    <h1 class=""> Listado de categorías </h1>
+    <br><br>
     <div class="d-grid gap-2 d-md-block ">
-        <a class="btn btn-success float-" href="{{route('categoria.crear')}}"> Agregar Categoría </a>
+        <a class="btn btn-success float-" href="{{route('categoria.crear')}}"> Agregar categoría </a>
         <a class="btn btn-success float-end me-md-2" href=""> Regresar </a>
     </div>
 
@@ -52,10 +51,12 @@
         <tbody>
         @forelse ($categorias as $categoria)
             <tr class="active">
-
+                
                 <td scope="col">{{ $categoria->NombreDeLaCategoría}}</td>
                 <td scope="col">{{ $categoria->DescripciónDeLaCategoría}}</td>
+
                 <td> <a class="btn btn-success" href="{{ route('categoria.edit',['id' => $categoria->id]) }}"> Editar </a></td>
+
             </tr>
         @empty
             <tr>
@@ -68,7 +69,3 @@
     {{ $categorias->links()}}
 
 @endsection
-
-
-
-

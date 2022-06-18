@@ -8,7 +8,7 @@
     @endif
     <br>
 
-    <h1 class=""> Precios Del Producto: {{$nombre}}</h1>
+    <h1 class=""> Precios del producto: {{$nombre}}</h1>
     <br>
     <br>
 

@@ -9,7 +9,7 @@
     @endif
     <br>
 
-    <h1 class=""> Precios De Venta Para El Producto: {{$nombre}}</h1>
+    <h1 class=""> Precios de venta para el producto: {{$nombre}}</h1>
     <br>
     <br>
 
@@ -39,7 +39,7 @@
 
     <br>
     <br>
-    <h1 class=""> Proximas Fechas De Vencimiento</h1>
+    <h1 class=""> Proximas fechas de vencimiento</h1>
     <br>
     <br>
 

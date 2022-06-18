@@ -21,36 +21,42 @@ class PresentacionSeeder extends Seeder
                 'categoria_id'=>1,
             ]
         );
+
         Presentacion::create(
             [
                 'informacion'=>'Litro',
                 'categoria_id'=>1,
             ]
         );
+
         Presentacion::create(
             [
                 'informacion'=>'Cuarto',
                 'categoria_id'=>1,
             ]
         );
+
         Presentacion::create(
             [
                 'informacion'=>'Bolsa',
                 'categoria_id'=>1,
             ]
         );
+
         Presentacion::create(
             [
                 'informacion'=>'10ml',
                 'categoria_id'=>2,
             ]
         );
+
         Presentacion::create(
             [
                 'informacion'=>'20ml',
                 'categoria_id'=>2,
             ]
         );
+
         Presentacion::create(
             [
                 'informacion'=>'30ml',
@@ -63,59 +69,68 @@ class PresentacionSeeder extends Seeder
                 'categoria_id'=>2,
             ]
         );
+
         Presentacion::create(
             [
                 'informacion'=>'100ml',
                 'categoria_id'=>2,
             ]
         );
+
         Presentacion::create(
             [
                 'informacion'=>'250ml',
                 'categoria_id'=>2,
             ]
         );
+
         Presentacion::create(
             [
                 'informacion'=>'Litro',
                 'categoria_id'=>2,
             ]
         );
+
         Presentacion::create(
             [
                 'informacion'=>'Quintal',
                 'categoria_id'=>3,
             ]
-        );    
+        );
+
         Presentacion::create(
             [
                 'informacion'=>'Grande',
                 'categoria_id'=>4,
             ]
-        );  
+        );
+
         Presentacion::create(
             [
                 'informacion'=>'Pequeña',
                 'categoria_id'=>4,
             ]
-        ); 
+        );
+
         Presentacion::create(
             [
                 'informacion'=>'Quintal',
                 'categoria_id'=>5,
             ]
-        );  
+        );
+
         Presentacion::create(
             [
                 'informacion'=>'Medio quintal',
                 'categoria_id'=>5,
             ]
         );
+
         Presentacion::create(
             [
                 'informacion'=>'Unidad',
                 'categoria_id'=>6,
             ]
-        );  
+        );
     }
 }

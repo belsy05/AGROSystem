@@ -15,8 +15,8 @@
 
     
     <div id="detalles">
-        <h1> Detalles de la Venta</h1>
-        <br>
+        <h1> Detalles de la venta</h1>
+        <br><br>
         <table class="table">
             <thead class="table-secondary">
                 <tr>
@@ -25,13 +25,13 @@
             </thead>
             <tbody>
                 <tr>
-                    <th scope="row"> Número de Factura </th>
+                    <th scope="row"> Número de factura </th>
                     <td scope="col">{{ $venta->NumFactura }} </td>
                 </tr>
                 <tr>
                     <th scope="row"> Cliente </th>
                     @if ($venta->cliente_id == null)
-                        <td scope="col">Consumidor Final</td>
+                        <td scope="col">Consumidor final</td>
                     @else
                         <td scope="col">{{ $venta->clientes->NombresDelCliente }}
                             {{ $venta->clientes->ApellidosDelCliente }}</td>
@@ -110,7 +110,7 @@
         </table>
 
         <a class="btn btn-primary" href="{{ route('ventas.index') }}"> Regresar </a>
-        <button type="button" class="btn btn-success" onclick="imprimir()">Imprimir Factura</button>
+        <button type="button" class="btn btn-success" onclick="imprimir()">Imprimir factura</button>
     </div>
 
     <div id="imprimir" style="display: none">
@@ -167,7 +167,7 @@
         <p style="float: left">Fecha {{ date_format($venta->created_at, 'd') }} de {{ $mes }} del
             {{ date_format($venta->created_at, 'Y') }}</p>
         @if ($venta->cliente_id == null)
-            <p style="float: right"> Consumidor Final</p>
+            <p style="float: right"> Consumidor final</p>
         @else
             <p style="float: right"> Señor (a) {{ $venta->clientes->NombresDelCliente }} 
                 {{ $venta->clientes->ApellidosDelCliente }}</p>
@@ -181,8 +181,8 @@
                     <th scope="col">N°</th>
                     <th scope="col">Producto</th>
                     <th scope="col">Cantidad</th>
-                    <th scope="col">Precio Unitario</th>
-                    <th scope="col">Total Compra (Lps.)</th>
+                    <th scope="col">Precio unitario</th>
+                    <th scope="col">Total compra (Lps.)</th>
                 </tr>
             </thead>
             <tbody>

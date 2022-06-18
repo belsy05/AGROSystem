@@ -39,7 +39,7 @@
                     </div>
                     <br>
                     <input type="submit" class="btn btn-success my-8" value="Buscar">
-                    <a href="{{ route('compras.index') }}" class="btn btn-success my-8">Borrar Búsqueda</a>
+                    <a href="{{ route('compras.index') }}" class="btn btn-success my-8">Borrar búsqueda</a>
                 </form>
             </div>
         </div>
@@ -51,29 +51,31 @@
             {{ session('mensaje') }}
         </div>
     @endif
-    <br>
 
-    <h1 class=""> Listado De Compras </h1>
-    <br>
+    <br><br>
+    <h1 class=""> Listado de compras </h1>
+    <br><br>
     <div class="d-grid gap-2 d-md-block ">
-        <a class="btn btn-success float-" href="{{ route('compras.crear') }}"> Agregar Compra </a>
-        <a class="btn btn-success float-" href="{{ route('compras.pdf', ['anio1' => $fechadesde, 'anio2' => 
-        $fechahasta, 'proveeforR' => $id]) }}"> Imprimir Reporte </a>
+        <a class="btn btn-success float" href="{{ route('compras.crear') }}"> Agregar compra </a>
+        <a class="btn btn-success float" href="{{route('pedidosProveedor.index')}}"> Lista de pedidos</a>
+        <a class="btn btn-success float" href="{{ route('compras.pdf', ['anio1' => $fechadesde, 'anio2' =>
+        $fechahasta, 'proveeforR' => $id]) }}"> Imprimir reporte </a>
+        <a href="{{route('compra.index')}}" class="btn btn-success">Facturas próximas a vencer</a>
         <a href="{{route('inventario.index')}}" class="btn btn-success">Regresar</a>
     </div>
 
     <br>
-
+    <div class="table-responsive">
     <table class="table table-bordered border-dark mt-3">
         <thead class="table table-striped table-hover">
             <tr class="success">
                 <th scope="col">N°</th>
-                <th scope="col">Número de Factura</th>
+                <th scope="col">Número de factura</th>
                 <th scope="col">Proveedor</th>
                 <th scope="col">Fecha</th>
                 <th scope="col">Subtotal (Lps.)</th>
                 <th scope="col">Impuesto (Lps.)</th>
-                <th scope="col">Total Compra (Lps.)</th>
+                <th scope="col">Total compra (Lps.)</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -90,7 +92,7 @@
 
                     <td>
                         <a class="btn btn-success" href="{{ route('compras.mostrar', ['id' => $compra->id]) }}">
-                            Ver Detalles
+                            Ver detalles
                         </a>
                     </td>
 
@@ -103,6 +105,7 @@
 
         </tbody>
     </table>
+    </div>
     {{ $compras->links() }}
 
 @endsection

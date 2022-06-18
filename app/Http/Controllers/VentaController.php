@@ -27,17 +27,20 @@ class VentaController extends Controller
         $fechahasta = 0;
         $clientes = Cliente::all();
         $personal = Personal::all();
+
         $ventas = Venta::paginate(10);
         foreach ($ventas as $key => $value) {
             if ($value->cliente_id != null) {
                 $value->clientes = Cliente::findOrFail($value->cliente_id);
             }
+            
         }
 
-        return view('Ventas.raizVentas', compact('clientes', 'ventas', 'personal', 'fechadesde', 'fechahasta', 'clien', 'empleado'));
+        return view('Ventas.raizVentas', compact('clientes', 'ventas', 'personal', 'fechadesde', 'fechahasta', 
+        'clien', 'empleado'));
     }
-    
-     public function reporte(Request $request)
+
+    public function reporte(Request $request)
     {
         $clientes = Cliente::all();
         $personal = Personal::all();
@@ -53,18 +56,18 @@ class VentaController extends Controller
             $ventas = Venta::select('ventas.*')
                 ->whereBetween('personal_id', [$empleado, $empleado])
                 ->where('cliente_id', '=', $clien)
-                ->paginate(15);
+                ->paginate(15)->withQueryString();
         } else {
             if ($fechadesde != '' && $clien == 0 && $empleado == 0) {
                 $ventas = Venta::select('ventas.*')
                     ->whereBetween('FechaVenta', [$fechadesde, $fechahasta])
-                    ->paginate(15);
+                    ->paginate(15)->withQueryString();
             } else {
                 if ($fechadesde != '' && $clien == 0 && $empleado != 0) {
                     $ventas = Venta::select('ventas.*')
                         ->whereBetween('FechaVenta', [$fechadesde, $fechahasta])
                         ->where('personal_id', '=', $empleado)
-                        ->paginate(15);
+                        ->paginate(15)->withQueryString();
                 } else {
                     if ($fechadesde != '' && $clien != 0 && $empleado == 0) {
                         if ($clien == 'a') {
@@ -74,7 +77,7 @@ class VentaController extends Controller
                         $ventas = Venta::select('ventas.*')
                             ->whereBetween('FechaVenta', [$fechadesde, $fechahasta])
                             ->where('cliente_id', '=', $clien)
-                            ->paginate(15);
+                            ->paginate(15)->withQueryString();
                     } else {
                         if ($fechadesde == '' && $clien != 0 && $empleado == 0) {
                             if ($clien == 'a') {
@@ -83,12 +86,12 @@ class VentaController extends Controller
 
                             $ventas = Venta::select('ventas.*')
                                 ->where('cliente_id', '=', $clien)
-                                ->paginate(15);
+                                ->paginate(15)->withQueryString();
                         } else {
                             if ($fechadesde == '' && $clien == 0 && $empleado != 0) {
                                 $ventas = Venta::select('ventas.*')
                                     ->where('personal_id', '=', $empleado)
-                                    ->paginate(15);
+                                    ->paginate(15)->withQueryString();
                             } else {
                                 if ($clien == 'a') {
                                     $clien = null;
@@ -98,7 +101,7 @@ class VentaController extends Controller
                                     ->whereBetween('FechaVenta', [$fechadesde, $fechahasta])
                                     ->where('personal_id', '=', $empleado)
                                     ->where('cliente_id', '=', $clien)
-                                    ->paginate(15);
+                                    ->paginate(15)->withQueryString();
                             }
                         }
                     }
@@ -124,7 +127,7 @@ class VentaController extends Controller
 
         return view('Ventas.raizVentas', compact('clientes', 'personal', 'ventas', 'fechadesde', 'fechahasta', 'clien', 'empleado'));
     }
-    
+
     public function pdf($fechadesde, $fechahasta, $cliente, $empleado)
     {
 
@@ -167,19 +170,22 @@ class VentaController extends Controller
                                 $ventas = Venta::select('ventas.*')
                                     ->whereBetween('personal_id', [$empleado, $empleado])
                                     ->paginate(15);
-                            } else {
+                            } elseif($fechadesde == 0 && $cliente == 0 && $empleado == 0) {
+                                $ventas = Venta::select('ventas.*')
+                                    ->paginate(15);
+                            }else {
                                 if ($cliente == '*') {
                                     $cliente = null;
                                 }
-                                
+
                                 $ventas = Venta::select('ventas.*')
                                     ->whereBetween('FechaVenta', [$fechadesde, $fechahasta])
                                     ->where('personal_id', '=', $empleado)
                                     ->where('cliente_id', '=', $cliente)
                                     ->paginate(15);
                             }
-                        
-                    
+
+
 
 
         foreach ($ventas as $key => $value) {
@@ -187,7 +193,7 @@ class VentaController extends Controller
                 $value->clientes = Cliente::findOrFail($value->cliente_id);
             }
         }
-        
+
         $c = Cliente::where('id', $cliente)->first();
         $e = Personal::where('id', $empleado)->first();
 
@@ -214,12 +220,16 @@ class VentaController extends Controller
         return $pdf->stream();
         //return $pdf->download('__compras.pdf');
     }
-   
-    public function create()
+
+
+
+    public function create($clientepedido)
     {
+        
         $total_cantidad = 0;
         $total_precio = 0;
         $total_impuesto = 0;
+        $c = $clientepedido;
         $now = now();
 
         $fac = DB::table('rangos')->where('FechaLimite', '>=', $now->format('Y-m-d'))->exists();
@@ -248,7 +258,7 @@ class VentaController extends Controller
             $total_precio += ($value->Cantidad * $value->Precio_venta);
             $produc = Producto::findorFail($value->IdProducto);
             if ($produc->Impuesto == 0.15) {
-                $total_impuesto += ($value->Cantidad * $value->Precio_venta) - (($value->Cantidad * $value->Precio_venta) / 1.15);
+                $total_impuesto += ($value->Cantidad * $value->Precio_venta) * 0.15;
             }
         }
 
@@ -271,7 +281,8 @@ class VentaController extends Controller
             ->with('total_impuesto', $total_impuesto)
             ->with('inventarios', $inventarios)
             ->with('numfactura', $numfactura)
-            ->with('precios', $precios);
+            ->with('precios', $precios)
+            ->with('client', $c);
     }
 
 
@@ -286,6 +297,7 @@ class VentaController extends Controller
 
         $request->validate([
             'NumFactura' => 'required|unique:ventas|numeric|min:1|max:' . ($max),
+            'NumFactura' => 'required|unique:ventas|numeric|min:1|max:' . ($max),
             'FechaVenta' => 'required|date|before:tomorrow|after:yesterday',
             'TotalVenta' => 'numeric|min:10.00',
         ], [
@@ -295,7 +307,7 @@ class VentaController extends Controller
             'FechaVenta.after' => 'El campo fecha de venta debe de ser hoy',
             'TotalVenta.min' => 'Ingrese detalles para esta venta',
         ]);
-
+        
 
         $venta = new Venta();
 
@@ -321,7 +333,8 @@ class VentaController extends Controller
         }
         return redirect()->route('ventas.mostrar', ['id' => $venta->id]);
     }
-    public function limpiar()
+
+    public function limpiar($cliente)
     {
         $detalles =  DetalleVenta::where('IdVenta', 0)->get();
         foreach ($detalles as $key => $value) {
@@ -335,8 +348,16 @@ class VentaController extends Controller
             DB::delete('delete from detalle_ventas where id = ?', [$value->id]);
         }
 
-        return redirect()->route('ventas.crear');
+        return redirect()->route('ventas.crear', ['clientepedido' => $cliente]);
     }
 
-   
+    public function show($id)
+    {
+        $venta = Venta::findOrFail($id);
+        $detalles =  DetalleVenta::where('IdVenta', $venta->id)->get();
+
+        return view('Ventas.verVenta')->with('venta', $venta)
+            ->with('detalles', $detalles);
+    }
+
 }

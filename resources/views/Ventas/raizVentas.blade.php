@@ -27,7 +27,7 @@
                                 @else
                                     <option style="display: none" value="0">--Seleccione--</option>
                                 @endif
-                                <option value="a">Consumidor Final</option>
+                                <option value="a">Consumidor final</option>
                                 @foreach ($clientes as $cliente)
                                     <option value="{{ $cliente['id'] }}">{{ $cliente['NombresDelCliente'] }} {{ $cliente['ApellidosDelCliente'] }}</option>
                                 @endforeach
@@ -66,76 +66,146 @@
                     </div>
                     <br>
                     <input type="submit" class="btn btn-success my-8" value="Buscar">
-                    <a href="{{ route('ventas.index') }}" class="btn btn-success my-8">Borrar Búsqueda</a>
+                    <a href="{{ route('ventas.index') }}" class="btn btn-success my-8">Borrar búsqueda</a>
                 </form>
             </div>
         </div>
     </div>
+
 @endsection
 @section('contenido')
+
+<style>
+    .tabla2 {
+           display: none;
+       }
+    @media (max-width: 868px) {
+       
+       /* ///////////////////////////////// */
+
+       .tabla2 {
+           display: block;
+           width: 100%;
+           height: 5%;
+           padding: 5px;
+           min-height: 5vh;
+           transition: all 0.3s;
+       }
+
+       .tabla1 {
+           display: none;
+       }
+   } 
+   
+</style> 
     @if (session('mensaje'))
         <div class="alert alert-success">
             {{ session('mensaje') }}
         </div>
     @endif
-    <br>
-
-    <h1 class=""> Listado De Ventas </h1>
-    <br>
+    <br><br>
+    <h1 class=""> Listado de ventas </h1>
+    <br><br>
     <div class="d-grid gap-2 d-md-block ">
-        <a class="btn btn-success float-" href="{{ route('ventas.crear') }}"> Agregar Venta </a>
-        <a class="btn btn-success float-" href="{{ route('ventas.pdf', ['anio1' => $fechadesde, 
-        'anio2' => $fechahasta, 'empleados' => $empleado, 'clientes' => $clien]) }}"> Imprimir Reporte </a>
-        <a href="#" class="btn btn-success">Regresar</a>
+        <a class="btn btn-success float" href="{{ route('ventas.crear', ['clientepedido' => 0]) }}"> Agregar venta </a>
+        <a class="btn btn-success float" href="{{ route('pedidosCliente.index') }}"> Lista de pedidos </a>
+        <a class="btn btn-success float" href="{{ route('ventas.pdf', ['anio1' => $fechadesde, 
+        'anio2' => $fechahasta, 'empleados' => $empleado, 'clientes' => $clien]) }}"> Imprimir reporte </a>
+        <a class="btn btn-success float" href="{{ route('cotizaciones.crear') }}"> Realizar una cotización </a>
     </div>
 
     <br>
-
-    <table class="table table-bordered border-dark mt-3">
-        <thead class="table table-striped table-hover">
-            <tr class="success">
-                <th scope="col">N°</th>
-                <th scope="col">Número de Factura</th>
-                <th scope="col">Empleado</th>
-                <th scope="col">Cliente</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Subtotal (Lps.)</th>
-                <th scope="col">Impuesto (Lps.)</th>
-                <th scope="col">Total Venta (Lps.)</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($ventas as $compra)
-                <tr class="active">
-                    <th scope="row">{{ $compra->id }}</th>
-                    <td scope="col">{{ $compra->NumFactura }}</td>
-                    <td scope="col">{{ $compra->personals->NombresDelEmpleado }} {{ $compra->personals->ApellidosDelEmpleado }}</td>
-                    @if ($compra->cliente_id == null)
-                        <td scope="col">Consumidor Final</td>
-                    @else
-                        <td scope="col">{{ $compra->clientes->NombresDelCliente }} {{ $compra->clientes->ApellidosDelCliente }}</td>
-                    @endif
-                    <td scope="col">{{\Carbon\Carbon::parse($compra->FechaVenta)->locale("es")->isoFormat("DD MMMM, YYYY")}}</td>
-                    <td scope="col">{{ $compra->TotalVenta }}</td>
-                    <td scope="col">{{ $compra->TotalImpuesto }}</td>
-                    <td scope="col">{{ $compra->TotalVenta + $compra->TotalImpuesto}}</td>                    
-
-                    <td>
-                        <a class="btn btn-success" href="{{ route('ventas.mostrar', ['id' => $compra->id]) }}">
-                            Ver Detalles
-                        </a>
-                    </td>
-
+    <div class="tabla1">
+        <table class="table table-bordered border-dark mt-3">
+            <thead class="table table-striped table-hover">
+                <tr class="success">
+                    <th scope="col">N°</th>
+                    <th scope="col">Número de factura</th>
+                    <th scope="col">Empleado</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Subtotal (Lps.)</th>
+                    <th scope="col">Impuesto (Lps.)</th>
+                    <th scope="col">Total venta (Lps.)</th>
+                    <th scope="col"></th>
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="4"> No hay ventas </td>
+            </thead>
+            <tbody>
+                @forelse ($ventas as $compra)
+                    <tr class="active">
+                        <th scope="row">{{ $compra->id }}</th>
+                        <td scope="col">{{ $compra->NumFactura }}</td>
+                        <td scope="col">{{ $compra->personals->NombresDelEmpleado }} {{ $compra->personals->ApellidosDelEmpleado }}</td>
+                        @if ($compra->cliente_id == null)
+                            <td scope="col">Consumidor final</td>
+                        @else
+                            <td scope="col">{{ $compra->clientes->NombresDelCliente }} {{ $compra->clientes->ApellidosDelCliente }}</td>
+                        @endif
+                        <td scope="col">{{\Carbon\Carbon::parse($compra->FechaVenta)->locale("es")->isoFormat("DD MMMM, YYYY")}}</td>
+                        <td scope="col">{{ $compra->TotalVenta }}</td>
+                        <td scope="col">{{ $compra->TotalImpuesto }}</td>
+                        <td scope="col">{{ $compra->TotalVenta + $compra->TotalImpuesto}}</td>                    
+
+                        <td>
+                            <a class="btn btn-success" href="{{ route('ventas.mostrar', ['id' => $compra->id]) }}">
+                                Ver <br> detalles
+                            </a>
+                        </td>
+
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4"> No hay ventas </td>
+                    </tr>
+                @endforelse
+
+            </tbody>
+        </table>
+        {{ $ventas->links() }}
+    </div>
+
+    <div class="tabla2">
+        <table class="table table-bordered border-dark mt-3">
+            <thead class="table table-striped table-hover">
+                <tr class="success">
+                    <th scope="col">N°</th>
+                    <th scope="col">Número de Factura</th>
+                    <th scope="col">Empleado</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Total Venta (Lps.)</th>
+                    <th scope="col"></th>
                 </tr>
-            @endforelse
+            </thead>
+            <tbody>
+                @forelse ($ventas as $compra)
+                    <tr class="active">
+                        <th scope="row">{{ $compra->id }}</th>
+                        <td scope="col">{{ $compra->NumFactura }}</td>
+                        <td scope="col">{{ $compra->personals->NombresDelEmpleado }} {{ $compra->personals->ApellidosDelEmpleado }}</td>
+                        @if ($compra->cliente_id == null)
+                            <td scope="col">Consumidor Final</td>
+                        @else
+                            <td scope="col">{{ $compra->clientes->NombresDelCliente }} {{ $compra->clientes->ApellidosDelCliente }}</td>
+                        @endif
+                        <td scope="col">{{\Carbon\Carbon::parse($compra->FechaVenta)->locale("es")->isoFormat("DD MMMM, YYYY")}}</td>
+                        <td scope="col">{{ $compra->TotalVenta + $compra->TotalImpuesto}}</td>                    
 
-        </tbody>
-    </table>
-    {{ $ventas->links() }}
+                        <td>
+                            <a class="btn btn-success" href="{{ route('ventas.mostrar', ['id' => $compra->id]) }}">
+                                Ver <br> Detalles
+                            </a>
+                        </td>
 
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4"> No hay ventas </td>
+                    </tr>
+                @endforelse
+
+            </tbody>
+        </table>
+        {{ $ventas->links() }}
+    </div>
 @endsection

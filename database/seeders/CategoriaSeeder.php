@@ -23,15 +23,16 @@ class CategoriaSeeder extends Seeder
                 'elaboracion'=>0
             ]
         );
+
         Categoria::create(
             [
                 'NombreDeLaCategoría'=>'Medicina para Animales',
                 'DescripciónDeLaCategoría'=>'Sección de productos orientados a prevenir y cuidar de la salud de los animales',
                 'vencimiento'=>0,
                 'elaboracion'=>0
-
             ]
         );
+
         Categoria::create(
             [
                 'NombreDeLaCategoría'=>'Fertilizante',
@@ -40,6 +41,7 @@ class CategoriaSeeder extends Seeder
                 'elaboracion'=>1
             ]
         );
+
         Categoria::create(
             [
                 'NombreDeLaCategoría'=>'Herramienta',
@@ -48,6 +50,7 @@ class CategoriaSeeder extends Seeder
                 'elaboracion'=>1
             ]
         );
+
         Categoria::create(
             [
                 'NombreDeLaCategoría'=>'Alimentos',
@@ -56,6 +59,7 @@ class CategoriaSeeder extends Seeder
                 'elaboracion'=>0
             ]
         );
+
         Categoria::create(
             [
                 'NombreDeLaCategoría'=>'Repuestos',

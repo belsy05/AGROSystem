@@ -32,7 +32,7 @@ class RangoController extends Controller
         $rango->FechaLimite = $request->input('fecha_limite');
         $rango->save();
 
-        return redirect()->route('ventas.crear');
+        return redirect()->route('ventas.crear', ['clientepedido' => $request->r_Idcliente]);
     }
 
 }

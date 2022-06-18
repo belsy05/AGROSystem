@@ -13,6 +13,7 @@
                     </div>
                     <div class="col-auto my-1">
                         <input type="submit" class="btn btn-secondary" value="Buscar">
+                        <a href="{{ route('inventario.index') }}" class="btn btn-success my-8">Borrar búsqueda</a>
                     </div>
                 </div>
             </form>
@@ -26,14 +27,13 @@
             {{ session('mensaje') }}
         </div>
     @endif
-    <br>
-
+    
+    <br><br>
     <h1 class=""> Inventario </h1>
-    <br>
+    <br><br>
     <div class="d-grid gap-2 d-md-block ">
-
+        <a href="{{route('Inventarios.index')}}" class="btn btn-success">Productos próximos por agotar</a>
         <a class="btn btn-success float-" href="#"> Regresar </a>
-        <a class="btn btn-success float-" href="{{route('compras.index')}}"> Ir a compras </a>
 
     </div>
 
@@ -48,7 +48,7 @@
                 <th scope="col">Producto</th>
                 <th scope="col">Presentación</th>
                 <th scope="col">Existencia</th>
-                <th scope="col">Precio Promedio</th>
+                <th scope="col">Precio promedio</th>
                 <th scope="col">Costo total</th>
                 <th scope="col"></th>
             </tr>
@@ -56,16 +56,38 @@
         <tbody>
         @forelse ($inventarios as $i => $inventario)
             <tr class="active">
-                <th scope="row">{{ ($i+1) }}</th>
-                <td scope="col">{{ $inventario->categoria->NombreDeLaCategoría }}</td>
-                <td scope="col">{{ $inventario->producto->NombreDelProducto}}</td>
-                <td scope="col">{{ $inventario->presentacion->informacion }}</td>
-                <td scope="col">{{ $inventario->Existencia }}</td>
-                <td scope="col">{{ $inventario->CostoPromedio}}</td>
-                <td scope="col">{{ $inventario->Existencia * $inventario->CostoPromedio}}</td>
+                @if (($inventario->categoria->NombreDeLaCategoría == 'Herramienta' || $inventario->categoria->NombreDeLaCategoría == 'Repuestos' ||
+                $inventario->categoria->NombreDeLaCategoría == 'Medicina para Animales') && $inventario->Existencia <= 3)
+                    <th class='text-danger' scope="row">{{ ($i+1) }}</th>
+                    <th class='text-danger' scope="col">{{ $inventario->categoria->NombreDeLaCategoría }}</th>
+                    <th class='text-danger' scope="col">{{ $inventario->producto->NombreDelProducto}}</th>
+                    <th class='text-danger' scope="col">{{ $inventario->presentacion->informacion }}</th>
+                    <th class='text-danger' scope="col">{{ $inventario->Existencia }}</th>
+                    <th class='text-danger' scope="col">{{ $inventario->CostoPromedio}}</th>
+                    <th class='text-danger' scope="col">{{ $inventario->Existencia * $inventario->CostoPromedio}}</th>
+                @else 
+                    @if(($inventario->categoria->NombreDeLaCategoría != 'Herramienta' && $inventario->categoria->NombreDeLaCategoría != 'Repuestos' &&
+                    $inventario->categoria->NombreDeLaCategoría != 'Medicina para Animales') && $inventario->Existencia <= 10)
+                        <th class='text-danger' scope="row">{{ ($i+1) }}</th>
+                        <th class='text-danger' scope="col">{{ $inventario->categoria->NombreDeLaCategoría }}</th>
+                        <th class='text-danger' scope="col">{{ $inventario->producto->NombreDelProducto}}</th>
+                        <th class='text-danger' scope="col">{{ $inventario->presentacion->informacion }}</th>
+                        <th class='text-danger' scope="col">{{ $inventario->Existencia }}</th>
+                        <th class='text-danger' scope="col">{{ $inventario->CostoPromedio}}</th>
+                        <th class='text-danger' scope="col">{{ $inventario->Existencia * $inventario->CostoPromedio}}</th>
+                    @else 
+                        <th scope="row">{{ ($i+1) }}</th>
+                        <td scope="col">{{ $inventario->categoria->NombreDeLaCategoría }}</td>
+                        <td scope="col">{{ $inventario->producto->NombreDelProducto}}</td>
+                        <td scope="col">{{ $inventario->presentacion->informacion }}</td>
+                        <td scope="col">{{ $inventario->Existencia }}</td>
+                        <td scope="col">{{ $inventario->CostoPromedio}}</td>
+                        <td scope="col">{{ $inventario->Existencia * $inventario->CostoPromedio}}</td>
+                   @endif
+                @endif
                 <td scope="col">
-                    <a href="{{route('inventario.precio', ['id'=>$inventario->IdProducto, 'presentacion'=>$inventario->IdPresentacion])}}" class="btn btn-success">Historial de Precios</a>
-                    <a href="{{route('inventario.detalle', ['id'=>$inventario->IdProducto, 'presentacion'=>$inventario->IdPresentacion])}}" class="btn btn-success">Más Detalles</a>
+                    <a href="{{route('inventario.precio', ['id'=>$inventario->IdProducto, 'presentacion'=>$inventario->IdPresentacion])}}" class="btn btn-success">Historial de <br>Precios</a>
+                    <a href="{{route('inventario.detalle', ['id'=>$inventario->IdProducto, 'presentacion'=>$inventario->IdPresentacion])}}" class="btn btn-success">Más detalles</a>
                 </td>
 
 
@@ -82,4 +104,3 @@
     {{ $inventarios->links()}}
 
 @endsection
-

@@ -2,9 +2,9 @@
 @section('titulo', 'Producto')
 @section('contenido')
 
-<h1> Detalles de: {{$producto->NombreDelProducto}}
+<h1> Detalles del producto {{$producto->NombreDelProducto}}
 </h1>
-<br>
+<br><br>
 <table class="table">
     <thead class="table-secondary">
         <tr>

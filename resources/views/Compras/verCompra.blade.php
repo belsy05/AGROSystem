@@ -4,7 +4,7 @@
 
 <h1> Detalles de la Compra
 </h1>
-<br>
+<br><br>
 <table class="table">
     <thead class="table-secondary">
         <tr>
@@ -13,7 +13,7 @@
     </thead>
     <tbody>
         <tr>
-            <th scope="row"> Número de Factura </th>
+            <th scope="row"> Número de factura </th>
             <td scope="col">{{ $compra->NumFactura}} </td>
         </tr>
         <tr>
@@ -23,6 +23,26 @@
         <tr>
             <th scope="row">Fecha de compra</th>
             <td scope="col">{{\Carbon\Carbon::parse($compra->FechaCompra)->locale("es")->isoFormat("DD MMMM, YYYY")}} </td>
+        </tr>
+        <tr>
+            <th scope="row">Tipo de pago</th>
+            <td scope="col">
+                @if ($compra->PagoCompra)
+                    Al crédito
+                @else
+                    Al contado
+                @endif    
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">Fecha de pago</th>
+            <td scope="col">
+                @if ($compra->FechaPago != null)
+                    {{\Carbon\Carbon::parse($compra->FechaPago)->locale("es")->isoFormat("DD MMMM, YYYY")}} 
+                @else
+                    --
+                @endif
+            </td>
         </tr>
 
     </tbody>
@@ -34,8 +54,8 @@
             <th scope="col">N°</th>
             <th scope="col">Producto</th>
             <th scope="col">Cantidad</th>
-            <th scope="col">Precio Unitario</th>
-            <th scope="col">Total Compra</th>
+            <th scope="col">Precio unitario</th>
+            <th scope="col">Total compra</th>
         </tr>
     </thead>
     <tbody>
@@ -61,13 +81,27 @@
         </tr>
     @endforelse
 
-        <tr >
-            <th scope="row"></th>
-            <th scope="col">Total</th>
-            <th scope="col">{{ $totalC }}</th>
-            <td scope="col"></td>
-            <th scope="col">{{ $totalP }}</th>
-        </tr>
+    <tr>
+        <th scope="row"></th>
+        <th scope="col">Subtotal</th>
+        <th scope="col">{{ $totalC }}</th>
+        <td scope="col"></td>
+        <th scope="col">{{ $totalP }}</th>
+    </tr>
+    <tr>
+        <th scope="row"></th>
+        <th scope="row" >Impuesto</th>
+        <th scope="row"></th>
+        <th scope="row"></th>
+        <th scope="row">{{ $compra->TotalImpuesto }} </th>
+    </tr>
+    <tr>
+        <th scope="row"></th>
+        <th scope="row" >Total</th>
+        <th scope="row"></th>
+        <th scope="row"></th>
+        <th scope="row" >{{ $compra->TotalImpuesto +  $totalP}} </th>
+    </tr>
     </tbody>
 </table>
 

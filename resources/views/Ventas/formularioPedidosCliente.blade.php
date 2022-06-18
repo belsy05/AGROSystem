@@ -17,7 +17,6 @@
     @endif
 
 
-
     <form id="form_guardar" name="form_guardar" method="POST" action="{{ route('pedidosCliente.guardar') }}"
         onsubmit="confirmar()">
         @csrf
@@ -27,7 +26,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="Cliente"> Cliente </label>
-                    <select name="Cliente" id="Cliente" class="form-control" data-live-search="true" required
+                    <select name="Cliente" id="Cliente" class="select222" data-live-search="true" required
                         style="width: 100%">
                         <option style="display: none;" value="">Seleccione un cliente</option>
                         @foreach ($cliente as $c)
@@ -37,18 +36,9 @@
                             </option>
                         @endforeach
                     </select>
-                    <script>
-                        /* $(document).ready(function() {                                                                                                                                                                             }); */
-                        $("#Cliente").select2({
-                            width: '100%',
-                            // theme: "classic",
-                            size: '100%',
-                            dropdownAutoWidth: false,
-                        });
-                    </script>
                 </div>
             </div>
-            <input type="text" name="TotalCantidad" id="TotalCantidad" value="{{$total_cantidad }}" hidden>
+            <input type="text" name="TotalCantidad" id="TotalCantidad" value="{{ $total_cantidad }}" hidden>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label style="width: 100%" for="FechaPedidoCliente"> Fecha del pedido </label>
@@ -104,13 +94,14 @@
                                         class="btn btn-danger">Eliminar</a>
                                 </td>
                                 <td>
-                                    <button onclick="editar_detalle(  {{ $de->producto->id }},
-                                                                                                            {{ $de->producto->categoria_id }},
-                                                                                                            {{ $de->IdPresentacion }},
-                                                                                                           '{{ $de->Cantidad }}',
-                                                                                                           {{ $de->id }})"
-                                                data-toggle="modal" data-target="#editar_detalle" type="button"
-                                                class="btn btn-success">Editar</button>
+                                    <button
+                                        onclick="editar_detalle(  {{ $de->producto->id }},
+                                                                                                                {{ $de->producto->categoria_id }},
+                                                                                                                {{ $de->IdPresentacion }},
+                                                                                                               '{{ $de->Cantidad }}',
+                                                                                                               {{ $de->id }})"
+                                        data-toggle="modal" data-target="#editar_detalle" type="button"
+                                        class="btn btn-success">Editar</button>
                                 </td>
                             </tr>
                         @empty
@@ -160,7 +151,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Categoría</label>
                                     <select name="IdCategoria" id="IdCategoria" style="width: 95%" class="form-control"
-                                        onchange="cambio()">
+                                        onchange="cambio()" required>
                                         <option style="display: none" value="">Seleccione una categoría</option>
                                         @foreach ($categoria as $cat)
                                             <option value="{{ $cat->id }}"
@@ -174,7 +165,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Producto</label>
                                     <select name="IdProducto" id="IdProducto" style="width: 100%" class="form-control"
-                                        onchange="impuesto()">
+                                        onchange="impuesto()" required>
                                         @if (old('IdProducto'))
                                             @foreach ($productos as $prod)
                                                 @if (old('IdProducto') == $prod->id)
@@ -244,7 +235,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Presentación</label>
                                     <select name="IdPresentacion" id="IdPresentacion" style="width: 100%"
-                                        class="form-control" onchange="precio()">
+                                        class="form-control" onchange="precio()" required>
                                         @if (old('IdPresentacion'))
                                             @foreach ($presentacion as $pre)
                                                 @if (old('IdPresentacion') == $pre->id)
@@ -285,6 +276,7 @@
                                 @foreach ($inventarios as $i)
                                     if ({{ $i->IdProducto }} == valor1 && {{ $i->IdPresentacion }} == valor) {
                                         document.getElementById("Existencia").value = '{{ $i->Existencia }}';
+                                        document.getElementById("Cantidad").max = '{{$i->Existencia}}';
 
                                     }
                                 @endforeach
@@ -297,10 +289,11 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label style="width: 100%" for="">Cantidad</label>
-                                    <input style="width: 100%" type="text" name="Cantidad"
+                                    <input style="width: 100%" type="number" name="Cantidad"
                                         class="form-control {{ $errors->has('Cantidad') ? 'is-invalid' : '' }}"
-                                        value="{{ old('Cantidad', 0) }}" id="Cantidad" required
-                                        title="Ingrese cantidad de la compra en números." maxlength="4" pattern="[0-9]+">
+                                        value="{{ old('Cantidad') }}" id="Cantidad" required placeholder="0"
+                                        title="Ingrese cantidad de la compra en números." maxlength="4" pattern="[0-9]+"
+                                        min="1">
                                 </div>
                             </div>
                         </div>
@@ -318,155 +311,159 @@
     </div>
 
     {{-- Modal de editar los detalles --}}
-<div class="modal fade" id="editar_detalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form action="{{ route('detalle_pedidosCliente.editar') }}" method="POST">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Agregar detalles</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-
-                    <div class="row" style="width: 100%">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Categoría</label>
-                                <select name="IdCategoria" id="e_IdCategoria" style="width: 95%" class="form-control"
-                                    onchange="e_cambio()">
-                                    <option style="display: none" value="">Seleccione una categoría</option>
-                                    @foreach ($categoria as $cat)
-                                        <option value="{{ $cat->id }}">{{ $cat->NombreDeLaCategoría }}</option>
-                                    @endforeach
-                                </select>
-
-                             <input type="text" name="IdDetalle" id="e_IdDetalle" hidden> 
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Producto</label>
-                                <select name="IdProducto" id="e_IdProducto" style="width: 100%" class="form-control">
-                                    <option style="display: none" value="">Seleccione un producto</option>
-                                </select>
-                            </div>
-                        </div>
+    <div class="modal fade" id="editar_detalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="{{ route('detalle_pedidosCliente.editar') }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar detalles</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
 
-                    <script>
-                        function e_cambio() {
-                            $("#e_IdProducto").find('option').not(':first').remove();
-                            $("#e_IdPresentacion").find('option').not(':first').remove();
-                            var select = document.getElementById("e_IdCategoria");
-                            var valor = select.value;
-                            var selectnw = document.getElementById("e_IdProducto");
-                            var selectpw = document.getElementById("e_IdPresentacion");
+                    <div class="modal-body">
 
-                            @foreach ($productos as $p)
-                                if ({{ $p->categoria_id }} == valor) {
+                        <div class="row" style="width: 100%">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Categoría</label>
+                                    <select name="IdCategoria" id="e_IdCategoria" style="width: 95%" class="form-control"
+                                        onchange="e_cambio()" required>
+                                        <option style="display: none" value="">Seleccione una categoría</option>
+                                        @foreach ($categoria as $cat)
+                                            <option value="{{ $cat->id }}">{{ $cat->NombreDeLaCategoría }}</option>
+                                        @endforeach
+                                    </select>
 
-                                    // creando la nueva option
-                                    var opt = document.createElement('option');
-
-                                    // Añadiendo texto al elemento (opt)
-                                    opt.innerHTML = "{{ $p->NombreDelProducto }}";
-
-                                    //Añadiendo un valor al elemento (opt)
-                                    opt.value = "{{ $p->id }}";
-
-                                    // Añadiendo opt al final del selector (sel)
-                                    selectnw.appendChild(opt);
-
-                                }
-                            @endforeach
-
-                            @foreach ($presentacion as $p)
-                                if ({{ $p->categoria_id }} == valor) {
-
-                                    // creando la nueva option
-                                    var opt = document.createElement('option');
-
-                                    // Añadiendo texto al elemento (opt)
-                                    opt.innerHTML = "{{ $p->informacion }}";
-
-                                    //Añadiendo un valor al elemento (opt)
-                                    opt.value = "{{ $p->id }}";
-
-                                    // Añadiendo opt al final del selector (sel)
-                                    selectpw.appendChild(opt);
-
-                                }
-                            @endforeach
-
-                        }
-                    </script>
-
-                    <div class="row" style="width: 100%">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Presentación</label>
-                                <select name="IdPresentacion" id="e_IdPresentacion" style="width: 100%"
-                                    class="form-control" onchange="e_precio()">
-                                    <option style="display: none" value="">Seleccione una presentación</option>
-                                </select>
+                                    <input type="text" name="IdDetalle" id="e_IdDetalle" hidden>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Producto</label>
+                                    <select name="IdProducto" id="e_IdProducto" style="width: 100%" class="form-control"
+                                        required>
+                                        <option style="display: none" value="">Seleccione un producto</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label style="width: 100%" for="">Existencia</label>
-                                <input style="width: 100%" type="text" name="Existencia" class="form-control"
-                                    value="0" id="e_Existencia" disabled>
+                        <script>
+                            function e_cambio() {
+                                $("#e_IdProducto").find('option').not(':first').remove();
+                                $("#e_IdPresentacion").find('option').not(':first').remove();
+                                var select = document.getElementById("e_IdCategoria");
+                                var valor = select.value;
+                                var selectnw = document.getElementById("e_IdProducto");
+                                var selectpw = document.getElementById("e_IdPresentacion");
+
+                                @foreach ($productos as $p)
+                                    if ({{ $p->categoria_id }} == valor) {
+
+                                        // creando la nueva option
+                                        var opt = document.createElement('option');
+
+                                        // Añadiendo texto al elemento (opt)
+                                        opt.innerHTML = "{{ $p->NombreDelProducto }}";
+
+                                        //Añadiendo un valor al elemento (opt)
+                                        opt.value = "{{ $p->id }}";
+
+                                        // Añadiendo opt al final del selector (sel)
+                                        selectnw.appendChild(opt);
+
+                                    }
+                                @endforeach
+
+                                @foreach ($presentacion as $p)
+                                    if ({{ $p->categoria_id }} == valor) {
+
+                                        // creando la nueva option
+                                        var opt = document.createElement('option');
+
+                                        // Añadiendo texto al elemento (opt)
+                                        opt.innerHTML = "{{ $p->informacion }}";
+
+                                        //Añadiendo un valor al elemento (opt)
+                                        opt.value = "{{ $p->id }}";
+
+                                        // Añadiendo opt al final del selector (sel)
+                                        selectpw.appendChild(opt);
+
+                                    }
+                                @endforeach
+
+                            }
+                        </script>
+
+                        <div class="row" style="width: 100%">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Presentación</label>
+                                    <select name="IdPresentacion" id="e_IdPresentacion" style="width: 100%"
+                                        class="form-control" onchange="e_precio()" required>
+                                        <option style="display: none" value="">Seleccione una presentación</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label style="width: 100%" for="">Existencia</label>
+                                    <input style="width: 100%" type="text" name="Existencia" class="form-control"
+                                        value="0" id="e_Existencia" disabled>
+                                </div>
                             </div>
                         </div>
+
+                        <script>
+                            function e_precio() {
+                                var select = document.getElementById("e_IdPresentacion");
+                                var valor = select.value;
+                                var select1 = document.getElementById("e_IdProducto");
+                                var valor1 = select1.value;
+                                document.getElementById("e_Existencia").value = 0;
+
+
+                                @foreach ($inventarios as $i)
+                                    if ({{ $i->IdProducto }} == valor1 && {{ $i->IdPresentacion }} == valor) {
+                                        document.getElementById("e_Existencia").value = '{{ $i->Existencia }}';
+                                        document.getElementById("e_Cantidad").max = '{{$i->Existencia}}';
+
+                                    }
+                                @endforeach
+
+                            }
+                        </script>
+
+                        <div class="row" style="width: 100%">
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label style="width: 100%" for="">Cantidad</label>
+                                    <input style="width: 100%" type="number" name="Cantidad"
+                                        class="form-control {{ $errors->has('Cantidad') ? 'is-invalid' : '' }}"
+                                        value="{{ old('Cantidad') }}" id="e_Cantidad" required placeholder="0" min="1"
+                                        title="Ingrese cantidad de la compra en números." maxlength="4"
+                                        pattern="[0-9]+">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
                     </div>
 
-                    <script>
-                        function e_precio() {
-                            var select = document.getElementById("e_IdPresentacion");
-                            var valor = select.value;
-                            var select1 = document.getElementById("e_IdProducto");
-                            var valor1 = select1.value;
-                            document.getElementById("e_Existencia").value = 0;
-
-                    
-                            @foreach ($inventarios as $i)
-                                if ({{ $i->IdProducto }} == valor1 && {{ $i->IdPresentacion }} == valor) {
-                                    document.getElementById("e_Existencia").value = '{{ $i->Existencia }}';
-
-                                }
-                            @endforeach
-
-                        }
-                    </script>
-
-                    <div class="row" style="width: 100%">
-
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label style="width: 100%" for="">Cantidad</label>
-                                <input style="width: 100%" type="text" name="Cantidad"
-                                    class="form-control {{ $errors->has('Cantidad') ? 'is-invalid' : '' }}"
-                                    value="{{ old('Cantidad', 0) }}" id="e_Cantidad" required
-                                    title="Ingrese cantidad de la compra en números." maxlength="4" pattern="[0-9]+">
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                </div>
-
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 
 @endsection
@@ -476,7 +473,21 @@
 @section('js')
     @push('alertas')
         <script>
-             function editar_detalle(IdProducto, categoria_id, IdPresentacion, Cantidad, id) {
+            $(document).ready(function() {
+                // $(".select222").select2({
+                //     width: 'resolve' // need to override the changed default
+                // });
+
+                new TomSelect(".select222", {
+                    create: false,
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    }
+                });
+            });
+
+            function editar_detalle(IdProducto, categoria_id, IdPresentacion, Cantidad, id) {
                 $('#e_IdCategoria').val(categoria_id);
                 e_cambio();
                 $('#e_IdProducto').val(IdProducto);

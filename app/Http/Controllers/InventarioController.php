@@ -41,7 +41,7 @@ class InventarioController extends Controller
                     ->orwhereRaw('(SELECT NombreDeLaCategoría
                                     FROM categorias  JOIN productos ON categorias.id = productos.categoria_id
                                     WHERE productos.id = inventarios.IdProducto ) LIKE "%'.$texto.'%"')
-                    ->paginate(10);
+                    ->paginate(10)->withQueryString();
 
         foreach ($inventarios as $key => $value) {
             $value->producto = Producto::findOrFail($value->IdProducto);

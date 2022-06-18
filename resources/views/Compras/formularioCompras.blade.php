@@ -33,53 +33,56 @@
                 <div class="form-group">
                         <label for="">Seleccione de que forma realizará la compra </label><br>
                         <input required type="radio" id="Contado" name="PagoCompra" value="0"> Al contado <br>
-                        <input required type="radio" id="Crédito" name="PagoCompra" value="1"> A crédito
+                        <input required type="radio" id="Crédito" name="PagoCompra" value="1" onchange="fp()"> A crédito
                  </div>
             </div>
         </div>
-        
-        <div class="row" style="width: 79%">
+        <script>
+            function fp(){
+                document.getElementById("FechaPago").required = true;
+            }
+        </script>
+
+        <div class="row" style="width: 87%">
             <div class="col-sm-4">
-                 <div class="form-group">
+                <div class="form-group">
                     <label for="Proveedor"> Proveedor </label>
-                    <select name="Proveedor" id="Proveedor" class="form-control" required style="width: 100%">
+                    <select name="Proveedor" id="Proveedor" class="select222" required style="width: 100%">
                         <option style="display: none;" value="">Seleccione un proveedor</option>
                         @foreach ($proveedor as $p)
                             <option value="{{ $p->id }}">{{ $p->EmpresaProveedora }}</option>
                         @endforeach
                     </select>
-                    <script>
-                        $("#Proveedor").select2();
-                    </script>
+
                 </div>
             </div>
-             <?php
+            <?php
             $fecha_actual = date('d-m-Y');
             ?>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label style="width: 100%" for="FechaCompra"> Fecha de la compra </label>
                     <input style="width: 100%" type="date" class="form-control" name="FechaCompra" id="FechaCompra"
-                        required maxlength="40">
+                        required maxlength="40" min="<?php echo date('Y-m-d', strtotime($fecha_actual . '- 1 month')); ?>" max="<?php echo date('Y-m-d', strtotime($fecha_actual)); ?>">
                 </div>
             </div>
-            
-             <div class="col-sm-4">
+
+            <div class="col-sm-4">
                 <div class="form-group">
                     <label style="width: 100%" for=""> Fecha del pago </label>
                     <input style="width: 100%" type="date" name="FechaPago"
                         class="form-control {{ $errors->has('FechaPago') ? 'is-invalid' : '' }}"
-                        value="{{ old('FechaPago') }}" id="FechaPago" title="Ingrese la fecha en la que hara el pago">
+                        value="{{ old('FechaPago') }}" id="FechaPago" title="Ingrese la fecha en la que hara el pago" min="<?php echo date('Y-m-d', strtotime($fecha_actual . '+ 1 day')); ?>">
                 </div>
             </div>
-            
+
         </div>
-        
-        <div class="row" style="width: 85%">
-            <div class="col-sm-4">
+
+        <div class="row" style="width: 100%">
+            <div class="col-sm-6">
                 <button data-toggle="modal" data-target="#agreagar_detalle" type="button" class="btn btn-success">Agregar
                     Detalles</button>
-                <a class="btn btn-success float-" href="{{ route('proveedor.crear2') }}"> Ir a Proveedores </a>
+                <a class="btn btn-success float-" href="{{ route('proveedor.crear2') }}"> Ir a proveedores </a>
             </div>
             <div class="col-sm-4">
             </div>
@@ -88,7 +91,7 @@
         </div>
         <br>
 
-        <div class="row" style="width: 87%">
+        <div class="row" style="width: 100%">
             <div class="col-sm-16">
 
                 <table class="table table-bordered border-dark mt-3">
@@ -112,7 +115,7 @@
                                 <td scope="col">
                                     {{ $de->producto->NombreDelProducto . ', ' . $de->producto->DescripciónDelProducto }}
                                 </td>
-                                <td scope="col">{{ $de->presentacion->informacion }}</td>                                
+                                <td scope="col">{{ $de->presentacion->informacion }}</td>
                                 <td scope="col">{{ $de->Precio_compra }}</td>
                                 <td scope="col">{{ $de->Precio_venta }}</td>
                                 <td scope="col">{{ $de->Cantidad }}</td>
@@ -123,14 +126,14 @@
                                 </td>
                                 <td>
                                     <button onclick="editar_detalle(  {{ $de->producto->id }},
-                                                                {{ $de->producto->categoria_id }},
-                                                                {{ $de->IdPresentacion }},
-                                                                '{{ $de->fecha_vencimiento }}',
-                                                               '{{ $de->fecha_elaboración }}',
-                                                               '{{ $de->Cantidad }}',
-                                                               '{{ $de->Precio_venta }}',
-                                                               '{{ $de->Precio_compra }}',
-                                                               {{ $de->id }})" data-toggle="modal"
+                                                                                {{ $de->producto->categoria_id }},
+                                                                                {{ $de->IdPresentacion }},
+                                                                                '{{ $de->fecha_vencimiento }}',
+                                                                               '{{ $de->fecha_elaboración }}',
+                                                                               '{{ $de->Cantidad }}',
+                                                                               '{{ $de->Precio_venta }}',
+                                                                               '{{ $de->Precio_compra }}',
+                                                                               {{ $de->id }})" data-toggle="modal"
                                         data-target="#editar_detalle" type="button" class="btn btn-success">Editar</button>
                                 </td>
                             </tr>
@@ -139,7 +142,7 @@
                                 <td colspan="4"> No hay detalles agregados </td>
                             </tr>
                         @endforelse
-                       
+
                     </tbody>
                     <tfoot>
                         <tr class="active">
@@ -192,7 +195,7 @@
                 <form action="{{ route('detalle_compra.crear') }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Agregar Detalles</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar detalles</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -204,9 +207,9 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Categoría</label>
                                     <select name="IdCategoria" id="IdCategoria" style="width: 95%" class="form-control"
-                                        onchange="cambio()">
+                                        onchange="cambio()" required>
                                         <option style="display: none" value="">Seleccione una categoría</option>
-                                         @foreach ($categoria as $cat)
+                                        @foreach ($categoria as $cat)
                                             <option value="{{ $cat->id }}"
                                                 @if (old("IdCategoria") == $cat->id)
                                                     @selected(true)
@@ -219,8 +222,8 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Producto</label>
                                     <select name="IdProducto" id="IdProducto" style="width: 100%" class="form-control"
-                                        onchange="impuesto()">
-                                       @if (old("IdProducto"))
+                                        onchange="impuesto()" required>
+                                        @if (old("IdProducto"))
                                             @foreach ($productos as $prod)
                                                 @if (old("IdProducto") == $prod->id)
                                                     <option style="display: none" value="{{old("IdProducto")}}">{{$prod->NombreDelProducto}}</option>
@@ -278,6 +281,11 @@
                                 
                                     }
                                 @endforeach
+                                
+                                if (valor != 3 && valor != 4 && valor != 6) {
+                                    document.getElementById("fecha_elaboración").required = true;
+                                    document.getElementById("fecha").required = true;
+                                }
 
                             }
 
@@ -299,7 +307,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Presentación</label>
                                     <select name="IdPresentacion" id="IdPresentacion" style="width: 100%"
-                                        class="form-control">
+                                        class="form-control" required>
                                         @if (old("IdPresentacion"))
                                             @foreach ($presentacion as $pre)
                                                 @if (old("IdPresentacion") == $pre->id)
@@ -315,22 +323,30 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label style="width: 100%" for="">Precio de compra</label>
-                                    <input style="width: 100%" type="text" name="Precio_compra"
+                                    <input style="width: 100%" type="number" name="Precio_compra"
                                         class="form-control {{ $errors->has('Precio_compra') ? 'is-invalid' : '' }}"
-                                        value="{{ old('Precio_compra', 0) }}" id="Precio_compra" required
-                                        title="Ingrese el Precio de Compra">
+                                        value="{{ old('Precio_compra') }}" id="Precio_compra" required
+                                        title="Ingrese el precio de compra en números sin decimales." pattern="[0-9]+" maxlength="4" placeholder="0.00" min="1" max="9998" onchange="pv()">
                                 </div>
                             </div>
                         </div>
+                        <script>
+                            function pv() {
+                                var select = document.getElementById("Precio_compra");
+                                var valor = Number(select.value);
+                                document.getElementById("Precio_venta").min= 1+valor;
+
+                            }
+                        </script>
 
                         <div class="row" style="width: 100%">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label style="width: 100%" for="">Precio de venta</label>
-                                    <input style="width: 100%" type="text" name="Precio_venta"
+                                    <input style="width: 100%" type="number" name="Precio_venta"
                                         class="form-control {{ $errors->has('Precio_venta') ? 'is-invalid' : '' }}"
-                                        value="{{ old('Precio_venta', 0) }}" id="Precio_venta" required
-                                        title="Ingrese el Precio de venta">
+                                        value="{{ old('Precio_venta') }}" id="Precio_venta" required
+                                        title="Ingrese el precio de venta en números sin decimales." pattern="[0-9]+" maxlength="4" placeholder="0.00" min="" max="9999">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -338,19 +354,19 @@
                                     <label style="width: 100%" for="">Cantidad</label>
                                     <input style="width: 100%" type="number" name="Cantidad"
                                         class="form-control {{ $errors->has('Cantidad') ? 'is-invalid' : '' }}"
-                                        value="{{ old('Cantidad', 0) }}" id="Cantidad" required
-                                        title="Ingrese cantidad de la compra">
+                                        value="{{ old('Cantidad') }}" id="Cantidad" required
+                                        title="Ingrese cantidad de la compra en números." maxlength="4" pattern="[0-9]+" placeholder="0" min="1" max="9999">
                                 </div>
                             </div>
                         </div>
-
                         <div class="row" style="width: 100%">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label style="width: 100%" for="">Fecha de elaboración</label>
                                     <input style="width: 100%" type="date" name="fecha_elaboración"
                                         class="form-control {{ $errors->has('fecha') ? 'is-invalid' : '' }}"
-                                        id="fecha_elaboración" title="Ingrese la fecha de elaboración">
+                                        id="fecha_elaboración" title="Ingrese la fecha de elaboración" value="{{old('fecha_elaboración')}}"
+                                        min="<?php echo date('Y-m-d', strtotime($fecha_actual . '- 2 year')); ?>" max="<?php echo date('Y-m-d', strtotime($fecha_actual. '- 1 day')); ?>">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -358,14 +374,14 @@
                                     <label style="width: 100%" for="">Fecha de vencimiento</label>
                                     <input style="width: 100%" type="date" name="fecha"
                                         class="form-control {{ $errors->has('fecha') ? 'is-invalid' : '' }}"
-                                        value="{{ old('fecha', 0) }}" id="fecha" title="Ingrese la fecha de vencimiento">
+                                        value="{{ old('fecha', 0) }}" id="fecha" title="Ingrese la fecha de vencimiento" min="<?php echo date('Y-m-d', strtotime($fecha_actual . '+ 1 day')); ?>">
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <input class="form-control" id="calimp" style="width: 95%;text-align: center;color: black"
-                                type="text" value="" disabled>
+                            <input class="form-control" id="calimp" name="calimp" style="width: 95%;text-align: center;color: black"
+                                type="text" value="{{old("calimp", " ")}}" readonly>
                         </div>
 
                     </div>
@@ -373,13 +389,15 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         <a class="btn btn-info" href="{{ route('categoria.crear2') }}">Ir a categorías</a>
                         <a class="btn btn-info" href="{{ route('producto.crear2') }}">Ir a productos </a>
-                        <button type="submit" class="btn btn-primary">Agregar a la Compra</button>
+                        <button type="submit" class="btn btn-primary">Agregar a la compra</button>
                     </div>
 
                 </form>
             </div>
         </div>
     </div>
+
+
 
 
     {{-- Modal de editar los detalles --}}
@@ -390,7 +408,7 @@
                 <form action="{{ route('detalle_compra.editar') }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Agregar Detalles</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar detalles</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -403,7 +421,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Categoría</label>
                                     <select name="IdCategoria" id="e_IdCategoria" style="width: 95%" class="form-control"
-                                        onchange="e_cambio()">
+                                        onchange="e_cambio()" required>
                                         <option style="display: none" value="">Seleccione una categoría</option>
                                         @foreach ($categoria as $cat)
                                             <option value="{{ $cat->id }}">{{ $cat->NombreDeLaCategoría }}</option>
@@ -417,7 +435,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Producto</label>
                                     <select name="IdProducto" id="e_IdProducto" style="width: 100%" class="form-control"
-                                        onchange="e_impuesto()">
+                                        onchange="e_impuesto()" required>
                                         <option style="display: none" value="">Seleccione un producto</option>
                                     </select>
                                 </div>
@@ -469,6 +487,11 @@
                                     }
                                 @endforeach
 
+                                if (valor != 3 && valor != 4 && valor != 6) {
+                                    document.getElementById("e_fecha_elaboración").required = true;
+                                    document.getElementById("e_fecha").required = true;
+                                }
+
                             }
 
                             function e_impuesto() {
@@ -489,7 +512,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Presentación</label>
                                     <select name="IdPresentacion" id="e_IdPresentacion" style="width: 100%"
-                                        class="form-control">
+                                        class="form-control" required>
                                         <option style="display: none" value="">Seleccione una presentación</option>
                                     </select>
                                 </div>
@@ -499,11 +522,20 @@
                                     <label style="width: 100%" for="">Precio de compra</label>
                                     <input style="width: 100%" type="number" name="Precio_compra"
                                         class="form-control {{ $errors->has('Precio_compra') ? 'is-invalid' : '' }}"
-                                        value="{{ old('Precio_compra', 0) }}" id="e_Precio_compra" required
-                                        title="Ingrese el Precio de Compra">
+                                        value="{{ old('Precio_compra') }}" id="e_Precio_compra" required onchange="e_pv()"
+                                        title="Ingrese el precio de compra en números sin decimales." maxlength="4" pattern="[0-9]+" placeholder="0.00" min="1" max="9999">
                                 </div>
                             </div>
                         </div>
+
+                        <script>
+                            function e_pv() {
+                                var select = document.getElementById("e_Precio_compra");
+                                var valor = Number(select.value);
+                                document.getElementById("e_Precio_venta").min= 1+valor;
+
+                            }
+                        </script>
 
                         <div class="row" style="width: 100%">
                             <div class="col-sm-6">
@@ -511,8 +543,8 @@
                                     <label style="width: 100%" for="">Precio de venta</label>
                                     <input style="width: 100%" type="number" name="Precio_venta"
                                         class="form-control {{ $errors->has('Precio_venta') ? 'is-invalid' : '' }}"
-                                        value="{{ old('Precio_venta', 0) }}" id="e_Precio_venta" required
-                                        title="Ingrese el Precio de venta">
+                                        value="{{ old('Precio_venta') }}" id="e_Precio_venta" required
+                                        title="Ingrese el Precio de venta en números." maxlength="4" pattern="[0-9]+" placeholder="0.00" max="9999">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -520,8 +552,8 @@
                                     <label style="width: 100%" for="">Cantidad</label>
                                     <input style="width: 100%" type="number" name="Cantidad"
                                         class="form-control {{ $errors->has('Cantidad') ? 'is-invalid' : '' }}"
-                                        value="{{ old('Cantidad', 0) }}" id="e_Cantidad" required
-                                        title="Ingrese cantidad de la compra">
+                                        value="{{ old('Cantidad') }}" id="e_Cantidad" required
+                                        title="Ingrese cantidad de la compra en números." maxlength="4" pattern="[0-9]+" placeholder="0" min="1">
                                 </div>
                             </div>
                         </div>
@@ -532,7 +564,8 @@
                                     <label style="width: 100%" for="">Fecha de elaboración</label>
                                     <input style="width: 100%" type="date" name="fecha_elaboración"
                                         class="form-control {{ $errors->has('fecha') ? 'is-invalid' : '' }}"
-                                        id="e_fecha_elaboración" title="Ingrese la fecha de elaboración">
+                                        id="e_fecha_elaboración" title="Ingrese la fecha de elaboración"
+                                        min="<?php echo date('Y-m-d', strtotime($fecha_actual . '- 2 years')); ?>" max="<?php echo date('Y-m-d', strtotime($fecha_actual . '- 1 day')); ?>">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -570,6 +603,20 @@
 @section('js')
     @push('alertas')
         <script>
+            $(document).ready(function() {
+                // $(".select222").select2({
+                //     width: 'resolve' // need to override the changed default
+                // });
+
+                new TomSelect(".select222",{
+                    create: false,
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    }
+                });
+            });
+
             function editar_detalle(IdProducto, categoria_id, IdPresentacion, fecha, fecha_elaboración, Cantidad, Precio_venta,
                 Precio_compra, id) {
                 $('#e_IdCategoria').val(categoria_id);

@@ -16,13 +16,19 @@
         </div>
     @endif
 
-
+    <form id="form_guardar" name="form_guardar" method="POST" action="{{ route('cotizaciones.guardar') }}"
+    onsubmit="confirmar()">
+    @csrf
         <div class="row" style="width: 100%">
             <div class="col-sm-12">
                 <button data-toggle="modal" data-target="#agreagar_detalle" type="button" class="btn btn-success">Agregar
                     detalles</button>
                 <a class="btn btn-danger" href="#" onclick="limpiarVenta()">Limpiar</a>
                 <a class="btn btn-info" href="{{ route('ventas.index') }}">Cerrar</a>
+                <input type="submit" class="btn btn-primary" value="Guardar">
+
+            </div>
+            <div class="col-sm-4">
             </div>
             <div class="col-sm-4">
             </div>
@@ -118,7 +124,7 @@
 
 
         </div>
-
+    </form>
 
     {{-- Modal de agregar detalle --}}
     <div class="modal fade" id="agreagar_detalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -140,7 +146,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Categoría</label>
                                     <select name="IdCategoria" id="IdCategoria" style="width: 95%" class="form-control"
-                                        onchange="cambio()">
+                                        onchange="cambio()" required>
                                         <option style="display: none" value="">Seleccione una categoría</option>
                                         @foreach ($categoria as $cat)
                                             <option value="{{ $cat->id }}"
@@ -154,7 +160,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Producto</label>
                                     <select name="IdProducto" id="IdProducto" style="width: 100%" class="form-control"
-                                        onchange="impuesto()">
+                                        onchange="impuesto()" required>
                                         @if (old('IdProducto'))
                                             @foreach ($productos as $prod)
                                                 @if (old('IdProducto') == $prod->id)
@@ -235,7 +241,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Presentación</label>
                                     <select name="IdPresentacion" id="IdPresentacion" style="width: 100%"
-                                        class="form-control" onchange="precio()">
+                                        class="form-control" onchange="precio()" required>
                                         @if (old('IdPresentacion'))
                                             @foreach ($presentacion as $pre)
                                                 @if (old('IdPresentacion') == $pre->id)
@@ -282,6 +288,7 @@
                                 @foreach ($inventarios as $i)
                                     if ({{ $i->IdProducto }} == valor1 && {{ $i->IdPresentacion }} == valor) {
                                         document.getElementById("Existencia").value = '{{ $i->Existencia }}';
+                                        document.getElementById("Cantidad").max = '{{ $i->Existencia }}';
 
                                     }
                                 @endforeach
@@ -302,10 +309,10 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label style="width: 100%" for="">Cantidad</label>
-                                    <input style="width: 100%" type="text" name="Cantidad"
+                                    <input style="width: 100%" type="number" name="Cantidad"
                                         class="form-control {{ $errors->has('Cantidad') ? 'is-invalid' : '' }}"
-                                        value="{{ old('Cantidad', 0) }}" id="Cantidad" required
-                                        title="Ingrese cantidad de la compra en números." maxlength="4" pattern="[0-9]+">
+                                        value="{{ old('Cantidad') }}" id="Cantidad" required placeholder="0"
+                                        title="Ingrese cantidad de la compra en números." maxlength="4" pattern="[0-9]+" min="1">
                                 </div>
                             </div>
                         </div>
@@ -319,7 +326,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Agregar a la Venta</button>
+                        <button type="submit" class="btn btn-primary">Agregar a la cotización</button>
                     </div>
 
                 </form>
@@ -349,7 +356,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Categoría</label>
                                     <select name="IdCategoria" id="e_IdCategoria" style="width: 95%" class="form-control"
-                                        onchange="e_cambio()">
+                                        onchange="e_cambio()" required>
                                         <option style="display: none" value="">Seleccione una categoría</option>
                                         @foreach ($categoria as $cat)
                                             <option value="{{ $cat->id }}">{{ $cat->NombreDeLaCategoría }}</option>
@@ -363,7 +370,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Producto</label>
                                     <select name="IdProducto" id="e_IdProducto" style="width: 100%" class="form-control"
-                                        onchange="e_impuesto()">
+                                        onchange="e_impuesto()" required>
                                         <option style="display: none" value="">Seleccione un producto</option>
                                     </select>
                                 </div>
@@ -436,7 +443,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Presentación</label>
                                     <select name="IdPresentacion" id="e_IdPresentacion" style="width: 100%"
-                                        class="form-control" onchange="e_precio()">
+                                        class="form-control" onchange="e_precio()" required>
                                         <option style="display: none" value="">Seleccione una presentación</option>
                                     </select>
                                 </div>
@@ -470,6 +477,7 @@
                                 @foreach ($inventarios as $i)
                                     if ({{ $i->IdProducto }} == valor1 && {{ $i->IdPresentacion }} == valor) {
                                         document.getElementById("e_Existencia").value = '{{ $i->Existencia }}';
+                                        document.getElementById("e_Cantidad").max = '{{ $i->Existencia }}';
 
                                     }
                                 @endforeach
@@ -489,10 +497,10 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label style="width: 100%" for="">Cantidad</label>
-                                    <input style="width: 100%" type="text" name="Cantidad"
+                                    <input style="width: 100%" type="number" name="Cantidad"
                                         class="form-control {{ $errors->has('Cantidad') ? 'is-invalid' : '' }}"
-                                        value="{{ old('Cantidad', 0) }}" id="e_Cantidad" required
-                                        title="Ingrese cantidad de la compra en números." maxlength="4" pattern="[0-9]+">
+                                        value="{{ old('Cantidad') }}" id="e_Cantidad" required placeholder="0"
+                                        title="Ingrese cantidad de la compra en números." maxlength="4" pattern="[0-9]+" min="1">
                                 </div>
                             </div>
                         </div>

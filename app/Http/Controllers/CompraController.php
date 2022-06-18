@@ -10,6 +10,8 @@ use App\Models\Proveedor;
 use App\Models\Categoria;
 use App\Models\Precio;
 use App\Models\Presentacion;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,8 +20,8 @@ class CompraController extends Controller
     public function index()
     {
         $id = 0;
-        $fechadesde = now();
-        $fechahasta = now();
+        $fechadesde = 0;
+        $fechahasta = 0;
         $proveedores = Proveedor::all();
         $compras = Compra::paginate(10);
 
@@ -35,23 +37,44 @@ class CompraController extends Controller
 
 
         if ($id == 0) {
-            $request->validate([
-                'FechaDesde' => '',
-                'FechaHasta' => 'after_or_equal:FechaDesde',
-            ]);
+            if ($fechadesde == '' && $fechahasta == '') {
+                $request->validate([
+                    
+                ]);
+                $rules = [
+                    'id' => 'required|numeric|min:1',
+                    'FechaDesde' => 'required',
+                    'FechaHasta' => 'required',
+                ];
+        
+                $mensaje = [
+                    'id.min' => 'Seleccione un proveedor o',
+                    'FechaDesde.required' => 'ingrese una fecha de inicio y',
+                    'FechaHasta.required' => 'una fecha de fin',
+                ];
+                $this->validate($request, $rules, $mensaje);
 
-            $compras = DB::table('compras')
-                ->select('compras.*')
-                ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
-                ->whereBetween('FechaCompra', [$fechadesde, $fechahasta])
-                ->paginate(15);
+                $fechadesde = 0;
+                $fechahasta = 0;
+            } else {
+                $request->validate([
+                    'FechaDesde' => '',
+                    'FechaHasta' => 'after_or_equal:FechaDesde',
+                ]);
+    
+                $compras = DB::table('compras')
+                    ->select('compras.*')
+                    ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
+                    ->whereBetween('FechaCompra', [$fechadesde, $fechahasta])
+                    ->paginate(15)->withQueryString();
+            }
         } else {
             if ($fechadesde == '') {
                 $compras = DB::table('compras')
                     ->select('compras.*')
                     ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
                     ->where('compras.proveedor_id', '=', $id)
-                    ->paginate(15);
+                    ->paginate(15)->withQueryString();
 
                 $fechadesde = 0;
                 $fechahasta = 0;
@@ -61,7 +84,7 @@ class CompraController extends Controller
                     ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
                     ->whereBetween('FechaCompra', [$fechadesde, $fechahasta])
                     ->where('compras.proveedor_id', '=', $id)
-                    ->paginate(15);
+                    ->paginate(15)->withQueryString();
             }
         }
 
@@ -71,11 +94,13 @@ class CompraController extends Controller
 
         return view('Compras.raizCompras', compact('proveedores', 'compras', 'id', 'fechadesde', 'fechahasta'));
     }
+
     public function create($proveedors=0)
     {
         $total_cantidad = 0;
         $total_precio = 0;
         $total_impuesto = 0;
+
         $detalles =  DetalleCompra::where('IdCompra', 0)->get();
         foreach ($detalles  as $key => $value) {
             $total_cantidad += $value->Cantidad;
@@ -104,24 +129,36 @@ class CompraController extends Controller
             ->with('total_impuesto', $total_impuesto);
     }
 
-
-    public function store(Request $request)
-    {
-
-        $request->validate([
-            'FechaCompra' => 'required|date|before:tomorrow',
-            'TotalCompra' => 'numeric|min:10.00',
-        ], [
-            'FechaCompra.before' => 'El campo fecha de compra debe de ser anterior al dia de mañana',
-            'TotalCompra.min' => 'Ingrese detalles para esta compra',
-        ]);
+    public function store(Request $request) {
 
 
-        $compra = new Compra();
+        if ($request->PagoCompra == 0){
+            $request->validate([
+                'FechaCompra' => 'required|date|before:tomorrow',
+                'TotalCompra' => 'numeric|min:10.00',
+            ], [
+                'FechaCompra.before' => 'El campo fecha de compra debe de ser anterior al dia de mañana',
+                'TotalCompra.min' => 'Ingrese detalles para esta compra',
+            ]);
+        }else{
+            $request->validate([
+                'FechaCompra' => 'required|date|before:tomorrow',
+                'FechaPago' => 'required|date|after:today',
+                'TotalCompra' => 'numeric|min:10.00',
+            ], [
+                'FechaCompra.before' => 'El campo fecha de compra debe de ser anterior al dia de mañana',
+                'FechaPago.after' => 'El campo fecha de pago debe de ser después de hoy',
+                'TotalCompra.min' => 'Ingrese detalles para esta compra',
+            ]);    
+        }
+
+              $compra = new Compra();
 
         $compra->NumFactura = $request->input('NumFactura');
         $compra->proveedor_id = $request->input('Proveedor');
         $compra->FechaCompra = $request->input('FechaCompra');
+        $compra->FechaPago = $request->input('FechaPago');
+        $compra->PagoCompra = $request->input('PagoCompra');
         $compra->TotalCompra = $request->input('TotalCompra');
         $compra->TotalImpuesto = $request->input('TotalImpuesto');
         $compra->save();
@@ -138,7 +175,7 @@ class CompraController extends Controller
 
             $total_cantidad += $de->Cantidad;
 
-           $existe = DB::table('inventarios')->where('IdProducto', '=', $de->IdProducto)
+            $existe = DB::table('inventarios')->where('IdProducto', '=', $de->IdProducto)
                         ->where('IdPresentacion', '=', $de->IdPresentacion)->exists();
 
             if ($existe) {
@@ -169,7 +206,7 @@ class CompraController extends Controller
                 ->where('IdPresentación', '=', $de->IdPresentacion)->exists();
 
             if ($exis) {
-                $pre =  Precio::where('IdProducto', '=', $de->IdProducto)
+            $pre =  Precio::where('IdProducto', '=', $de->IdProducto)
                     ->where('IdPresentación', '=', $de->IdPresentacion)->firstOrFail();
 
                 $pre->Precio = $de->Precio_venta;
@@ -187,8 +224,8 @@ class CompraController extends Controller
 
                 $pre->save();
             }
-
         }
+
 
         return redirect()->route('compras.index');
     }
@@ -202,6 +239,15 @@ class CompraController extends Controller
             ->with('detalles', $detalles);
     }
 
+    public function show2($id)
+    {
+        $compra = Compra::findOrFail($id);
+        $detalles =  DetalleCompra::where('IdCompra', $compra->id)->get();
+
+        return view('Compras.verCompra2')->with('compra', $compra)
+            ->with('detalles', $detalles);
+    }
+
 
     public function limpiar()
     {
@@ -212,18 +258,26 @@ class CompraController extends Controller
 
         return redirect()->route('compras.crear');
     }
-    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public function pdf($anio1, $anio2, $proveeforR)
     {
 
         if ($proveeforR == 0) {
-
-            $compras = DB::table('compras')
+            if ($anio1 == 0 && $anio2 == 0) {
+                $compras = DB::table('compras')
+                ->select('compras.*')
+                ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
+                ->paginate(15);
+                $provee = 0;
+            } else {
+                $compras = DB::table('compras')
                 ->select('compras.*')
                 ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
                 ->whereBetween('FechaCompra', [$anio1, $anio2])
                 ->paginate(15);
                 $provee = 0;
+            }
         } else {
             if ($anio1 == 0) {
                 $compras = DB::table('compras')
@@ -247,9 +301,25 @@ class CompraController extends Controller
             $value->proveedors = Proveedor::findOrFail($value->proveedor_id);
         }
 
-        $pdf = PDF::loadView('Compras.pdf', ['compras' => $compras, 'provee' =>$provee, 'anio1'=>$anio1, 'anio2'=>$anio2]);
+        $pdf = PDF::loadView('compras.pdf', ['compras' => $compras, 'provee' =>$provee, 'anio1'=>$anio1, 'anio2'=>$anio2]);
         return $pdf->stream();
         //return $pdf->download('__compras.pdf');
     }
 
+    public function edit($id)
+    {
+        $productos = Producto::all();
+        $compra = Compra::findOrFail($id);
+        $detalles =  DetalleCompra::where('IdCompra', $compra->id)->get();
+        $total_precio = 0;
+        foreach ($detalles  as $key => $value) {
+            $total_precio += ($value->Cantidad * $value->Precio_compra);
+        }
+
+
+        return view('Compras.formularioEditCompras')->with('compra', $compra)
+            ->with('detalles', $detalles)
+            ->with('total_precio', $total_precio)
+            ->with('productos', $productos);
+    }
 }

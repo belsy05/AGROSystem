@@ -11,6 +11,7 @@
                     </div>
                     <div class="col-auto my-1">
                         <input type="submit" class="btn btn-secondary" value="Buscar">
+                        <a href="{{ route('cargo.index') }}" class="btn btn-success my-8">Borrar búsqueda</a>
                     </div>
                 </div>
             </form>
@@ -25,11 +26,12 @@
         </div>
     @endif
 
-    <h1> Listado De Cargos </h1>
+    <br><br>
+    <h1> Listado de cargos </h1>
     <br><br>
 
     <div class="d-grid gap-2 d-md-block">
-        <a class="btn btn-success float-end" href="{{route('cargo.crear')}}"> Agregar Cargo </a>
+        <a class="btn btn-success float-end" href="{{route('cargo.crear')}}"> Agregar cargo </a>
         <a class="btn btn-success float-end me-md-2" href=""> Regresar </a>
     </div>
 
@@ -41,8 +43,8 @@
         <thead class="table-dark">
             <tr class="success">
                 <th scope="col">N°</th>
-                <th scope="col">Nombre del Cargo</th>
-                <th scope="col">Descripción del Cargo</th>
+                <th scope="col">Nombre del cargo</th>
+                <th scope="col">Descripción del cargo</th>
                 <th scope="col">Sueldo</th>
                 <th scope="col"></th>
             </tr>

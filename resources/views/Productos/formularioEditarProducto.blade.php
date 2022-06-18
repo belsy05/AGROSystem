@@ -2,7 +2,7 @@
 @section('titulo', 'Formulario De Editar Productos')
 @section('contenido')
 
-<h1> Editar Productos </h1>
+<h1> Editar producto </h1>
 
 <br><br>
 
@@ -44,7 +44,7 @@
         <label for="DescripciónDelProducto"> Descripción </label>
         <textarea class="form-control" name="DescripciónDelProducto" id="DescripciónDelProducto"
             cols="30" rows="10"  placeholder="Breve descripción deL producto"
-                maxlength="150">{{old('DescripciónDelProducto', $producto->DescripciónDelProducto)}}</textarea>
+                maxlength="150" required>{{old('DescripciónDelProducto', $producto->DescripciónDelProducto)}}</textarea>
     </div>
 
     <div class="form-group">

@@ -2,7 +2,7 @@
 @section('titulo', 'Clientes')
 @section('contenido')
 
-<h1> Cliente </h1>
+<h1> Editar cliente </h1>
 <br><br>
 
 <!-- PARA LOS ERRORES -->
@@ -23,30 +23,30 @@
         <label for="IdentidadDelCliente"> Identidad </label>
         <input type="tel" class="form-control" name="IdentidadDelCliente" id="IdentidadDelCliente"
         placeholder="Identidad del cliente sin guiones" pattern="[0-1][0-8][0-2][0-9]{10}" required 
-        value="{{old('IdentidadDelCliente' , $cliente->IdentidadDelCliente)}}">
+        value="{{old('IdentidadDelCliente' , $cliente->IdentidadDelCliente)}}" maxlength="13" title="La identidad debe comenzar con 0 o con 1. Debe ingresar 13 caracteres">
     </div>
 
     <div class="form-group">
         <label for="NombresDelCliente"> Nombres </label>
         <input type="text" class="form-control" name="NombresDelCliente" id="NombresDelCliente" required
-        placeholder="Nombres del cliente" maxlength="30" value="{{old('NombresDelCliente', $cliente->NombresDelCliente )}}">
+        placeholder="Nombres del cliente" maxlength="30" pattern="[a-zA-ZñÑáéíóú ]+" value="{{old('NombresDelCliente', $cliente->NombresDelCliente )}}" title="No ingrese números ni signos">
     </div>
 
     <div class="form-group">
         <label for="ApellidosDelCliente"> Apellidos </label>
-        <input type="text" class="form-control" name="ApellidosDelCliente" id="ApellidosDelCliente" required
-        placeholder="Apellidos del cliente" maxlength="40" value="{{old('ApellidosDelCliente', $cliente->ApellidosDelCliente)}}">
+        <input type="text" class="form-control" name="ApellidosDelCliente" id="ApellidosDelCliente" required title="No ingrese números ni signos"
+        placeholder="Apellidos del cliente" maxlength="40" pattern="[a-zA-ZñÑáéíóú ]+" value="{{old('ApellidosDelCliente', $cliente->ApellidosDelCliente)}}">
     </div>
 
     <div class="form-group">
         <label for="Telefono"> Teléfono </label>
         <input type="tel" class="form-control" name="Telefono" id="Telefono" placeholder="00000000"
-        pattern="([3, 8-9][0-9]{7})" value="{{old('Telefono', $cliente->Telefono)}}">
+        pattern="([2-3, 8-9][0-9]{7})" value="{{old('Telefono', $cliente->Telefono)}}" maxlength="8" title="El teléfono debe comenzar con 2, 3, 8 o 9. Debe ingresar 8 caracteres">
     </div>
 
     <div class="form-group">
         <label for="LugarDeProcedencia"> Dirección </label>
-        <input type="text" class="form-control" name="LugarDeProcedencia" id="LugarDeProcedencia"
+        <input type="text" class="form-control" name="LugarDeProcedencia" id="LugarDeProcedencia" required
         placeholder="Lugar de Procedencia" maxlength="150" value="{{old('LugarDeProcedencia', $cliente->LugarDeProcedencia)}}">
     </div>
 

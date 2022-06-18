@@ -19,16 +19,17 @@ class ProductoSeeder extends Seeder
             [
                 'categoria_id'=>1,
                 'NombreDelProducto'=>'Glifosato',
-                'DescripciónDelProducto'=>'Herbicida para el control de la maleza en áreas industriales, 
+                'DescripciónDelProducto'=>'Herbicida para el control de la maleza en áreas industriales,
                  céspedes y jardines',
                 'Impuesto'=>0.15,
             ]
         );
+
         Producto::create(
             [
                 'categoria_id'=>1,
                 'NombreDelProducto'=>'Diflufenican',
-                'DescripciónDelProducto'=>'Herbicida de aplicación en postemergencia temprana y/o preemergente 
+                'DescripciónDelProducto'=>'Herbicida de aplicación en postemergencia temprana y/o preemergente
                  para el control de malezas de hoja ancha y algunas gramíneas anuales',
                 'Impuesto'=>0.15,
             ]
@@ -37,7 +38,7 @@ class ProductoSeeder extends Seeder
             [
                 'categoria_id'=>1,
                 'NombreDelProducto'=>'Triasulfuron',
-                'DescripciónDelProducto'=>'Herbicida de aplicación post-emergente a la maleza y a los cultivos 
+                'DescripciónDelProducto'=>'Herbicida de aplicación post-emergente a la maleza y a los cultivos
                  de trigo y cebada',
                 'Impuesto'=>0,
             ]
@@ -96,7 +97,7 @@ class ProductoSeeder extends Seeder
             [
                 'categoria_id'=>5,
                 'NombreDelProducto'=>'Dog Chow',
-                'DescripciónDelProducto'=>'Concentrado enriquecido con multivitaminas, prebióticos y fibras naturales, 
+                'DescripciónDelProducto'=>'Concentrado enriquecido con multivitaminas, prebióticos y fibras naturales,
                  especial para perros adultos de razas medianas y grandes',
                 'Impuesto'=>0.15,
             ]

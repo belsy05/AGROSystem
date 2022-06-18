@@ -2,8 +2,7 @@
 @section('titulo', 'Formulario De Productos')
 @section('contenido')
 
-<h1> Registro de Productos </h1>
-
+<h1> Registro de producto </h1>
 <br><br>
 
 <!-- PARA LOS ERRORES -->
@@ -39,7 +38,7 @@
     <div class="form-group">
         <label for="DescripciónDelProducto"> Descripción </label>
         <textarea class="form-control" name="DescripciónDelProducto" id="DescripciónDelProducto" cols="30" rows="10" 
-        placeholder="Breve descripción del producto">{{old('DescripciónDelProducto')}}</textarea>
+        placeholder="Breve descripción del producto" required>{{old('DescripciónDelProducto')}}</textarea>
     </div>
 
     <div class="form-group">

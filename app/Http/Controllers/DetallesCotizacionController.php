@@ -35,13 +35,32 @@ class DetallesCotizacionController extends Controller
         ];
         $this->validate($request, $rules, $mensaje);
 
-        $detalle = new DetalleCotizacion();
-        $detalle->IdCotizacion = 0;
-        $detalle->IdProducto = $request->input('IdProducto');
-        $detalle->IdPresentacion = $request->input('IdPresentacion');
-        $detalle->Cantidad = $request->input('Cantidad');
-        $detalle->Precio_venta = $request->input('Precio_venta');
-        $detalle->save();
+        $existe = DB::table('detalle_cotizacions')->where('IdProducto', '=', $request->IdProducto)
+                                                            ->where('IdPresentacion', '=', $request->IdPresentacion)
+                                                            ->where('IdCotizacion', '=', 0)->exists();
+
+        if ($existe) {
+            $detalle = DetalleCotizacion::where('IdProducto', '=', $request->IdProducto)
+                                ->where('IdPresentacion', '=', $request->IdPresentacion)
+                                ->where('IdCotizacion', '=', 0)->firstOrFail();
+                        
+            $detalle->IdCotizacion = 0;
+            $detalle->IdProducto = $request->input('IdProducto');
+            $detalle->IdPresentacion = $request->input('IdPresentacion');
+            $detalle->Cantidad = $detalle->Cantidad + $request->input('Cantidad');
+            $detalle->Precio_venta = $request->input('Precio_venta');
+            $detalle->save();
+
+        } else {
+            $detalle = new DetalleCotizacion();
+            $detalle->IdCotizacion = 0;
+            $detalle->IdProducto = $request->input('IdProducto');
+            $detalle->IdPresentacion = $request->input('IdPresentacion');
+            $detalle->Cantidad = $request->input('Cantidad');
+            $detalle->Precio_venta = $request->input('Precio_venta');
+            $detalle->save();
+        }
+
 
         return redirect()->route('cotizaciones.crear');
     }

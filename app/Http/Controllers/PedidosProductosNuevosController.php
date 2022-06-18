@@ -75,9 +75,6 @@ class PedidosProductosNuevosController extends Controller
            
         ]);
 
-
-        
-
         $venta = new PedidosProductosNuevos();
 
         $venta->cliente_id = $request->input('ClienteP');

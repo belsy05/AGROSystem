@@ -7,11 +7,13 @@
         <div class="col-xl-12">
             <form action="{{route('cliente.index2')}}" method="GET">
                 <div class="form-row">
-                    <div class="col-sm-6 my-1">
-                        <input type="search" class="form-control" name="texto" placeholder="Buscar por identidad, nombre, apellido o lugar de procedencia.">
+                    <div class="col-sm-7 my-1">
+                        <input type="search" class="form-control" name="texto" placeholder="Buscar por identidad, nombre, apellido o lugar de procedencia"
+                        title="Buscar por identidad, nombre, apellido o lugar de procedencia">
                     </div>
                     <div class="col-auto my-1">
                         <input type="submit" class="btn btn-secondary" value="Buscar">
+                        <a href="{{ route('cliente.index') }}" class="btn btn-success my-8">Borrar</a>
                     </div>
                 </div>
             </form>
@@ -25,14 +27,12 @@
             {{ session('mensaje') }}
         </div>
     @endif
-    <br>
 
-
-
-    <h1 class=""> Listado De Clientes </h1>
-    <br>
+    <br><br>
+    <h1 class=""> Listado de clientes </h1>
+    <br><br>
     <div class="d-grid gap-2 d-md-block ">
-        <a class="btn btn-success float-" href="{{route('cliente.crear')}}"> Agregar Cliente </a>
+        <a class="btn btn-success float-" href="{{route('cliente.crear')}}"> Agregar cliente </a>
         <a class="btn btn-success float-end me-md-2" href=""> Regresar </a>
     </div>
 
@@ -44,10 +44,10 @@
     <table class="table table-bordered border-dark mt-3" >
         <thead class="table table-striped table-hover">
             <tr class="success">
-                <th scope="col">N° De Identidad</th>
-                <th scope="col">Nombre Completo</th>
+                <th scope="col">N° de identidad</th>
+                <th scope="col">Nombre completo</th>
                 <th scope="col">Teléfono</th>
-                <th scope="col">Lugar De Procedencia</th>
+                <th scope="col">Lugar de procedencia</th>
                 <th scope="col"></th>
             </tr>
         </thead>

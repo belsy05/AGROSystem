@@ -6,6 +6,7 @@ use Illuminate\Validation\Rule;
 use App\Models\Cargo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use withQueryString;
 
 class CargoController extends Controller
 {
@@ -19,8 +20,8 @@ class CargoController extends Controller
 
         $texto =trim($request->get('texto'));
         $cargo = DB::table('cargos')
-                        ->where('NombreCargo', 'LIKE', '%'.$texto.'%')
-                        ->paginate(10);
+                        ->where('NombreDelCargo', 'LIKE', '%'.$texto.'%')
+                        ->paginate(10)->withQueryString();
         return view('cargos.raizcargos')->with('cargos', $cargo);
     }
 
@@ -33,7 +34,7 @@ class CargoController extends Controller
     public function store(Request $request){
         //VALIDAR
         $request->validate([
-            'NombreDelCargo'=>'required|unique:cargos|string|max:40|min:5',
+            'NombreDelCargo'=>'required|unique:cargos|string|max:40',
             'DescripciónDelCargo'=>'required|string|max:150|min:5',
             'Sueldo'=>'required|numeric|min:1000.00|max:30000.00'
         ]);
@@ -54,7 +55,7 @@ class CargoController extends Controller
         }
     }
 
-//funcion para editar los datos
+    //funcion para editar los datos
     public function edit($id){
         $cargo = Cargo::findOrFail($id);
         return view('cargos.formularioEditarCargo')->with('cargo', $cargo);
@@ -70,7 +71,6 @@ class CargoController extends Controller
                 'required',
                 'string',
                 'max:40',
-                'min:5',
                 Rule::unique('cargos')->ignore($cargo->id),
             ],
             'DescripciónDelCargo'=>'required|string|max:150',

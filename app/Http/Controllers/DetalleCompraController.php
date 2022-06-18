@@ -6,11 +6,13 @@ use App\Models\DetalleCompra;
 use App\Models\Producto;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Return_;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class DetalleCompraController extends Controller
 {    
+    
     public function agregar_detalle(Request $request)
     {
         
@@ -66,20 +68,41 @@ class DetalleCompraController extends Controller
         ];
         $this->validate($request,$rules,$mensaje);
 
-        $detalle = new DetalleCompra();
-        $detalle->IdCompra = 0;
-        $detalle->IdProducto = $request->input('IdProducto');
-        $detalle->IdPresentacion = $request->input('IdPresentacion');
-        $detalle->Cantidad = $request->input('Cantidad');
-        $detalle->Precio_compra = $request->input('Precio_compra');
-        $detalle->Precio_venta = $request->input('Precio_venta');
-        $detalle->fecha_vencimiento = $request->input('fecha');
-        $detalle->fecha_elaboración = $request->input('fecha_elaboración');
-        $detalle->save();
+        $existe = DB::table('detalle_compras')->where('IdProducto', '=', $request->IdProducto)
+                                                            ->where('IdPresentacion', '=', $request->IdPresentacion)
+                                                            ->where('IdCompra', '=', 0)->exists();
+
+        if ($existe) {
+            $detalle = DetalleCompra::where('IdProducto', '=', $request->IdProducto)
+                                ->where('IdPresentacion', '=', $request->IdPresentacion)
+                                ->where('IdCompra', '=', 0)->firstOrFail();
+                        
+                                $detalle->IdCompra = 0;
+                                $detalle->IdProducto = $request->input('IdProducto');
+                                $detalle->IdPresentacion = $request->input('IdPresentacion');
+                                $detalle->Cantidad = $detalle->Cantidad + $request->input('Cantidad');
+                                $detalle->Precio_compra = $request->input('Precio_compra');
+                                $detalle->Precio_venta = $request->input('Precio_venta');
+                                $detalle->fecha_vencimiento = $request->input('fecha');
+                                $detalle->fecha_elaboración = $request->input('fecha_elaboración');
+                                $detalle->save();
+
+        } else {
+            $detalle = new DetalleCompra();
+            $detalle->IdCompra = 0;
+            $detalle->IdProducto = $request->input('IdProducto');
+            $detalle->IdPresentacion = $request->input('IdPresentacion');
+            $detalle->Cantidad = $request->input('Cantidad');
+            $detalle->Precio_compra = $request->input('Precio_compra');
+            $detalle->Precio_venta = $request->input('Precio_venta');
+            $detalle->fecha_vencimiento = $request->input('fecha');
+            $detalle->fecha_elaboración = $request->input('fecha_elaboración');
+            $detalle->save();
+        }
 
         return redirect()->route('compras.crear');
     }
-    
+
     public function destroy($id)
     {
         DetalleCompra::findOrFail($id)->delete();
@@ -143,6 +166,7 @@ class DetalleCompraController extends Controller
         $this->validate($request,$rules,$mensaje);
 
         $detalle = DetalleCompra::findOrFail($request->input('IdDetalle'));
+        $detalle->IdCompra = 0;
         $detalle->IdProducto = $request->input('IdProducto');
         $detalle->IdPresentacion = $request->input('IdPresentacion');
         $detalle->Cantidad = $request->input('Cantidad');

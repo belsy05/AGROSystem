@@ -130,6 +130,7 @@ return [
     */
 
     'custom' => [
+        'tomorrow'=> "mañana",
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
@@ -146,6 +147,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        
+    ],
+    
 
 ];

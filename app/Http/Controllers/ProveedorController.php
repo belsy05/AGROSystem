@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Proveedor;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProveedorController extends Controller
 {
     public function index(){
         $proveedor = Proveedor::paginate(10);
-        return view('Proveedor.raizproveedor')->with('proveedors', $proveedor);
+        return view('Proveedors.raizproveedor')->with('proveedors', $proveedor);
     }
 
-    //funcion para la barra de navegacion
+    //funcion para la barra
     public function index2(Request $request){
 
         $texto =trim($request->get('texto'));
@@ -20,19 +22,18 @@ class ProveedorController extends Controller
         $proveedors = DB::table('Proveedors')
                         ->where('EmpresaProveedora', 'LIKE', '%'.$texto.'%')
                         ->orwhere('NombresDelEncargado', 'LIKE', '%'.$texto.'%')
-                        ->paginate(10);
-        return view('Proveedor.raizProveedor', compact('proveedors', 'texto'));
+                        ->paginate(10)->withQueryString();
+        return view('Proveedors.raizProveedor', compact('proveedors', 'texto'));
     }
-
 
     public function crear(){
-        return view('proveedor.formularioProveedor');
+        return view('proveedors.formularioProveedor');
     }
-
+    
     public function show($id){
         $proveedor = Proveedor::findOrFail($id);
-        return view('Proveedor.verProveedor')->with( 'proveedor', $proveedor);
-    }
+        return view('Proveedors.verProveedor')->with( 'proveedor', $proveedor);
+    } 
 
     public function store(Request $request){
         //Validar
@@ -40,10 +41,10 @@ class ProveedorController extends Controller
             'EmpresaProveedora'=>'required|unique:proveedors|max:40',
             'DirecciónDeLaEmpresa'=>'required|max:150',
             'CorreoElectrónicoDeLaEmpresa'=>'nullable|email|unique:proveedors|max:40',
-            'TeléfonoDeLaEmpresa'=>'required',
-            'NombresDelEncargado'=>'required||max:30',
+            'TeléfonoDeLaEmpresa'=>'required|unique:proveedors',
+            'NombresDelEncargado'=>'required|string|max:30',
             'ApellidosDelEncargado'=>'required|max:40',
-            'TeléfonoDelEncargado'=>'required',
+            'TeléfonoDelEncargado'=>'required|unique:proveedors',
         ]);
 
         //Formulario
@@ -65,6 +66,7 @@ class ProveedorController extends Controller
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////
     public function crear2(){
         return view('Compras.formularioProveedor');
     }
@@ -75,10 +77,10 @@ class ProveedorController extends Controller
             'EmpresaProveedora'=>'required|unique:proveedors|max:40',
             'DirecciónDeLaEmpresa'=>'required|max:150',
             'CorreoElectrónicoDeLaEmpresa'=>'nullable|email|unique:proveedors|max:40',
-            'TeléfonoDeLaEmpresa'=>'required',
+            'TeléfonoDeLaEmpresa'=>'required|unique:proveedors',
             'NombresDelEncargado'=>'required||max:30',
             'ApellidosDelEncargado'=>'required|max:40',
-            'TeléfonoDelEncargado'=>'required',
+            'TeléfonoDelEncargado'=>'required|unique:proveedors',
         ]);
 
         //Formulario
@@ -99,8 +101,9 @@ class ProveedorController extends Controller
             //retornar con un mensaje de error
         }
     }
+    ///////////////////////////////////////////////////////////////////////////////////
 
-  //funcion para editar los datos
+     //funcion para editar los datos
      public function edit($id){
         $proveedor = Proveedor::findOrFail($id);
         return view('Proveedors.formularioEditarProveedor')->with('proveedor', $proveedor);
@@ -112,9 +115,10 @@ class ProveedorController extends Controller
         $proveedor = Proveedor::findOrFail($id);
 
             $request->validate([
-
+            
                 'EmpresaProveedora'=> [
                     'required',
+                    'string',
                     'max:40',
                     Rule::unique('proveedors')->ignore($proveedor->id),
                 ],
@@ -125,12 +129,18 @@ class ProveedorController extends Controller
                 'max:40',
                 Rule::unique('proveedors')->ignore($proveedor->id),
                 ],
-                'TeléfonoDeLaEmpresa'=>'required',
+                'TeléfonoDeLaEmpresa'=>[
+                    'required',
+                    Rule::unique('proveedors')->ignore($proveedor->id),
+                ],
                 'NombresDelEncargado'=>'required||max:30',
                 'ApellidosDelEncargado'=>'required|max:40',
-                'TeléfonoDelEncargado'=>'required',
+                'TeléfonoDelEncargado'=>[
+                    'required',
+                    Rule::unique('proveedors')->ignore($proveedor->id),
+                ],
             ]);
-
+        
                 $proveedor->EmpresaProveedora = $request->input('EmpresaProveedora');
                 $proveedor->DirecciónDeLaEmpresa = $request->input('DirecciónDeLaEmpresa');
                 $proveedor->CorreoElectrónicoDeLaEmpresa = $request->input('CorreoElectrónicoDeLaEmpresa');
@@ -147,6 +157,6 @@ class ProveedorController extends Controller
                 }else{
                     //retornar con un mensaje de error
                 }
-    }
+    } 
 
 }

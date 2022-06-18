@@ -4,7 +4,7 @@
 
 @section('contenido')
 
-<h1> Registro de Categoría </h1>
+<h1> Registro de categoría </h1>
 <br><br>
 
 <!-- PARA LOS ERRORES -->
@@ -24,13 +24,13 @@
     <div class="form-group">
         <label for="NombreDeLaCategoría"> Nombre </label>
         <input type="text" class="form-control" name="NombreDeLaCategoría" id="NombreDeLaCategoría"
-        placeholder="Nombre de la categoría" value="{{old('NombreDeLaCategoría')}}" maxlength="30">
+        placeholder="Nombre de la categoría" value="{{old('NombreDeLaCategoría')}}" maxlength="30" required>
     </div>
 
     <div class="form-group">
         <label for="DescripciónDeLaCategoría"> Descripción </label>
         <textarea class="form-control" name="DescripciónDeLaCategoría" id="DescripciónDeLaCategoría" cols="30" rows="10" 
-        placeholder="Breve descripción de la categoría" maxlength="150">{{old('DescripciónDeLaCategoría')}}</textarea>
+        placeholder="Breve descripción de la categoría" maxlength="150" required>{{old('DescripciónDeLaCategoría')}}</textarea>
     </div>
 
     <div class="form-group">
@@ -58,7 +58,7 @@
 
     <br><br>
     <input type="submit" class="btn btn-primary" value="Guardar">
-    <input type="reset" class="btn btn-danger" value="Limpiar">
+    <input type="button" class="btn btn-danger" value="Limpiar" onclick="restaurar()">
     <a class="btn btn-info" href="{{route('categoria.index')}}">Cerrar</a>
 
 </form>
@@ -75,6 +75,11 @@
 @endsection
 @push('alertas')
     <script>
+        function restaurar() {
+        $("#NombreDeLaCategoría").val('');
+        $("#DescripciónDeLaCategoría").val('');
+
+    }
         function confirmar() {
            var formul = document.getElementById("form_guardarC");
             Swal.fire({

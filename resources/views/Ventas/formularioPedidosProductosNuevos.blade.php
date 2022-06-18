@@ -235,9 +235,9 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label style="width: 100%" for="">Cantidad</label>
-                                    <input style="width: 100%" type="text" name="Cantidad"
+                                    <input style="width: 100%" type="number" name="Cantidad"
                                         class="form-control {{ $errors->has('Cantidad') ? 'is-invalid' : '' }}"
-                                        value="{{ old('Cantidad', 0) }}" id="e_Cantidad" required
+                                        value="{{ old('Cantidad') }}" id="e_Cantidad" required placeholder="0" min="1" max="9999"
                                         title="Ingrese cantidad de la compra en números." maxlength="4" pattern="[0-9]+">
                                 </div>
                             </div>
@@ -257,7 +257,9 @@
     @push('alertas')
         <script>
             $(document).ready(function() {
-               
+                // $(".select222").select2({
+                //     width: 'resolve' // need to override the changed default
+                // });
 
                 new TomSelect(".select222", {
                     create: false,

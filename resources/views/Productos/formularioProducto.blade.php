@@ -2,7 +2,7 @@
 @section('titulo', 'Formulario De Productos')
 @section('contenido')
 
-<h1> Registro de Productos </h1>
+<h1> Registro de producto </h1>
 
 <br><br>
 
@@ -39,7 +39,7 @@
     <div class="form-group">
         <label for="DescripciónDelProducto"> Descripción </label>
         <textarea class="form-control" name="DescripciónDelProducto" id="DescripciónDelProducto" cols="30" rows="10" 
-        placeholder="Breve descripción del producto">{{old('DescripciónDelProducto')}}</textarea>
+        placeholder="Breve descripción del producto" maxlength="150" required>{{old('DescripciónDelProducto')}}</textarea>
     </div>
 
     <div class="form-group">
@@ -50,7 +50,7 @@
 
     <br>
     <input type="submit" class="btn btn-primary" value="Guardar">
-    <input type="reset" class="btn btn-danger" value="Limpiar">
+    <input type="button" class="btn btn-danger" value="Limpiar" onclick="restaurar()">
     <a class="btn btn-info" href="{{route('producto.index')}}">Cerrar</a>
 
 </form>
@@ -60,6 +60,12 @@
 @section('js')
 @push('alertas')
     <script>
+        function restaurar() {
+        $("#NombreDelProducto").val('');
+        $("#DescripciónDelProducto").val('');
+        $("#Impuesto").val('');
+        $("#Categoria").val('');
+    }
         function confirmar() {
            var formul = document.getElementById("form_guardar");
             Swal.fire({

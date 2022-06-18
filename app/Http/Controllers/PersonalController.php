@@ -7,14 +7,16 @@ use App\Models\Cargo;
 use App\Models\Personal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use phpDocumentor\Reflection\Types\Boolean;
+use withQueryString;
 
 class PersonalController extends Controller
 {
 
     public function index(){
+        $texto = '';
         $personal = Personal::paginate(10);
-        return view('raizpersonal')->with('personals', $personal);
+        return view('Personal.raizpersonal')->with('personals', $personal)
+                                            ->with('texto', $texto);
     }
 
     //funcion para la barra
@@ -23,25 +25,26 @@ class PersonalController extends Controller
         $texto =trim($request->get('texto'));
 
         $personals = DB::table('Personals')
+                        ->select('*')
                         ->where('IdentidadDelEmpleado', 'LIKE', '%'.$texto.'%')
                         ->orwhere('NombresDelEmpleado', 'LIKE', '%'.$texto.'%')
                         ->orwhere('ApellidosDelEmpleado', 'LIKE', '%'.$texto.'%')
                         ->orWhere('EmpleadoActivo', 'LIKE', $texto)
-                        ->paginate(10);
-        return view('raizPersonal', compact('personals', 'texto'));
+                        ->paginate(10)->withQueryString();
+        return view('Personal.raizpersonal', compact('personals', 'texto'));
     }
 
     //funcion para mostrar
     public function show($id){
         $cargos = Cargo::all();
         $personal = Personal::findOrFail($id);
-        return view('verPersonal', compact('cargos'))->with('personal', $personal);
+        return view('Personal.verPersonal', compact('cargos'))->with('personal', $personal);
     }
 
     //funcion para crear o insertar datos
     public function crear(){
         $cargos = Cargo::all();
-        return view('formularioPersonal', compact('cargos'));
+        return view('Personal.formularioPersonal', compact('cargos'));
     }
 
     //funcion para guardar los datos creados o insertados
@@ -53,7 +56,7 @@ class PersonalController extends Controller
             'NombresDelEmpleado'=>'required||max:30',
             'ApellidosDelEmpleado'=>'required|max:40',
             'CorreoElectrónico'=>'required|email|unique:personals|max:40',
-            'Teléfono'=>'required',
+            'Teléfono'=>'required|unique:personals',
             'FechaDeNacimiento'=>'required|date',
             'FechaDeIngreso'=>'required|date',
             'Ciudad'=>'required|max:20',
@@ -86,7 +89,7 @@ class PersonalController extends Controller
     public function edit($id){
         $cargos = Cargo::all();
         $personal = Personal::findOrFail($id);
-        return view('formularioEditarPersonal', compact('cargos'))->with('personal', $personal);
+        return view('Personal.formularioEditarPersonal', compact('cargos'))->with('personal', $personal);
 
     }
 
@@ -110,7 +113,11 @@ class PersonalController extends Controller
                 'max:40',
                 Rule::unique('personals')->ignore($personal->id),
             ],
-            'Teléfono'=>'required|max:8',
+            'Teléfono'=>[
+                'required',
+                'max:8',
+                Rule::unique('personals')->ignore($personal->id),
+            ],
             'FechaDeNacimiento'=>'required|date',
             'FechaDeIngreso'=>'required|date',
             'Ciudad'=>'required|max:20',

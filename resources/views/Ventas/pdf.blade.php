@@ -47,12 +47,12 @@
     <table class='table table-bordered border-dark mt-3'>
         <thead class='table table-striped table-hover'>
             <tr class='success'>
-                <th scope="col">Número de Factura</th>
+                <th scope="col">Número de factura</th>
                 <th scope="col">Empleado</th>
                 <th scope="col">Cliente</th>
                 <th scope="col">Fecha</th>
-                <th scope="col">Total Impuesto (Lps.)</th>
-                <th scope="col">Total Compra (Lps.)</th>
+                <th scope="col">Total impuesto (Lps.)</th>
+                <th scope="col">Total compra (Lps.)</th>
             </tr>
         </thead>
         <tbody>
@@ -65,7 +65,7 @@
                     <td scope="col">{{ $compra->NumFactura }}</td>
                     <td scope="col">{{ $compra->personals->NombresDelEmpleado }} {{ $compra->personals->ApellidosDelEmpleado }}</td>
                     @if ($compra->cliente_id == null)
-                        <td scope="col">Consumidor Final</td>
+                        <td scope="col">Consumidor final</td>
                     @else
                         <td scope="col">{{ $compra->clientes->NombresDelCliente }} {{ $compra->clientes->ApellidosDelCliente }}</td>
                     @endif
@@ -86,7 +86,7 @@
 
         </tbody>
         <tfoot>
-            <th scope='col' colspan='4'>Total Reporte</th>
+            <th scope='col' colspan='4'>Total reporte</th>
             <th scope='col'>{{ $impuesto }}</th>
             <th scope='col'>{{ $total }}</th>
         </tfoot>

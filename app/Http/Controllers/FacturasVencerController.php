@@ -34,17 +34,35 @@ class FacturasVencerController extends Controller
 
 
         if ($id == 0) {
-            $request->validate([
-                'FechaDesde' => '',
-                'FechaHasta' => 'after_or_equal:FechaDesde',
-            ]);
-
-            $compras = DB::table('compras')
-                ->select('compras.*')
-                ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
-                ->whereBetween('FechaCompra', [$fechadesde, $fechahasta])
-                ->where('FechaPago', '<=', $fechalimite)
-                ->paginate(15)->withQueryString();
+            if ($fechadesde == '' && $fechahasta == '') {
+                $request->validate([
+                    
+                ]);
+                $rules = [
+                    'id' => 'required|numeric|min:1',
+                    'FechaDesde' => 'required',
+                    'FechaHasta' => 'required',
+                ];
+        
+                $mensaje = [
+                    'id.min' => 'Seleccione un proveedor o',
+                    'FechaDesde.required' => 'ingrese una fecha de inicio y',
+                    'FechaHasta.required' => 'una fecha de fin',
+                ];
+                $this->validate($request, $rules, $mensaje);
+            } else {
+                $request->validate([
+                    'FechaDesde' => '',
+                    'FechaHasta' => 'after_or_equal:FechaDesde',
+                ]);
+    
+                $compras = DB::table('compras')
+                    ->select('compras.*')
+                    ->join('proveedors', 'proveedors.id', '=', 'compras.proveedor_id')
+                    ->whereBetween('FechaCompra', [$fechadesde, $fechahasta])
+                    ->where('FechaPago', '<=', $fechalimite)
+                    ->paginate(15)->withQueryString();
+            }
         } else {
             if ($fechadesde == '') {
                 $compras = DB::table('compras')

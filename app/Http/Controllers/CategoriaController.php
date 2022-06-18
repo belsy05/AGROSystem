@@ -21,7 +21,7 @@ class CategoriaController extends Controller
 
         $categorias = DB::table('Categorias')
                         ->where('NombreDeLaCategoría', 'LIKE', '%'.$texto.'%')
-                        ->paginate(10);
+                        ->paginate(10)->withQueryString();
         return view('Categorias.raizcategorias', compact('categorias', 'texto'));
     }
 
@@ -62,11 +62,11 @@ class CategoriaController extends Controller
             //retornar con un mensaje de error
         }
     }
-
+    ///////////////////////////////////////////////////////////////////////////////////
     public function crear2(){
         return view('Compras.formularioCategoria');
     }
-    
+
     //funcion para guardar los datos creados o insertados
     public function store2(Request $request){
         //VALIDAR
@@ -100,11 +100,13 @@ class CategoriaController extends Controller
             //retornar con un mensaje de error
         }
     }
-    
+    ///////////////////////////////////////////////////////////////////////////////////
+
     //funcion para editar los datos
     public function edit($id){
         $categoria = Categoria::findOrFail($id);
-        return view('categorias.formularioEditarCategoria')->with('categoria', $categoria);
+        $presentacion = Presentacion::where('categoria_id',$id)->get();
+        return view('categorias.formularioEditarCategoria')->with('categoria', $categoria)->with('presentacion', $presentacion);
 
     }
 
@@ -126,10 +128,32 @@ class CategoriaController extends Controller
 
         $categoria->NombreDeLaCategoría = $request->input('NombreDeLaCategoría');
         $categoria->DescripciónDeLaCategoría = $request->DescripciónDeLaCategoría;
+        
+        $categoria->vencimiento = $request->input('vencimiento');
+        $categoria->elaboracion = $request->input('elaboracion');
 
         $creado = $categoria->save();
 
         if($creado){
+
+            $presentacion = Presentacion::where('categoria_id',$id)->get();
+            foreach ($presentacion as $p) {
+                $pres = Presentacion::findOrFail($p->id);
+                $pres->informacion = $request->input('presentacion'.$p->id);
+                $creado = $pres->save();
+            }
+
+            if ($request->input('presentacion')!=null) {
+                foreach ($request->input('presentacion') as $presentation) {
+                    $presentacion = new Presentacion();
+                    $presentacion->categoria_id = $categoria->id;
+                    $presentacion->informacion = $presentation;
+    
+                    $creado2 = $presentacion->save();
+                }
+            }
+
+
             return redirect()->route('categoria.index')
                 ->with('mensaje', 'La categoría fue modificado exitosamente');
         }else{

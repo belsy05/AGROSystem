@@ -12,6 +12,7 @@
                     </div>
                     <div class="col-auto my-1">
                         <input type="submit" class="btn btn-secondary" value="Buscar">
+                        <a href="{{ route('producto.index') }}" class="btn btn-success my-8">Borrar búsqueda</a>
                     </div>
                 </div>
             </form>
@@ -26,12 +27,12 @@
         </div>
     @endif
 
-    <h1> Listado De Productos </h1>
+    <br><br>
+    <h1> Listado de productos </h1>
     <br><br>
 
-
     <div class="d-grid gap-2 d-md-block">
-        <a class="btn btn-success float-end" href="{{route('producto.crear')}}"> Agregar Producto </a>
+        <a class="btn btn-success float-end" href="{{route('producto.crear')}}"> Agregar producto </a>
         <a class="btn btn-success float-end me-md-2" href=""> Regresar </a>
     </div>
 
@@ -42,9 +43,8 @@
         <thead class="table-dark">
             <tr class="success">
                 <th scope="col">N°</th>
-                <th scope="col">Nombre del Producto</th>
+                <th scope="col">Nombre del producto</th>
                 <th scope="col">Categoría</th>
-                <th scope="col">Presentación</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -55,8 +55,7 @@
                 <th scope="row">{{ $producto->id }}</th>
                 <td scope="col">{{ $producto->NombreDelProducto}}</td>
                 <td scope="col">{{ $producto->categorias->NombreDeLaCategoría}}</td>
-                <td scope="col">{{ $producto->PresentaciónDelProducto}}</td>
-                <td> <a class="btn btn-success" href="{{ route('producto.mostrar',['id' => $producto->id]) }}" > Más Detalles </a></td> 
+                <td> <a class="btn btn-success" href="{{ route('producto.mostrar',['id' => $producto->id]) }}" > Más detalles </a></td> 
                 <td> <a class="btn btn-success" href="{{ route('producto.edit',['id' => $producto->id]) }}"> Editar </a></td>
             </tr>
         @empty

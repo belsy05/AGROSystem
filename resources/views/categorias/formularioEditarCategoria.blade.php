@@ -4,7 +4,7 @@
 
 @section('contenido')
 
-<h1> Editar Categoría </h1>
+<h1> Editar categoría </h1>
 <br><br>
 
 <!-- PARA LOS ERRORES -->
@@ -25,12 +25,12 @@
     <div class="form-group">
         <label for="NombreDeLaCategoría"> Nombre </label>
         <input type="text" class="form-control" name="NombreDeLaCategoría" id="NombreDeLaCategoría" placeholder="Nombre de la categoría"
-        value="{{old('NombreDeLaCategoría', $categoria->NombreDeLaCategoría)}}" maxlength="40">
+        value="{{old('NombreDeLaCategoría', $categoria->NombreDeLaCategoría)}}" maxlength="40" required>
     </div>
 
     <div class="form-group">
         <label for="DescripciónDeLaCategoría"> Descripción </label>
-        <textarea class="form-control" name="DescripciónDeLaCategoría" id="DescripciónDeLaCategoría"
+        <textarea required class="form-control" name="DescripciónDeLaCategoría" id="DescripciónDeLaCategoría"
             cols="30" rows="10"  placeholder="Breve descripción de la categoría"
                 maxlength="150">{{old('DescripciónDeLaCategoría', $categoria->DescripciónDeLaCategoría)}}</textarea>
     </div>

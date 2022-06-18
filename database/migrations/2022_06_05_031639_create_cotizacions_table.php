@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('cotizacions', function (Blueprint $table) {
             $table->id();
+            $table->date('FechaVenta')->format('%d/%m/%Y');
             $table->float('TotalVenta');
             $table->float('TotalImpuesto');
             $table->timestamps();

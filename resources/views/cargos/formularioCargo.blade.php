@@ -23,19 +23,19 @@
 
     <div class="form-group">
         <label for="NombreDelCargo"> Nombre </label>
-        <input type="text" class="form-control" name="NombreDelCargo" id="NombreDelCargo" placeholder="Nombre del cargo" 
+        <input type="text" class="form-control" name="NombreDelCargo" id="NombreDelCargo" placeholder="Nombre del cargo"
         maxlength="40" value="{{old('NombreDelCargo')}}" required>
     </div>
 
     <div class="form-group">
         <label for="DescripciónDelCargo"> Descripción </label>
-        <textarea class="form-control" name="DescripciónDelCargo" id="DescripciónDelCargo" cols="30" rows="10" 
+        <textarea class="form-control" name="DescripciónDelCargo" id="DescripciónDelCargo" cols="30" rows="10"
         placeholder="Breve descripción de la función del puesto" maxlength="200" required>{{old('DescripciónDelCargo')}}</textarea>
     </div>
 
     <div class="form-group">
         <label for="Sueldo"> Sueldo </label>
-        <input required type="number" class="form-control" min="1000" max="100000" name="Sueldo" id="Sueldo" 
+        <input required type="number" class="form-control" min="1000" max="100000" name="Sueldo" id="Sueldo"
         placeholder="00" value="{{old('Sueldo')}}" maxlength="8" title="Ingrese el sueldo sin decimales">
     </div>
 

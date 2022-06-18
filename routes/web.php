@@ -478,7 +478,7 @@ Route::get('/Servicio/{id}', [ServicioController::class, 'show'])
 Route::get('/Servicio/crear', [ServicioController::class, 'crear'])
 ->name('servicio.crear');
 
-Route::post('Servicior/crear', [ServicioController::class, 'store'])
+Route::post('Servicio/crear', [ServicioController::class, 'store'])
 ->name('servicio.guardar');
 
 Route::get('/Servicio/{id}/editar', [ServicioController::class, 'edit'])

@@ -1,6 +1,6 @@
 @extends('Plantillas.plantilla')
 
-@section('titulo', 'Editar Cargos')
+@section('titulo', 'Editar cargos')
 
 @section('contenido')
 
@@ -35,15 +35,15 @@
 
     <div class="form-group">
         <label for="Sueldo"> Sueldo </label>
-        <input type="number" class="form-control" name="Sueldo" id="Sueldo" placeholder="0" min="1000" max="100000" required 
+        <input type="number" class="form-control" name="Sueldo" id="Sueldo" placeholder="0" min="1000" max="100000" required
         value="{{old('Sueldo', $cargo->Sueldo)}}" maxlength="8" title="Ingrese el sueldo sin decimales">
     </div>
 
     <br>
     <input type="submit" class="btn btn-primary" value="Actualizar">
-    <input type="button" class="btn btn-danger" value="Restaurar" onclick="restaurar()"> 
+    <input type="button" class="btn btn-danger" value="Restaurar" onclick="restaurar()">
     <a class="btn btn-info" href="{{route('cargo.index')}}">Cerrar</a>
-</form> 
+</form>
 @endsection
 
 @push('alertas')

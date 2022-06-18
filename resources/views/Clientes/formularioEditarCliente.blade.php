@@ -3,7 +3,7 @@
 @section('contenido')
 
 <h1> Editar cliente </h1>
-<br><br>
+<br>
 
 <!-- PARA LOS ERRORES -->
 @if ($errors->any())
@@ -22,7 +22,7 @@
     <div class="form-group">
         <label for="IdentidadDelCliente"> Identidad </label>
         <input type="tel" class="form-control" name="IdentidadDelCliente" id="IdentidadDelCliente"
-        placeholder="Identidad del cliente sin guiones" pattern="[0-1][0-8][0-2][0-9]{10}" required 
+        placeholder="Identidad del cliente sin guiones" pattern="[0-1][0-8][0-2][0-9]{10}" required
         value="{{old('IdentidadDelCliente' , $cliente->IdentidadDelCliente)}}" maxlength="13" title="La identidad debe comenzar con 0 o con 1. Debe ingresar 13 caracteres">
     </div>
 

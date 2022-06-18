@@ -21,7 +21,7 @@ class ServicioController extends Controller
             $value->cliente = Cliente::findOrFail($value->cliente_id);
         }
         return view('Servicios.raizservicio')->with('servicios', $servicio)
-                                            ->with('texto', $texto);
+            ->with('texto', $texto);
     }
 
     //funcion para la barra
@@ -30,10 +30,10 @@ class ServicioController extends Controller
         $texto =trim($request->get('texto'));
 
         $servicios = DB::table('Servicios')
-                        ->select('*')
-                        ->orwhere('NombresDelCliente', 'LIKE', '%'.$texto.'%')
-                        ->orwhere('ApellidosDelCliente', 'LIKE', '%'.$texto.'%')
-                        ->paginate(10)->withQueryString();
+            ->select('*')
+            ->orwhere('NombresDelCliente', 'LIKE', '%'.$texto.'%')
+            ->orwhere('ApellidosDelCliente', 'LIKE', '%'.$texto.'%')
+            ->paginate(10)->withQueryString();
         return view('Servicios.raizservicio', compact('servicios', 'texto'));
     }
 
@@ -41,11 +41,11 @@ class ServicioController extends Controller
     public function show($id){
         $servicio = Servicio::findOrFail($id);
         $id = $servicio->empleado_id;
-        
+
         $cargo = Cargo::select('cargos.*')
-        ->join('personals', 'cargos.id', '=', 'personals.cargo_id')
-        ->where('personals.id', '=', $id)
-        ->get();
+            ->join('personals', 'cargos.id', '=', 'personals.cargo_id')
+            ->where('personals.id', '=', $id)
+            ->get();
         return view('Servicios.verServicio', compact('cargo'))->with('servicio', $servicio);
     }
 
@@ -93,39 +93,35 @@ class ServicioController extends Controller
 
     //funcion para editar los datos
     public function edit($id){
-        $cargos = Cargo::all();
+        $personals = Personal::select('personals.*', 'cargos.NombreDelCargo')
+            ->join('cargos', 'cargos.id', '=', 'personals.cargo_id')
+            ->where('NombreDelCargo', 'like', '%tecnico%')
+            ->get();
+        $clientes = Cliente::all();
         $servicio = Servicio::findOrFail($id);
-        return view('Servicios.formularioEditarServicio', compact('cargos'))->with('servicio', $servicio);
-
+        return view('Servicios.formularioEditarServicio', compact('personals', 'clientes'))->with('servicio', $servicio);
     }
 
     //funcion para actualizar los datos
     public function update(Request $request, $id){
-
         $servicio = Servicio::findOrFail($id);
 
         $request->validate([
-            'Cargo'=>'required',
-            'NombresDelCliente'=>'required|max:30',
-            'ApellidosDelCliente'=>'required|max:40',
-            'NombresDelTecnico'=>'required|max:30',
-            'ApellidosDelTecnico'=>'required|max:40',
-            'Teléfono'=>[
+            'tecnico'=>'required',
+            'Cliente'=>'required',
+            'TeléfonoCliente'=>[
                 'required',
                 'max:8',
                 Rule::unique('servicios')->ignore($servicio->id),
             ],
             'FechaDeRealizacion'=>'required|date',
-            'Dirección'=>'required|max:150',
-            'DescripciónDelServicio'=>'required|string|max:200|min:5'
+            'DescripciónDelServicio'=>'required|string|max:200|min:5',
+            'Dirección'=>'required|max:150'
         ]);
 
-        $servicio->cargo_id = $request->Cargo;
-        $servicio->NombresDelCliente = $request->input('NombresDelCliente');
-        $servicio->ApellidosDelCliente = $request->input('ApellidosDelCliente');
-        $servicio->NombresDelTecnico = $request->input('NombresDelTecnico');
-        $servicio->ApellidosDelTecnico = $request->input('ApellidosDelTecnico');
-        $servicio->Teléfono = $request->input('Teléfono');
+        $servicio->empleado_id = $request->tecnico;
+        $servicio->cliente_id = $request->Cliente;
+        $servicio->TeléfonoCliente = $request->input('TeléfonoCliente');
         $servicio->FechaDeRealizacion = $request->input('FechaDeRealizacion');
         $servicio->Dirección = $request->input('Dirección');
         $servicio->DescripciónDelServicio = $request->DescripciónDelServicio;

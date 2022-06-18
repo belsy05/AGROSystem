@@ -31,7 +31,6 @@
         </select>
     </div>
 
-
     <div class="form-group">
         <label for="IdentidadDelEmpleado"> Identidad </label>
         <input type="tel" class="form-control" name="IdentidadDelEmpleado" id="IdentidadDelEmpleado" pattern="[0-1][0-8][0-2][0-9]{10}" required

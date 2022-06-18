@@ -46,8 +46,9 @@
     {{-- DEMO STYLE --}} @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
     body {
-    font-family: 'Poppins', sans-serif;
-    background: #ffffff;
+        font-family: Century Gothic;
+        background: #ffffff;
+        font-size:small ;
     }
 
     p {
@@ -411,6 +412,7 @@
                         Ventas
                     </a>
                 </li>
+
                 <li>
                     <a href="/inventario" aria-expanded="true">
                         <i class="glyphicon glyphicon-list-alt"></i>
@@ -420,11 +422,10 @@
 
                 <li>
                     <a href="/Servicio" aria-expanded="true">
-                        <i class="glyphicon glyphicon-list-alt"></i>
+                        <i class="glyphicon glyphicon-fire"></i>
                         Servicio Técnico
                     </a>
                 </li>
-
             </ul>
         </nav>
 
@@ -439,8 +440,6 @@
             <nav class="navbar navbar-default" id="barras">
 
                 <div class="container-fluid">
-
-
 
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right">

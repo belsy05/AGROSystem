@@ -1,10 +1,8 @@
 @extends('Plantillas.plantilla')
-
-@section('titulo', 'Editar Servicio')
-
+@section('titulo', 'Agregar Servicio')
 @section('contenido')
 
-    <h1> Editar servicio técnico </h1>
+    <h1> Agregar servicio técnico </h1>
     <br><br>
     <!-- PARA LOS ERRORES -->
     @if ($errors->any())
@@ -24,7 +22,10 @@
             <select class="select222" name="tecnico" id="tecnico" required>
                 <option value="">--Seleccione--</option>
                 @foreach ($personals as $personal)
-                    <option value="{{ $personal['id'] }}" @if (old('tecnico') == $personal->id) @selected(true) @endif>
+                    <option value="{{ $personal['id'] }}" @if (old('tecnico') == $personal->id)
+
+                        @selected(true) @endif
+                    >
                         {{ $personal->NombresDelEmpleado}}
                         {{ $personal->ApellidosDelEmpleado}}-{{$personal->NombreDelCargo}}</option>
                 @endforeach

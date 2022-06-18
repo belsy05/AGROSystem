@@ -20,7 +20,7 @@
     </div>
 </div>
 @endsection
-@section('contenido') 
+@section('contenido')
     @if (session('mensaje'))
         <div class="alert alert-success">
             {{ session('mensaje') }}
@@ -28,7 +28,7 @@
     @endif
     <br><br>
 
-    <h1 class=""> Listado de los servicios técnicos</h1>
+    <h1 class="">Servicios Técnicos</h1>
     <br><br>
     <div class="d-grid gap-2 d-md-block ">
         <a class="btn btn-success float" href="{{ route('servicio.crear') }}"> Agregar servicio </a>
@@ -59,9 +59,8 @@
                         <td scope="col">{{ $serv->Estado}}</td>
                         <td> <a class="btn btn-success" onclick="cambiarEstado({{$serv->id}})">Realizado</a>
                         </td>
-                        <td> <a class="btn btn-success" href="{{ route('servicio.mostrar', ['id' => $serv->id]) }}"> Más
-                                <br> detalles </a>
-                            <a class="btn btn-success" href="{{ route('servicio.edit', ['id' => $serv->id]) }}"> Editar</a>
+                        <td> <a class="btn btn-success" href="{{ route('servicio.mostrar', ['id' => $serv->id]) }}"> <span class=" 	glyphicon glyphicon-eye-open"></span> Visualizar</a>
+                            <a class="btn btn-primary" href="{{ route('servicio.edit', ['id' => $serv->id]) }}"> <span class="glyphicon glyphicon-edit"></span> Editar</a>
                         </td>
                     </tr>
                 @empty
@@ -69,10 +68,10 @@
                         <td colspan="4"> No hay más servicios </td>
                     </tr>
                 @endforelse
-    
+
             </tbody>
         </table>
-        {{ $servicios->links() }}    
+        {{ $servicios->links() }}
 
 @endsection
 

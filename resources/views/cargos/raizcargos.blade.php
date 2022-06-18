@@ -1,5 +1,5 @@
 @extends('Plantillas.plantilla')
-@section('titulo', 'Cargos')
+@section('titulo', 'cargos')
 @section('barra')
 <div class="container">
     <div class="row">

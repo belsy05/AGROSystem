@@ -1,8 +1,10 @@
 @extends('Plantillas.plantilla')
-@section('titulo', 'Agregar Servicio')
+
+@section('titulo', 'Crear Servicio')
+
 @section('contenido')
 
-    <h1> Agregar servicio técnico </h1>
+    <h1> Crear servicio técnico </h1>
     <br><br>
     <!-- PARA LOS ERRORES -->
     @if ($errors->any())
@@ -18,16 +20,13 @@
     <form id="form_guardar" name="form_guardar" method="POST" action="{{ route('servicio.guardar') }}" onsubmit="confirmar()">
         @csrf
         <div class="form-group">
-            <label for="tecnico">Técnico</label>
-            <select class="select222" name="tecnico" id="tecnico" required>
-                <option value="">--Seleccione--</option>
+            <label for="tecnico"> Cliente </label>
+            <select name="tecnico" id="tecnico" class="select2222" required>
+                <option style="display: none;" value="">Seleccione un cliente</option>
                 @foreach ($personals as $personal)
-                    <option value="{{ $personal['id'] }}" @if (old('tecnico') == $personal->id)
-
-                        @selected(true) @endif
-                    >
-                        {{ $personal->NombresDelEmpleado}}
-                        {{ $personal->ApellidosDelEmpleado}}-{{$personal->NombreDelCargo}}</option>
+                    <option value="{{ $personal->id }}" @if (old('tecnico') == $personal->id) @selected(true) @endif>
+                        {{ $personal->NombresDelEmpleado }} {{ $personal->ApellidosDelEmpleado }}
+                    </option>
                 @endforeach
             </select>
         </div>
@@ -38,8 +37,7 @@
                 <option style="display: none;" value="">Seleccione un cliente</option>
                 @foreach ($clientes as $c)
                     <option value="{{ $c->id }}" @if (old('Cliente') == $c->id) @selected(true) @endif>
-                        {{ $c->IdentidadDelCliente }}-{{ $c->NombresDelCliente }}
-                        {{ $c->ApellidosDelCliente }}
+                     {{ $c->NombresDelCliente }} {{ $c->ApellidosDelCliente }}
                     </option>
                 @endforeach
             </select>
@@ -48,8 +46,8 @@
         <div class="form-group">
             <label for="Teléfono"> Teléfono </label>
             <input type="tel" class="form-control" name="Teléfono" id="Teléfono" placeholder="00000000"
-                pattern="([2-3, 8-9][0-9]{7})" required value="{{ old('Teléfono') }}" maxlength="8"
-                title="El teléfono debe comenzar con 2, 3, 8 o 9. Debe ingresar 8 caracteres">
+                   pattern="([2-3, 8-9][0-9]{7})" required value="{{ old('Teléfono') }}" maxlength="8"
+                   title="El teléfono debe comenzar con 2, 3, 8 o 9. Debe ingresar 8 caracteres">
         </div>
 
         <?php
@@ -59,22 +57,22 @@
         <div class="form-group">
             <label style="width: 100%" for=""> Fecha en que se realizará el servicio </label>
             <input style="width: 100%" type="date" name="FechaDeRealizacion"
-                class="form-control {{ $errors->has('FechaDeRealizacion') ? 'is-invalid' : '' }}"
-                value="{{ old('FechaDeRealizacion') }}" id="FechaDeRealizacion"
-                title="Ingrese la fecha en la que hara el servicio" min="<?php echo date('Y-m-d', strtotime($fecha_actual . '+ 1 day')); ?>" max="<?php echo date('Y-m-d', strtotime($fecha_actual . '+ 2 month')); ?>">
+                   class="form-control {{ $errors->has('FechaDeRealizacion') ? 'is-invalid' : '' }}"
+                   value="{{ old('FechaDeRealizacion') }}" id="FechaDeRealizacion"
+                   title="Ingrese la fecha en la que hara el servicio" min="<?php echo date('Y-m-d', strtotime($fecha_actual . '+ 1 day')); ?>" max="<?php echo date('Y-m-d', strtotime($fecha_actual . '+ 2 month')); ?>">
         </div>
 
         <div class="form-group">
             <label for="DescripciónDelServicio"> Descripción </label>
             <textarea class="form-control" name="DescripciónDelServicio" id="DescripciónDelServicio" cols="30" rows="10"
-                placeholder="Breve descripción del servicio que se realizará" maxlength="200" required>{{ old('DescripciónDelServicio') }}</textarea>
+                      placeholder="Breve descripción del servicio que se realizará" maxlength="200" required>{{ old('DescripciónDelServicio') }}</textarea>
         </div>
 
         <div class="form-group">
             <label for="Dirección"> Dirección </label>
             <input type="text" class="form-control" name="Dirección" id="Dirección"
-                placeholder="Dirección donde se hará el servicio" maxlength="150" value="{{ old('Dirección') }}"
-                required>
+                   placeholder="Dirección donde se hará el servicio" maxlength="150" value="{{ old('Dirección') }}"
+                   required>
         </div>
 
         <br>

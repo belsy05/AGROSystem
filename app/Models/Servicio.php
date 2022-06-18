@@ -15,5 +15,5 @@ class Servicio extends Model
 
     public function clientes(){
         return $this->belongsTo(Cliente::class, 'cliente_id');
-    } 
+    }
 }

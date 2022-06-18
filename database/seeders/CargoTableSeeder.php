@@ -15,6 +15,6 @@ class CargoTableSeeder extends Seeder
      */
     public function run()
     {
-        Cargo::Factory(5)->create();
+        Cargo::Factory(6)->create();
     }
 }

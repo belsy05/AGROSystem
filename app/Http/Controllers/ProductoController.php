@@ -25,11 +25,11 @@ class ProductoController extends Controller
                     ->paginate(10)->withQueryString();
         return view('Productos.raizproducto')->with('productos', $producto)->with('texto', $texto);
     }
-    
+
     public function crear(){
         $categorias = Categoria::all();
         return view('Productos.formularioProducto', compact('categorias'));
-    } 
+    }
 
     public function show($id){
         $producto = Producto::findOrFail($id);
@@ -59,13 +59,13 @@ class ProductoController extends Controller
                 ->with('mensaje', 'El producto fue creado exitosamente');
         }else{
             //retornar con un mensaje de error
-        } 
+        }
     }
     ///////////////////////////////////////////////////////////////////////////////////////
     public function crear2(){
         $categorias = Categoria::all();
         return view('Compras.formularioProducto', compact('categorias'));
-    } 
+    }
 
     public function store2(Request $request){
         //VALIDAR
@@ -88,7 +88,7 @@ class ProductoController extends Controller
                 ->with('mensaje', 'El producto fue creado exitosamente');
         }else{
             //retornar con un mensaje de error
-        } 
+        }
     }
     ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -111,7 +111,7 @@ class ProductoController extends Controller
                 'required',
                 'max:40',
                 Rule::unique('productos')->ignore($producto->id),
-            ],    
+            ],
             'DescripciónDelProducto'=>'required|string|max:150|min:10'
         ]);
 

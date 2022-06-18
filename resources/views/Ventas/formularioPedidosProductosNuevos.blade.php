@@ -27,7 +27,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="ClienteP"> Cliente </label>
-                    <select name="ClienteP" id="ClienteP" class="ejemplo-select2 form-control" data-live-search="true" required
+                    <select name="ClienteP" id="ClienteP" class="select222" data-live-search="true" required
                         style="width: 100%">
                         <option style="display: none;" value="">Seleccione un cliente</option>
                         @foreach ($cliente as $c)
@@ -37,28 +37,15 @@
                             </option>
                         @endforeach
                     </select>
-                    <script type="text/javascript">
-                        $(document).ready(function(){
-                            $('#ClienteP').select2({
-                                width: 'resolve',
-                                data: 'sportalist',
-                            });
-                        });/* .select2({
-                            width: '100%',
-                            // theme: "classic",
-                            size: '100%',
-                            dropdownAutoWidth: false,
-                        }); */
-                    </script>
                 </div>
             </div>
             <input type="text" name="TotalCantidad" id="TotalCantidad" value="{{$total_cantidad }}" hidden>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label style="width: 100%" for="TotalAnticipo"> Total del anticipo </label>
-                    <input style="width: 100%" type="text" class="form-control" name="TotalAnticipo" id="TotalAnticipo"
-                        required maxlength="10" value="{{ old('TotalAnticipo') }}"
-                        title="Ingrese el total del anticipo en números." pattern="[0-9.]+">
+                    <input style="width: 100%" type="number" class="form-control" name="TotalAnticipo" id="TotalAnticipo"
+                        required maxlength="10" value="{{ old('TotalAnticipo') }}" min="0" max="9999"
+                        title="Ingrese el total del anticipo en números, sin decimales." pattern="[0-9]+">
                 </div>
             </div>
 
@@ -192,9 +179,9 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label style="width: 100%" for="">Cantidad</label>
-                                    <input style="width: 100%" type="text" name="Cantidad"
+                                    <input style="width: 100%" type="number" name="Cantidad"
                                         class="form-control {{ $errors->has('Cantidad') ? 'is-invalid' : '' }}" 
-                                        value="{{ old('Cantidad', 0) }}" id="Cantidad"
+                                        value="{{ old('Cantidad') }}" id="Cantidad" placeholder="0" min="1" max="9999"
                                         title="Ingrese cantidad de la compra en números." maxlength="4" pattern="[0-9]+" required>
                                 </div>
                             </div>
@@ -269,6 +256,18 @@
 @section('js')
     @push('alertas')
         <script>
+            $(document).ready(function() {
+               
+
+                new TomSelect(".select222", {
+                    create: false,
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    }
+                });
+            });
+
             function editar_detalleP(Producto, Presentacion, Cantidad, id) {
                 $('#e_NombreDelProducto').val(Producto);
                 $('#e_presentacion').val(Presentacion);

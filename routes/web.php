@@ -315,6 +315,12 @@ Route::get('/detalle_pedidosCliente/eliminar/{DetalleCompra}', [DetallesPedidosC
 
 /******************************* PEDIDOS PRODUCTOS NUEVOS CLIENTES *******************************/
 
+Route::get('/pedidosProductoNuevoClientes', [PedidosProductosNuevosController::class, 'index'])
+->name('pedidosClienteP.index');
+
+Route::get('/pedidosProductoNuevoClientes/detalle/{id}', [PedidosProductosNuevosController::class, 'show'])
+->name('pedidosClienteP.show');
+
 Route::get('/pedidosProductoNuevoClientes/crear', [PedidosProductosNuevosController::class, 'create'])
 ->name('pedidosClienteP.crear');
 
@@ -324,6 +330,9 @@ Route::post('/pedidosProductoNuevo/crear', [PedidosProductosNuevosController::cl
 Route::get('/pedidosProductoNuevoCliente/limpiar',[PedidosProductosNuevosController::class, 'limpiar'])
 ->name('pedidosClienteP.limpiar');
 
+Route::get('/estadoPPN/{id}', [PedidosProductosNuevosController::class, 'updateStatus'])
+ ->name('status.update')->where('id', '[0-9]+');
+
 
 /******************************* DETALLE PEDIDO PRODUCTOS NUEVOS CLIENTES *******************************/
 
@@ -332,6 +341,9 @@ Route::post('/detalle_pedidosProductoNuevoCliente/agregar', [DetallesPedidosProd
 
 Route::get('/detalle_pedidosProductoNuevoCliente/eliminar/{Detallepedido}', [DetallesPedidosProductosNuevosController::class, 'destroy'])
 ->name('detalle_pedidosClienteP.eliminar');
+
+Route::post('/detalle_pedidosProductoNuevoCliente/editar', [DetallesPedidosProductosNuevosController::class, 'agregar_detalle_edit'])
+->name('detalle_pedidoP.editar');
 
 
 /******************************* FACTURAS PROXIMAS A VENCER *******************************/
@@ -357,8 +369,14 @@ Route::get('/Inventarios/buscar', [ProductosVencerController::class, 'index2'])
 Route::get('/cotizaciones/crear',[CotizacionController::class, 'create'])
 ->name('cotizaciones.crear');
 
+Route::post('/cotizaciones/guardar', [CotizacionController::class, 'store'])
+->name('cotizaciones.guardar');
+
 Route::get('/cotizaciones/limpiar',[CotizacionController::class, 'limpiar'])
 ->name('cotizaciones.limpir');
+
+Route::get('/cotizaciones/{id}', [CotizacionController::class, 'show'])
+->name('cotizaciones.mostrar');
 
 Route::post('/detalle_cotizacion/agregar', [DetallesCotizacionController::class, 'agregar_detalle'])
 ->name('detalle_cotizacion.crear');

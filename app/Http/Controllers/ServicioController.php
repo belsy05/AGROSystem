@@ -14,28 +14,26 @@ class ServicioController extends Controller
 {
 
     public function index(){
-        $texto = '';
         $servicio = Servicio::paginate(10);
-        foreach ($servicio as $key => $value) {
-            $value->personal = Personal::findOrFail($value->empleado_id);
-            $value->cliente = Cliente::findOrFail($value->cliente_id);
-        }
-        return view('Servicios.raizservicio')->with('servicios', $servicio)
-            ->with('texto', $texto);
+        return view('Servicios.raizservicio')->with('servicios', $servicio);
     }
 
-    //funcion para la barra
     public function index2(Request $request){
 
         $texto =trim($request->get('texto'));
 
-        $servicios = DB::table('Servicios')
-            ->select('*')
-            ->orwhere('NombresDelCliente', 'LIKE', '%'.$texto.'%')
-            ->orwhere('ApellidosDelCliente', 'LIKE', '%'.$texto.'%')
+        $servicio = Servicio::where(null)
+            ->orwhereRaw('(SELECT NombresDelCliente
+                                    FROM clientes WHERE clientes.id = servicios.cliente_id ) LIKE "%'.$texto.'%"')
+
+            ->orwhereRaw('(SELECT ApellidosDelCliente
+                                    FROM clientes WHERE clientes.id = servicios.cliente_id ) LIKE "%'.$texto.'%"')
+
             ->paginate(10)->withQueryString();
-        return view('Servicios.raizservicio', compact('servicios', 'texto'));
+        return view('Servicios.raizservicio')->with('servicios', $servicio)->with('texto', $texto);
     }
+
+
 
     //funcion para mostrar
     public function show($id){
@@ -109,11 +107,7 @@ class ServicioController extends Controller
         $request->validate([
             'tecnico'=>'required',
             'Cliente'=>'required',
-            'TeléfonoCliente'=>[
-                'required',
-                'max:8',
-                Rule::unique('servicios')->ignore($servicio->id),
-            ],
+            'TeléfonoCliente'=>[ 'required', 'max:8' . $id ],
             'FechaDeRealizacion'=>'required|date',
             'DescripciónDelServicio'=>'required|string|max:200|min:5',
             'Dirección'=>'required|max:150'

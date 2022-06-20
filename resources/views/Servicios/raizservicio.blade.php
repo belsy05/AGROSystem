@@ -2,13 +2,15 @@
 
 @section('titulo', 'Servicio')
 @section('barra')
+
+
     <div class="container">
         <div class="row">
             <div class="col-xl-12">
                 <form action="{{route('servicio.index2')}}" method="GET">
                     <div class="form-row">
-                        <div class="col-sm-8 my-1">
-                            <input type="search" class="form-control" name="texto" value="{{$texto}}" placeholder="Buscar por nombre o apellido del cliente">
+                        <div class="col-sm-6 my-1">
+                            <input type="search" class="form-control" name="texto" name="texto" placeholder="Buscar por nombre o apellido del cliente">
                         </div>
                         <div class="col-auto my-1">
                             <input type="submit" class="btn btn-secondary" value="Buscar">
@@ -50,18 +52,18 @@
                 </tr>
             </thead>
             <tbody>
-            @forelse ($servicios as $serv)
+            @forelse ($servicios as $servicio)
                 <tr class="active">
-                    <th scope="row">{{ $serv->id }}</th>
-                    <td scope="col">{{ $serv->personal->NombresDelEmpleado }} {{ $serv->personal->ApellidosDelEmpleado }}</td>
-                    <td scope="col">{{ $serv->cliente->NombresDelCliente }} {{ $serv->cliente->ApellidosDelCliente }}</td>
-                    <td scope="col">{{ $serv->FechaDeRealizacion}}</td>
-                    <td scope="col">{{ $serv->Estado}}</td>
-                    <td> <a class="btn btn-success" onclick="cambiarEstado({{$serv->id}})">Realizado</a>
+                    <th scope="row">{{ $servicio->id }}</th>
+                    <td scope="col">{{ $servicio->personal->NombresDelEmpleado }} {{ $servicio->personal->ApellidosDelEmpleado }}</td>
+                    <td scope="col">{{ $servicio->clientes->NombresDelCliente }} {{ $servicio->clientes->ApellidosDelCliente }}</td>
+
+                    <td scope="col">{{ $servicio->FechaDeRealizacion}}</td>
+                    <td scope="col">{{ $servicio->Estado}}</td>
+                    <td> <a class="btn btn-success" onclick="cambiarEstado({{$servicio->id}})">Realizado</a>
                     </td>
-                    <td> <a class="btn btn-success" href="{{ route('servicio.mostrar', ['id' => $serv->id]) }}"> Más
-                            <br> detalles </a>
-                        <a class="btn btn-success" href="{{ route('servicio.edit', ['id' => $serv->id]) }}"> Editar</a>
+                    <td> <a class="btn btn-info" href="{{ route('servicio.mostrar', ['id' => $servicio->id]) }}"><span class="glyphicon glyphicon-eye-open"></span> Más Detalles</a>
+                        <a class="btn btn-primary" href="{{ route('servicio.edit', ['id' => $servicio->id]) }}"><span class="glyphicon glyphicon-edit"></span> Editar</a>
                     </td>
                 </tr>
             @empty

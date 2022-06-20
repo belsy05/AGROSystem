@@ -15,6 +15,6 @@ class PersonalTableSeeder extends Seeder
      */
     public function run()
     {
-        Personal::Factory(20)->create();
+        Personal::Factory(30)->create();
     }
 }

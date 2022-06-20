@@ -20,9 +20,9 @@
     <form id="form_guardar" name="form_guardar" method="POST" action="{{ route('servicio.guardar') }}" onsubmit="confirmar()">
         @csrf
         <div class="form-group">
-            <label for="tecnico"> Cliente </label>
-            <select name="tecnico" id="tecnico" class="select2222" required>
-                <option style="display: none;" value="">Seleccione un cliente</option>
+            <label for="tecnico"> Técnico </label>
+            <select name="tecnico" id="tecnico" class="form-control"required>
+                <option style="display: none;" value="">Seleccione un Técnico</option>
                 @foreach ($personals as $personal)
                     <option value="{{ $personal->id }}" @if (old('tecnico') == $personal->id) @selected(true) @endif>
                         {{ $personal->NombresDelEmpleado }} {{ $personal->ApellidosDelEmpleado }}
@@ -33,7 +33,7 @@
 
         <div class="form-group">
             <label for="Cliente"> Cliente </label>
-            <select name="Cliente" id="Cliente" class="select2222" required>
+            <select name="Cliente" id="Cliente" class="form-control"required>
                 <option style="display: none;" value="">Seleccione un cliente</option>
                 @foreach ($clientes as $c)
                     <option value="{{ $c->id }}" @if (old('Cliente') == $c->id) @selected(true) @endif>

@@ -17,7 +17,8 @@ class CargoFactory extends Factory
     public function definition()
     {
         return [
-            'NombreDelCargo' => $this->faker->randomElement($array = array ('Gerente','Cajero','Vigilancia','Aseo','Informática','Técnico')),
+            'NombreDelCargo' => $this->faker->randomElement($array = array ('Gerente','Cajero','Vigilancia','Aseo',
+                'Técnico en Informática','Técnico en Maquinaria Agrícola','Sanidad Animal')),
             'DescripciónDelCargo' => $this->faker->sentence($nbWords = 6, $variableNbWords = true),
             'Sueldo'  => $this->faker->numerify('#####.##'),
         ];

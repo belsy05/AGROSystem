@@ -30,60 +30,7 @@ class PedidosProveedorController extends Controller
     }
 
 
-    public function show($id)
-    {
-        $pedidos = PedidosProveedor::where('id', $id)->first();
-        $details = DetallesPedidosProveedor::where('IdPedido', $pedidos->id)->get();
-        return view('Compras.detallePedidosProveedor')->with('pedidos', $pedidos)->with('detalles', $details);
-    }
-
-    public function create()
-    {
-        $total_cantidad = 0;
-        $detalles =  DetallesPedidosProveedor::where('IdPedido', 0)->get();
-        $proveedor = Proveedor::all();
-
-        foreach ($detalles  as $key => $value) {
-            $total_cantidad += $value->Cantidad;
-        }
-
-        return view('Compras.formularioPedidosProveedor')
-            ->with('proveedor', $proveedor)
-            ->with('detalles', $detalles)
-            ->with('total_cantidad', $total_cantidad);
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'FechaPedidoProveedor' => 'required|date|before:tomorrow|after:yesterday',
-            'Proveedor'=> 'required',
-            'TotalCantidad' => 'required|numeric|min:1'
-        ], [
-
-            'FechaPedidoProveedor.before' => 'El campo fecha de pedido debe de ser hoy',
-            'FechaPedidoProveedor.after' => 'El campo fecha de pedido debe de ser hoy',
-            'TotalCantidad.min' => 'Ingrese detalles para este pedido'
-
-        ]);
-
-        $venta = new PedidosProveedor();
-
-        $venta->proveedor_id = $request->input('Proveedor');
-        $venta->FechaDelPedido = $request->input('FechaPedidoProveedor');
-        $venta->save();
-
-        $detalles =  DetallesPedidosProveedor::where('IdPedido', 0)->get();
-
-
-        foreach ($detalles  as $key => $value) {
-            $de = DetallesPedidosProveedor::findOrFail($value->id);
-            $de->IdPedido = $venta->id;
-
-            $de->save();
-        }
-        return redirect()->route('pedidosProveedor.index');
-    }
+   
 
     public function limpiar()
     {

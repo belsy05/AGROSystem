@@ -322,13 +322,7 @@ Route::post('/rango/agregar', [RangoController::class, 'agregar_detalle'])
 Route::get('/pedidosClientes', [PedidosClientesController::class, 'index'])
 ->name('pedidosCliente.index');
 
-Route::get('/pedidosClientes/detalle/{id}', [PedidosClientesController::class, 'show'])
-->name('pedidosCliente.show');
 
-Route::get('/pedidosClientes/crear', [PedidosClientesController::class, 'create'])
-->name('pedidosCliente.crear');
-
-Route::post('/pedidos/crear', [PedidosClientesController::class, 'store'])
 ->name('pedidosCliente.guardar');
 
 Route::get('/pedidosCliente/limpiar',[PedidosClientesController::class, 'limpiar'])

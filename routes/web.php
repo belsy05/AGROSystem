@@ -433,14 +433,7 @@ Route::post('/detalle_cotizacion/editar', [DetallesCotizacionController::class, 
 Route::get('/pedidosProveedor', [PedidosProveedorController::class, 'index'])
 ->name('pedidosProveedor.index');
 
-Route::get('/pedidosProveedor/detalle/{id}', [PedidosProveedorController::class, 'show'])
-->name('pedidosProveedor.show');
 
-Route::get('/pedidosProveedor/crear', [PedidosProveedorController::class, 'create'])
-->name('pedidosProveedor.crear');
-
-Route::post('/pedidosP/crear', [PedidosProveedorController::class, 'store'])
-->name('pedidosProveedor.guardar');
 
 Route::get('/pedidosProveedor/limpiar',[PedidosProveedorController::class, 'limpiar'])
 ->name('pedidosProveedor.limpiar');
@@ -454,8 +447,7 @@ Route::get('/destroyP/{id}', [PedidosProveedorController::class, 'eliminar'])
 
 /******************************* DETALLE PEDIDO PROVEEDOR *******************************/
 
-Route::post('/detalle_pedidosProveedor/agregar', [DetallesPedidosProveedorController::class, 'agregar_detalle'])
-->name('detalle_pedidosProveedor.crear');
+R
 
 Route::get('/detalle_pedidosProveedor/eliminar/{DetalleCompra}', [DetallesPedidosProveedorController::class, 'destroy'])
 ->name('detalle_pedidosProveedor.eliminar');

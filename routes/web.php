@@ -343,11 +343,7 @@ Route::get('/destroy/{id}', [PedidosClientesController::class, 'eliminar'])
 
 /******************************* DETALLE PEDIDO CLIENTES *******************************/
 
-Route::post('/detalle_pedidosCliente/agregar', [DetallesPedidosClientesController::class, 'agregar_detalle'])
-->name('detalle_pedidosCliente.crear');
 
-Route::get('/detalle_pedidosCliente/eliminar/{DetalleCompra}', [DetallesPedidosClientesController::class, 'destroy'])
-->name('detalle_pedidosCliente.eliminar');
 
 Route::post('/detalle_pedidosCliente/editar', [DetallesPedidosClientesController::class, 'agregar_detalle_edit'])
 ->name('detalle_pedidosCliente.editar');

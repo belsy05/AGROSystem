@@ -457,12 +457,6 @@ Route::get('/destroyP/{id}', [PedidosProveedorController::class, 'eliminar'])
 Route::post('/detalle_pedidosProveedor/agregar', [DetallesPedidosProveedorController::class, 'agregar_detalle'])
 ->name('detalle_pedidosProveedor.crear');
 
-Route::get('/detalle_pedidosProveedor/eliminar/{DetalleCompra}', [DetallesPedidosProveedorController::class, 'destroy'])
-->name('detalle_pedidosProveedor.eliminar');
-
-Route::post('/detalle_pedidosProveedor/editar', [DetallesPedidosProveedorController::class, 'agregar_detalle_edit'])
-->name('detalle_pedidosProveedor.editar');
-
 
 /******************************* SERVICIO TECNICO *******************************/
 

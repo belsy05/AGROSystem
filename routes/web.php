@@ -451,7 +451,6 @@ Route::get('/estadoPP/{id}', [PedidosProveedorController::class, 'updateStatus']
 Route::get('/destroyP/{id}', [PedidosProveedorController::class, 'eliminar'])
 ->name('status.destroy')->where('id', '[0-9]+');
 
-
 /******************************* DETALLE PEDIDO PROVEEDOR *******************************/
 
 
@@ -466,11 +465,12 @@ Route::post('/detalle_pedidosProveedor/editar', [DetallesPedidosProveedorControl
 
 
 /******************************* SERVICIO TECNICO *******************************/
+
 Route::get('/Servicio', [ServicioController::class, 'index'])
-    ->name('servicio.index');
+->name('servicio.index');
 
 Route::get('/Servicio/buscar', [ServicioController::class, 'index2'])
-    ->name('servicio.index2');
+->name('servicio.index2');
 
 Route::get('/Servicio/{id}', [ServicioController::class, 'show'])
 ->name('servicio.mostrar')->where('id', '[0-9]+');

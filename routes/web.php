@@ -488,3 +488,16 @@ Route::put('/Servicio/{id}/editar', [ServicioController::class, 'update'])
 
 Route::get('/estado/{id}', [ServicioController::class, 'updateStatus'])
 ->name('status.update')->where('id', '[0-9]+');
+
+/******************************* Gastos *******************************/
+Route::get('/gasto', [GastoController::class, 'index'])
+->name('gasto.index');
+
+Route::get('/gasto/crear', [GastoController::class, 'create'])
+->name('gasto.crear');
+
+Route::post('gasto/crear', [GastoController::class, 'store'])
+->name('gasto.guardar');
+
+Route::get('/gasto/{id}', [GastoController::class, 'show'])
+->name('gasto.update')->where('id', '[0-9]+');

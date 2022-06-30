@@ -47,47 +47,7 @@ class ServicioController extends Controller
         return view('Servicios.verServicio', compact('cargo'))->with('servicio', $servicio);
     }
 
-    //funcion para crear o insertar datos
-    public function crear(){
-        $personals = Personal::select('personals.*', 'cargos.NombreDelCargo')
-            ->join('cargos', 'cargos.id', '=', 'personals.cargo_id')
-            ->where('NombreDelCargo', 'like', '%tecnico%')
-            ->get();
-
-        $clientes = Cliente::all();
-
-        return view('Servicios.formularioServicio', compact('personals', 'clientes'));
-    }
-
-    //funcion para guardar los datos creados o insertados
-    public function store(Request $request){
-        //VALIDAR
-        $request->validate([
-            'tecnico'=>'required',
-            'Cliente'=>'required',
-            'Teléfono'=>'required',
-            'FechaDeRealizacion'=>'required|date',
-            'DescripciónDelServicio'=>'required|string|max:200|min:5',
-            'Dirección'=>'required|max:150'
-        ]);
-
-        //Formulario
-        $nuevoServicio = new Servicio();
-        $nuevoServicio->empleado_id = $request->tecnico;
-        $nuevoServicio->cliente_id = $request->Cliente;
-        $nuevoServicio->TeléfonoCliente = $request->input('Teléfono');
-        $nuevoServicio->FechaDeRealizacion = $request->input('FechaDeRealizacion');
-        $nuevoServicio->Dirección = $request->input('Dirección');
-        $nuevoServicio->DescripciónDelServicio = $request->DescripciónDelServicio;
-        $creado = $nuevoServicio->save();
-
-        if($creado){
-            return redirect()->route('servicio.index')
-                ->with('mensaje', 'El servicio técnico fue creado exitosamente');
-        }else{
-            //retornar con un mensaje de error
-        }
-    }
+    
 
     //funcion para editar los datos
     public function edit($id){

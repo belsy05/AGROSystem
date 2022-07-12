@@ -341,6 +341,19 @@ Route::get('/estadoP/{id}', [PedidosClientesController::class, 'updateStatus'])
 Route::get('/destroy/{id}', [PedidosClientesController::class, 'eliminar'])
 ->name('status.destroy')->where('id', '[0-9]+');
 
+//PARA EDITAR
+
+Route::get('/pedidosClientes/{id}/editar', [PedidosClientesController::class, 'edit'])
+    ->name('pedidosClientes.edit')->where('id', '[0-9]+');
+
+Route::post('/pedidosClientes/{id}/editar', [PedidosClientesController::class, 'update'])
+    ->name('pedidosClientes.update')->where('id', '[0-9]+');
+
+Route::get('/pedidosClientes/restaurar/{id}',[PedidosClientesController::class, 'restaurar'])
+    ->name('pedidosClientes.restaurar')->where('id', '[0-9]+');
+
+Route::get('/pedidosClientes/cerrar',[PedidosClientesController::class, 'cerrar'])
+    ->name('pedidosClientes.cerrar');
 
 /******************************* DETALLE PEDIDO CLIENTES *******************************/
 
@@ -501,7 +514,7 @@ Route::get('/gasto/crear', [GastoController::class, 'create'])
 Route::post('gasto/crear', [GastoController::class, 'store'])
 ->name('gasto.guardar');
 
-// REPORTE 
+// REPORTE
 Route::get('/gasto/{id}', [GastoController::class, 'show'])
 ->name('gasto.update')->where('id', '[0-9]+');
 

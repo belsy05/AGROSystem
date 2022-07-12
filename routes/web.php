@@ -487,7 +487,7 @@ Route::get('/Servicio/{id}/editar', [ServicioController::class, 'edit'])
 Route::put('/Servicio/{id}/editar', [ServicioController::class, 'update'])
 ->name('servicio.update')->where('id', '[0-9]+');
 
-Route::get('/estado/{id}', [ServicioController::class, 'updateStatus'])
+Route::get('/estadoS/{id}', [ServicioController::class, 'updateStatus'])
 ->name('status.update')->where('id', '[0-9]+');
 
 
@@ -502,5 +502,12 @@ Route::get('/gasto/crear', [GastoController::class, 'create'])
 Route::post('gasto/crear', [GastoController::class, 'store'])
 ->name('gasto.guardar');
 
+// REPORTE 
 Route::get('/gasto/{id}', [GastoController::class, 'show'])
 ->name('gasto.update')->where('id', '[0-9]+');
+
+Route::get('/gasto/reporte', [GastoController::class, 'reporte'])
+->name('gasto.reporte');
+
+Route::get('/gasto/pdf/{anio1}/{anio2}/{tipo}/{empleado}', [GastoController::class, 'pdf'])
+->name('gasto.pdf');

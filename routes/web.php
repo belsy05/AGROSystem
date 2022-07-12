@@ -19,6 +19,7 @@ use App\Http\Controllers\DetallesPedidosClientesController;
 use App\Http\Controllers\DetallesPedidosProductosNuevosController;
 use App\Http\Controllers\DetallesPedidosProveedorController;
 use App\Http\Controllers\FacturasVencerController;
+use App\Http\Controllers\GastoController;
 use App\Http\Controllers\PedidosProductosNuevosController;
 use App\Http\Controllers\PedidosProveedorController;
 use App\Http\Controllers\ProductosVencerController;

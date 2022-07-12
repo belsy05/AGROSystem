@@ -26,6 +26,71 @@ class GastoController extends Controller
         $gastos = Gasto::paginate(10);
         return view('Gasto.raizGasto', compact('gastos','personal', 'empleado', 'fechadesde', 'fechahasta', 'TipoG'));
     }
+    
+    public function reporte(Request $request)
+    {
+
+        $personal = Personal::all();
+        $gastos = Gasto::all();
+        $TipoG = $request->get('tipo');
+        $empleado = $request->get('empleado');
+        $fechadesde = $request->get('FechaDesde');
+        $fechahasta = $request->get('FechaHasta');
+
+            if ($fechadesde != '' && $TipoG == 0 && $empleado == 0) {
+                $gastos = Gasto::select('gastos.*')
+                    ->whereBetween('fecha', [$fechadesde, $fechahasta])
+                    ->paginate(15)->withQueryString();
+            } else {
+                if ($fechadesde != '' && $TipoG == 0 && $empleado != 0) {
+                    $gastos = Gasto::select('gastos.*')
+                        ->whereBetween('fecha', [$fechadesde, $fechahasta])
+                        ->where('responsable', '=', $empleado)
+                        ->paginate(15)->withQueryString();
+                } else {
+                    if ($fechadesde != '' && $TipoG != 0 && $empleado == 0) {
+                        $gastos = Gasto::select('gastos.*')
+                            ->whereBetween('fecha', [$fechadesde, $fechahasta])
+                            ->where('tipo', '=', $TipoG)
+                            ->paginate(15)->withQueryString();
+                    } else {
+                        if ($fechadesde == '' && $TipoG != 0 && $empleado == 0) {
+                            $gastos = Gasto::select('gastos.*')
+                                ->where('tipo', '=', $TipoG)
+                                ->paginate(15)->withQueryString();
+                        } else {
+                            if ($fechadesde == '' && $TipoG == 0 && $empleado != 0) {
+                                $gastos = Gasto::select('gastos.*')
+                                    ->where('responsable', '=', $empleado)
+                                    ->paginate(15)->withQueryString();
+                            } else {
+                                if ($fechadesde == '' && $TipoG != 0 && $empleado != 0) {
+                                    $gastos = Gasto::select('gastos.*')
+                                        ->where('responsable', '=', $empleado)
+                                        ->where('tipo', '=', $TipoG)
+                                        ->paginate(15)->withQueryString();
+                                } else {
+                                    $gastos = Gasto::select('gastos.*')
+                                    ->whereBetween('fecha', [$fechadesde, $fechahasta])
+                                    ->where('responsable', '=', $empleado)
+                                    ->where('tipo', '=', $TipoG)
+                                    ->paginate(15)->withQueryString();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        if ($fechadesde == '') {
+            $fechadesde = 0;
+        }
+        if ($fechahasta == '') {
+            $fechahasta = 0;
+        }
+
+        return view('Gasto.raizGasto', compact('gastos','personal', 'empleado', 'fechadesde', 'fechahasta', 'TipoG'));
+    } 
 
     /**
      * Show the form for creating a new resource.

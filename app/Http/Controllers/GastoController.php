@@ -14,9 +14,15 @@ class GastoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+   public function index()
     {
-        
+        $empleado = 0;
+        $TipoG = 0;
+        $fechadesde = 0;
+        $fechahasta = 0;
+        $personal = Personal::all();
+        $gastos = Gasto::paginate(10);
+        return view('Gasto.raizGasto', compact('gastos','personal', 'empleado', 'fechadesde', 'fechahasta', 'TipoG'));
     }
 
     /**

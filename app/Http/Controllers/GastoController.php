@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gasto;
+use App\Models\Personal;
 use App\Http\Requests\StoreGastoRequest;
 use App\Http\Requests\UpdateGastoRequest;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class GastoController extends Controller

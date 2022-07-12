@@ -490,7 +490,9 @@ Route::put('/Servicio/{id}/editar', [ServicioController::class, 'update'])
 Route::get('/estado/{id}', [ServicioController::class, 'updateStatus'])
 ->name('status.update')->where('id', '[0-9]+');
 
-/******************************* Gastos *******************************/
+
+/******************************* GASTOS *******************************/
+
 Route::get('/gasto', [GastoController::class, 'index'])
 ->name('gasto.index');
 

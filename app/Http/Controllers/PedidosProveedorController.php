@@ -151,6 +151,102 @@ class PedidosProveedorController extends Controller
              ->with('mensaje', 'El estado fue modificado exitosamente');
     } */
 
+    public function edit($id){
+        $detallesViejos = DetallesPedidosProveedor::where('IdPedido', $id)->get();
+        foreach ($detallesViejos  as $key => $value) {
+            $existe = DB::table('detalles_pedidos_proveedores_temporals')->where('IdPedido', '=', $id)
+                                                            ->where('Producto', '=', $value->Producto)
+                                                            ->where('Presentacion', '=', $value->Presentacion)->exists();
+            
+            $exis = DB::table('detalles_pedidos_proveedores_temporals')->where('IdPedido', '=', null)
+                                                            ->where('Producto', '=', $value->Producto)
+                                                            ->where('Presentacion', '=', $value->Presentacion)->exists();
+            if ($existe == false && $exis == false) {
+                $temporal = new DetallesPedidosProveedoresTemporal();
+                $temporal->IdPedido = $value->IdPedido;
+                $temporal->Producto = $value->Producto;
+                $temporal->Presentacion = $value->Presentacion;
+                $temporal->Cantidad = $value->Cantidad;
+                $temporal->save();
+            }
+        }
+        $pedido = PedidosProveedor::findOrFail($id);
+        $total_cantidad = 0;
+        $detalles =  DetallesPedidosProveedoresTemporal::where('IdPedido', '=', $id)->orwhere('IdPedido', '=', 0)->get();
+        $proveedor = Proveedor::all();
 
+        foreach ($detalles  as $key => $value) {
+            $total_cantidad += $value->Cantidad;
+        }
+
+        return view('Compras.formularioEditarPedidosProveedor')->with('pedido', $pedido)
+                                                                ->with('proveedor', $proveedor)
+                                                                ->with('detalles', $detalles)
+                                                                ->with('total_cantidad', $total_cantidad);
+
+    }
+
+    public function update(Request $request, $id){
+
+        $request->validate([
+            'FechaPedidoProveedor' => 'required|date|before:tomorrow|after:yesterday',
+            'Proveedor'=> 'required',
+            'TotalCantidad' => 'required|numeric|min:1'
+        ], [
+
+            'FechaPedidoProveedor.before' => 'El campo fecha de pedido debe de ser hoy',
+            'FechaPedidoProveedor.after' => 'El campo fecha de pedido debe de ser hoy',
+            'TotalCantidad.min' => 'Ingrese detalles para este pedido'
+
+        ]);
+
+        $pedido= PedidosProveedor::findOrFail($id);
+
+        $pedido->proveedor_id = $request->input('Proveedor');
+        $pedido->FechaDelPedido = $request->input('FechaPedidoProveedor');
+        $pedido->save();
+
+        $detalles =  DetallesPedidosProveedor::where('IdPedido', $id)->get();
+        foreach ($detalles  as $key => $value) {
+            DetallesPedidosProveedor::destroy($value->id);
+        }
+
+        $det =  DetallesPedidosProveedoresTemporal::where('IdPedido', $id)->orwhere('IdPedido', 0)->get();
+        foreach ($det  as $key => $value) {
+            $nuevoPedido = new DetallesPedidosProveedor();
+            $nuevoPedido->IdPedido = $id;
+            $nuevoPedido->Producto = $value->Producto;
+            $nuevoPedido->Presentacion = $value->Presentacion;
+            $nuevoPedido->Cantidad = $value->Cantidad;
+            $nuevoPedido->save();
+        }
+
+        $details = DetallesPedidosProveedoresTemporal::all();
+        foreach ($details  as $key => $value) {
+            DetallesPedidosProveedoresTemporal::destroy($value->id);
+        }
+        return redirect()->route('pedidosProveedor.index');
+
+    }
+
+    public function restaurar($id)
+    {
+        $details = DetallesPedidosProveedoresTemporal::all();
+        foreach ($details  as $key => $value) {
+            DetallesPedidosProveedoresTemporal::destroy($value->id);
+        }
+
+        return redirect()->route('pedidosProveedor.edit', ['id' => $id]);
+    }
+
+    public function cerrar()
+    {
+        $details = DetallesPedidosProveedoresTemporal::all();
+        foreach ($details  as $key => $value) {
+            DetallesPedidosProveedoresTemporal::destroy($value->id);
+        }
+
+        return redirect()->route('pedidosProveedor.index');
+    }
 
 }

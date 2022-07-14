@@ -38,13 +38,15 @@ class ServicioController extends Controller
     //funcion para mostrar
     public function show($id){
         $servicio = Servicio::findOrFail($id);
-        $id = $servicio->empleado_id;
+        $id_p = $servicio->empleado_id;
 
-        $cargo = Cargo::select('cargos.*')
-            ->join('personals', 'cargos.id', '=', 'personals.cargo_id')
-            ->where('personals.id', '=', $id)
-            ->get();
-        return view('Servicios.verServicio', compact('cargo'))->with('servicio', $servicio);
+        $personal = Personal::findOrFail($id_p);
+        $id_c = $personal->cargo_id;
+
+        $cargos = Cargo::findOrFail($id_c);
+
+        return view('Servicios.verServicio')->with('servicio', $servicio)
+            ->with('cargo', $cargos);
     }
 
      //funcion para crear o insertar datos

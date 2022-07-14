@@ -19,6 +19,7 @@ use App\Http\Controllers\DetallesPedidosClientesController;
 use App\Http\Controllers\DetallesPedidosProductosNuevosController;
 use App\Http\Controllers\DetallesPedidosProveedorController;
 use App\Http\Controllers\FacturasVencerController;
+use App\Http\Controllers\GastoController;
 use App\Http\Controllers\PedidosProductosNuevosController;
 use App\Http\Controllers\PedidosProveedorController;
 use App\Http\Controllers\ProductosVencerController;
@@ -340,6 +341,19 @@ Route::get('/estadoP/{id}', [PedidosClientesController::class, 'updateStatus'])
 Route::get('/destroy/{id}', [PedidosClientesController::class, 'eliminar'])
 ->name('status.destroy')->where('id', '[0-9]+');
 
+//PARA EDITAR
+
+Route::get('/pedidosClientes/{id}/editar', [PedidosClientesController::class, 'edit'])
+    ->name('pedidosClientes.edit')->where('id', '[0-9]+');
+
+Route::post('/pedidosClientes/{id}/editar', [PedidosClientesController::class, 'update'])
+    ->name('pedidosClientes.update')->where('id', '[0-9]+');
+
+Route::get('/pedidosClientes/restaurar/{id}',[PedidosClientesController::class, 'restaurar'])
+    ->name('pedidosClientes.restaurar')->where('id', '[0-9]+');
+
+Route::get('/pedidosClientes/cerrar',[PedidosClientesController::class, 'cerrar'])
+    ->name('pedidosClientes.cerrar');
 
 /******************************* DETALLE PEDIDO CLIENTES *******************************/
 
@@ -453,7 +467,6 @@ Route::get('/destroyP/{id}', [PedidosProveedorController::class, 'eliminar'])
 
 /******************************* DETALLE PEDIDO PROVEEDOR *******************************/
 
-
 Route::post('/detalle_pedidosProveedor/agregar', [DetallesPedidosProveedorController::class, 'agregar_detalle'])
 ->name('detalle_pedidosProveedor.crear');
 
@@ -486,10 +499,12 @@ Route::get('/Servicio/{id}/editar', [ServicioController::class, 'edit'])
 Route::put('/Servicio/{id}/editar', [ServicioController::class, 'update'])
 ->name('servicio.update')->where('id', '[0-9]+');
 
-Route::get('/estado/{id}', [ServicioController::class, 'updateStatus'])
+Route::get('/estadoS/{id}', [ServicioController::class, 'updateStatus'])
 ->name('status.update')->where('id', '[0-9]+');
 
-/******************************* Gastos *******************************/
+
+/******************************* GASTOS *******************************/
+
 Route::get('/gasto', [GastoController::class, 'index'])
 ->name('gasto.index');
 
@@ -499,5 +514,12 @@ Route::get('/gasto/crear', [GastoController::class, 'create'])
 Route::post('gasto/crear', [GastoController::class, 'store'])
 ->name('gasto.guardar');
 
+// REPORTE
 Route::get('/gasto/{id}', [GastoController::class, 'show'])
 ->name('gasto.update')->where('id', '[0-9]+');
+
+Route::get('/gasto/reporte', [GastoController::class, 'reporte'])
+->name('gasto.reporte');
+
+Route::get('/gasto/pdf/{anio1}/{anio2}/{tipo}/{empleado}', [GastoController::class, 'pdf'])
+->name('gasto.pdf');

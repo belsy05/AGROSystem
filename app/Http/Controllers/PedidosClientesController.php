@@ -9,6 +9,7 @@ use App\Models\DetallesPedidosProductosNuevos;
 use App\Models\DetalleVenta;
 use App\Models\Inventario;
 use App\Models\PedidosClientes;
+use App\Models\PedidosClientesTemporal;
 use App\Models\Precio;
 use App\Models\Presentacion;
 use App\Models\Producto;
@@ -134,9 +135,9 @@ class PedidosClientesController extends Controller
 
             $inve =  Inventario::where('IdProducto', '=', $value->IdProducto)
             ->where('IdPresentacion', '=', $value->IdPresentacion)->firstOrFail();
-    
+
             $inve->Existencia = $inve->Existencia - $value->Cantidad;
-    
+
             $inve->save();
         }
 
@@ -165,7 +166,116 @@ class PedidosClientesController extends Controller
 
         return redirect()->route('pedidosCliente.index');
 
-        
+
 
     }
+
+
+    public function edit($id){
+        $detallesViejos = DetallesPedidosClientes::where('IdVenta', $id)->get();
+        foreach ($detallesViejos  as $key => $value) {
+            $existe = DB::table('pedidos_clientes_temporals')->where('Idventa', '=', $id)
+                ->where('IdProducto', '=', $value->IdProducto)
+                ->where('IdPresentacion', '=', $value->IdPresentacion)->exists();
+
+            $exis = DB::table('pedidos_clientes_temporals')->where('IdVenta', '=', null)
+                ->where('IdProducto', '=', $value->IdProducto)
+                ->where('IdPresentacion', '=', $value->IdPresentacion)->exists();
+            if ($existe == false && $exis == false) {
+                $temporal = new PedidosClientesTemporal();
+                $temporal->IdVenta = $value->IdVenta;
+                $temporal->IdProducto = $value->IdProducto;
+                $temporal->IdPresentacion = $value->IdPresentacion;
+                $temporal->Cantidad = $value->Cantidad;
+                $temporal->save();
+            }
+        }
+        $pedido = PedidosClientes::findOrFail($id);
+        $total_cantidad = 0;
+        $detalles =  PedidosClientesTemporal::where('IdVenta', '=', $id)->orwhere('IdVenta', '=', 0)->get();
+        $productos = Producto::all();
+        $cliente = Cliente::all();
+        $categoria = Categoria::all();
+        $presentacion = Presentacion::all();
+        $inventarios = Inventario::all();
+
+
+        foreach ($detalles  as $key => $value) {
+            $total_cantidad += $value->Cantidad;
+        }
+
+        return view('Ventas.formularioPedidosClienteEditar')->with('pedido', $pedido)
+            ->with('cliente', $cliente)
+            ->with('detalles', $detalles)
+            ->with('total_cantidad', $total_cantidad)
+            ->with('productos',$productos)
+            ->with('categoria',$categoria)
+            ->with('presentacion',$presentacion)
+            ->with('inventarios', $inventarios);
+
+    }
+
+    public function update(Request $request, $id){
+
+        $request->validate([
+            'FechaPedidoCliente' => 'required|date|before:tomorrow|after:yesterday',
+            'Cliente'=> 'required',
+            'TotalCantidad' => 'required|numeric|min:1'
+        ], [
+
+            'FechaPedidoCliente.before' => 'El campo fecha de pedido debe de ser hoy',
+            'FechaPedidoCliente.after' => 'El campo fecha de pedido debe de ser hoy',
+            'TotalCantidad.min' => 'Ingrese detalles para este pedido'
+
+        ]);
+
+        $pedido= PedidosClientes::findOrFail($id);
+
+        $pedido->cliente_id = $request->input('Cliente');
+        $pedido->FechaDelPedido = $request->input('FechaPedidoCliente');
+        $pedido->save();
+
+        $detalles =  DetallesPedidosClientes::where('IdVenta', $id)->get();
+        foreach ($detalles  as $key => $value) {
+            DetallesPedidosClientes::destroy($value->id);
+        }
+
+        $det =  PedidosClientesTemporal::where('IdVenta', $id)->orwhere('IdVenta', 0)->get();
+        foreach ($det  as $key => $value) {
+            $nuevoPedido = new DetallesPedidosClientes();
+            $nuevoPedido->IdVenta = $id;
+            $nuevoPedido->IdProducto = $value->IdProducto;
+            $nuevoPedido->IdPresentacion = $value->IdPresentacion;
+            $nuevoPedido->Cantidad = $value->Cantidad;
+            $nuevoPedido->save();
+        }
+
+        $details = PedidosClientesTemporal::all();
+        foreach ($details  as $key => $value) {
+            PedidosClientesTemporal::destroy($value->id);
+        }
+        return redirect()->route('pedidosCliente.index');
+
+    }
+
+    public function restaurar($id)
+    {
+        $details = PedidosClientesTemporal::all();
+        foreach ($details  as $key => $value) {
+            PedidosClientesTemporal::destroy($value->id);
+        }
+
+        return redirect()->route('pedidosClientes.edit', ['id' => $id]);
+    }
+
+    public function cerrar()
+    {
+        $details = PedidosClientesTemporal::all();
+        foreach ($details  as $key => $value) {
+            PedidosClientesTemporal::destroy($value->id);
+        }
+
+        return redirect()->route('pedidosCliente.index');
+    }
+
 }

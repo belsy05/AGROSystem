@@ -415,6 +415,16 @@ Route::get('/detalle_pedidosProductoNuevoCliente/eliminar/{Detallepedido}', [Det
 Route::post('/detalle_pedidosProductoNuevoCliente/editar', [DetallesPedidosProductosNuevosController::class, 'agregar_detalle_edit'])
 ->name('detalle_pedidoP.editar');
 
+//Rutas para editar detalls de actualizar venta Mj
+Route::post('/detalle_pedidosCliente/agregar/{DetalleCompra}/edit', [DetallesPedidosClientesController::class, 'edit_agregar_detalle'])
+->name('detalle_pedidosCliente.crear2');
+
+Route::get('/detalle_pedidosCliente/eliminar/{DetalleCompra}/{edit}', [DetallesPedidosClientesController::class, 'destroy2'])
+->name('detalle_pedidosCliente.eliminar2');
+
+Route::post('/detalle_pedidosCliente/editar/{DetalleCompra}/editar', [DetallesPedidosClientesController::class, 'edit_agregar_detalle_edit'])
+->name('detalle_pedidosCliente.editar2');
+
 
 /******************************* FACTURAS PROXIMAS A VENCER *******************************/
 

@@ -126,6 +126,14 @@ class PedidosProductosNuevosController extends Controller
                 $temporal->save();
             }
         }
+        $pedido = PedidosProductosNuevos::findOrFail($id);
+        $total_cantidad = 0;
+        $detalles =  DetallesProductosNuevosTemporal::where('IdPedido', '=', $id)->orwhere('IdPedido', '=', 0)->get();
+        $cliente = Cliente::all();
+
+        foreach ($detalles  as $key => $value) {
+            $total_cantidad += $value->Cantidad;
+        }
 
     public function updateStatus($id)
     {

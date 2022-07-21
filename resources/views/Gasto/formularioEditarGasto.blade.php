@@ -14,7 +14,6 @@
             </ul>
         </div>
     @endif
-
     <form id="form_editar" name="form_editar" method="POST" action="{{ route('gasto.mostrar', $gasto->id) }}" onsubmit="confirmar()">
         @method('put')
         @csrf 
@@ -112,8 +111,6 @@
             })
 
             event.preventDefault()
-
-
         }
         $(document).ready(function() {
         new TomSelect(".select222", {

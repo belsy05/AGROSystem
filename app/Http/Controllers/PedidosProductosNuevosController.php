@@ -107,6 +107,22 @@ class PedidosProductosNuevosController extends Controller
         return redirect()->route('pedidosClienteP.crear');
     }
 
+    public function updateStatus($id)
+    {
+        $detalles =  DetallesPedidosProductosNuevos::where('IdPedido', '=', $id)->get();
+        foreach ($detalles as $key => $value) {
+
+            DetallesPedidosProductosNuevos::destroy($value->id);
+        }
+
+        PedidosProductosNuevos::destroy($id);
+
+        return redirect()->route('pedidosClienteP.index');
+
+        
+
+    }
+
     public function edit($id){
         $detallesViejos = DetallesPedidosProductosNuevos::where('IdPedido', $id)->get();
         foreach ($detallesViejos  as $key => $value) {
@@ -142,19 +158,5 @@ class PedidosProductosNuevosController extends Controller
 
     }
 
-    public function updateStatus($id)
-    {
-        $detalles =  DetallesPedidosProductosNuevos::where('IdPedido', '=', $id)->get();
-        foreach ($detalles as $key => $value) {
-
-            DetallesPedidosProductosNuevos::destroy($value->id);
-        }
-
-        PedidosProductosNuevos::destroy($id);
-
-        return redirect()->route('pedidosClienteP.index');
-
-        
-
-    }
+    
 }

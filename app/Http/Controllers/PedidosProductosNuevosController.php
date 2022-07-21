@@ -215,7 +215,13 @@ class PedidosProductosNuevosController extends Controller
         return redirect()->route('pedidosClienteP.edit', ['id' => $id]);
     }
 
+    public function cerrar()
+    {
+        $details = DetallesProductosNuevosTemporal::all();
+        foreach ($details  as $key => $value) {
+            DetallesProductosNuevosTemporal::destroy($value->id);
+        }
 
-
-    
+        return redirect()->route('pedidosClienteP.index');
+    }
 }

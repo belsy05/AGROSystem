@@ -175,5 +175,35 @@ class PedidosProductosNuevosController extends Controller
            
         ]);
 
+        $pedido= PedidosProductosNuevos::findOrFail($id);
+
+        $pedido->cliente_id = $request->input('ClienteP');
+        $pedido->TotalAnticipo = $request->input('TotalAnticipo');
+        $pedido->FechaDelPedido = $request->input('FechaPedidoClienteP');
+        $pedido->save();
+
+        $detalles =  DetallesPedidosProductosNuevos::where('IdPedido', $id)->get();
+        foreach ($detalles  as $key => $value) {
+            DetallesPedidosProductosNuevos::destroy($value->id);
+        }
+
+        $det =  DetallesProductosNuevosTemporal::where('IdPedido', $id)->orwhere('IdPedido', 0)->get();
+        foreach ($det  as $key => $value) {
+            $nuevoPedido = new DetallesPedidosProductosNuevos();
+            $nuevoPedido->IdPedido = $id;
+            $nuevoPedido->Producto = $value->Producto;
+            $nuevoPedido->Presentacion = $value->Presentacion;
+            $nuevoPedido->Cantidad = $value->Cantidad;
+            $nuevoPedido->save();
+        }
+
+        $details = DetallesProductosNuevosTemporal::all();
+        foreach ($details  as $key => $value) {
+            DetallesProductosNuevosTemporal::destroy($value->id);
+        }
+        return redirect()->route('pedidosClienteP.index');
+
+    }
+
     
 }

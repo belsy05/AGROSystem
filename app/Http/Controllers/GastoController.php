@@ -207,37 +207,42 @@ class GastoController extends Controller
         return view('gasto.show')->with('gasto',$gasto);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Gasto  $gasto
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Gasto $gasto)
-    {
-        //
+   
+     //funcion para editar los datos
+     public function edit($id){
+        $personal = Personal::all();
+        $gasto = Gasto::findOrFail($id);
+        return view('Gasto.formularioEditarGasto')->with('personal', $personal)->with('gasto', $gasto);
     }
+    //funcion para actualizar los datos
+    public function update(Request $request, $id){
+        $gasto = Gasto::findOrFail($id);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateGastoRequest  $request
-     * @param  \App\Models\Gasto  $gasto
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateGastoRequest $request, Gasto $gasto)
-    {
-        //
-    }
+        
+        $request->validate([
+            'nombre'=>'required|string|max:40',
+            'descripcion'=>'required|string|max:150|min:5',
+            'tipo'=>'required|string',
+            'fecha'=>'required|string|max:150|min:5',
+            'total'=>'required|numeric|min:1.00|max:50000.00',
+            'responsable'=>'required|numeric',
+        ], [
+            'descripcion.required'=>'Agregue una descripción para el gasto'
+        ]);
+        $gasto->nombre = $request->input('nombre');
+        $gasto->descripcion = $request->input('descripcion');
+        $gasto->tipo = $request->input('tipo');
+        $gasto->fecha = $request->input('fecha');
+        $gasto->total = $request->input('total');
+        $gasto->responsable = $request->responsable;
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Gasto  $gasto
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Gasto $gasto)
-    {
-        //
+        $creado = $gasto->update();
+
+        if($creado){
+            return redirect()->route('gasto.index')
+                ->with('mensaje', 'El gasto fue modificado exitosamente');
+        }else{
+            //retornar con un mensaje de error
+        }
     }
 }

@@ -205,5 +205,17 @@ class PedidosProductosNuevosController extends Controller
 
     }
 
+    public function restaurar($id)
+    {
+        $details = DetallesProductosNuevosTemporal::all();
+        foreach ($details  as $key => $value) {
+            DetallesProductosNuevosTemporal::destroy($value->id);
+        }
+
+        return redirect()->route('pedidosClienteP.edit', ['id' => $id]);
+    }
+
+
+
     
 }

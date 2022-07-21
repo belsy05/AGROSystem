@@ -107,6 +107,26 @@ class PedidosProductosNuevosController extends Controller
         return redirect()->route('pedidosClienteP.crear');
     }
 
+    public function edit($id){
+        $detallesViejos = DetallesPedidosProductosNuevos::where('IdPedido', $id)->get();
+        foreach ($detallesViejos  as $key => $value) {
+            $existe = DB::table('detalles_productos_nuevos_temporals')->where('IdPedido', '=', $id)
+                                                            ->where('Producto', '=', $value->Producto)
+                                                            ->where('Presentacion', '=', $value->Presentacion)->exists();
+            
+            $exis = DB::table('detalles_productos_nuevos_temporals')->where('IdPedido', '=', null)
+                                                            ->where('Producto', '=', $value->Producto)
+                                                            ->where('Presentacion', '=', $value->Presentacion)->exists();
+            if ($existe == false && $exis == false) {
+                $temporal = new DetallesProductosNuevosTemporal();
+                $temporal->IdPedido = $value->IdPedido;
+                $temporal->Producto = $value->Producto;
+                $temporal->Presentacion = $value->Presentacion;
+                $temporal->Cantidad = $value->Cantidad;
+                $temporal->save();
+            }
+        }
+
     public function updateStatus($id)
     {
         $detalles =  DetallesPedidosProductosNuevos::where('IdPedido', '=', $id)->get();

@@ -158,5 +158,22 @@ class PedidosProductosNuevosController extends Controller
 
     }
 
+    public function update(Request $request, $id){
+
+        $request->validate([
+            'FechaPedidoClienteP' => 'required|date|before:tomorrow|after:yesterday',
+            'TotalAnticipo' => 'required|numeric|min:0.00|max:30000.00',
+            'ClienteP' => 'required',
+            'TotalCantidad' => 'required|numeric|min:1'
+        ], [
+            
+            'FechaPedidoCliente.before' => 'El campo fecha de pedido debe de ser hoy',
+            'FechaPedidoCliente.after' => 'El campo fecha de pedido debe de ser hoy',
+            'TotalAnticipo.numeric' => 'El anticipo debe ser en número',
+            'ClienteP.required' => 'El campo nombre del cliente es obligatorio',
+            'TotalCantidad.min' => 'Ingrese detalles para este pedido'
+           
+        ]);
+
     
 }

@@ -135,6 +135,13 @@ class PedidosProductosNuevosController extends Controller
             $total_cantidad += $value->Cantidad;
         }
 
+        return view('Ventas.formularioEditarPedidosProductosNuevos')->with('cliente', $cliente)
+                                                                    ->with('pedido', $pedido)
+                                                                    ->with('detalles', $detalles)
+                                                                    ->with('total_cantidad', $total_cantidad);
+
+    }
+
     public function updateStatus($id)
     {
         $detalles =  DetallesPedidosProductosNuevos::where('IdPedido', '=', $id)->get();
